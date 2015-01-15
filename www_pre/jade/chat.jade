@@ -1,0 +1,6 @@
+ion-view(view-title='讨论')
+	ion-header-bar(frosted-bar='', title="'Blurred...man!'", type='bar-frosted')
+		ion-content(has-header='true', has-footer='true', padding='true', start-y='120')
+	    	ol.messages
+	    		li(ng-repeat='message in messages', ion-bind-html-unsafe='message.content')
+

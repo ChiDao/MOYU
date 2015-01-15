@@ -1,0 +1,9 @@
+html
+  body
+    ion-view(view-title='频道')
+      ion-content
+        ion-list
+          ion-item.item-thumbnail-left(ng-repeat='game in games', type='item-text-wrap', href='#/tab/channels/{{game._id}}')
+            img(src='{{game.logo}}')
+            | {{game.name}}
+

@@ -1,0 +1,10 @@
+define(['app', 'services.RestRoute'], function(app)
+{
+	app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute',
+		function($scope, $stateParams, UI, RestRoute, $timeout) {
+			// RestRoute.getData($scope, 'game').then(function(){
+			// 	console.log(_.keys($scope));
+			// });
+		}
+	]);
+});

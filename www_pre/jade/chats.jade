@@ -1,0 +1,9 @@
+html
+  body
+    ion-view(view-title='讨论')
+      ion-content
+        ion-list
+          ion-item.item-thumbnail-left(ng-repeat='chat in chats', type='item-text-wrap', href='#/tab/chats/{{chat._id}}')
+            img(src='{{chat.image}}')
+            | {{game.name}}
+
