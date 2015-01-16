@@ -12,7 +12,21 @@ define(['app'], function(app){
       .state('tab', {
       url: "/tab",
       abstract: true,
-      templateUrl: "templates/tabs.html"
+      templateUrl: "templates/tabs.html",
+      controllerProvider: function($state){
+        return function($scope, $state){
+          $scope.hideTabs = function(){
+            switch ($state.current.name) {
+              case 'tab.channel':
+                  return true;
+              case 'tab.chat':
+                  return true;
+              default:
+                  return false;
+            }
+          };
+        };
+      }
     })
 
     // Each tab has its own nav history stack:
