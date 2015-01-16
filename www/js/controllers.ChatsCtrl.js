@@ -1,7 +1,7 @@
 define(['app', 'services.RestRoute'], function(app)
 {
 	app.controller('ChatsCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute',
-		function($scope, $stateParams, UI, RestRoute, $timeout) {
+		function($scope, $stateParams, UI, RestRoute) {
 			$scope.chats = [
 				{
 					_id: 1,

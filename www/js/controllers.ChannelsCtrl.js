@@ -1,7 +1,7 @@
 define(['app', 'services.RestRoute'], function(app)
 {
 	app.controller('ChannelsCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute',
-		function($scope, $stateParams, UI, RestRoute, $timeout) {
+		function($scope, $stateParams, UI, RestRoute) {
 
 			var games = {};
 			$scope.games = [];
