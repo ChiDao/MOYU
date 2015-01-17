@@ -26,6 +26,20 @@ define(['app', 'services.Modal'], function(app)
         api: 'all-clients/<%= platform %>\?_last',
         apiType: 'list',
       },
+      {
+        name: 'client-posts-last',
+        apiRegExp: /\/client-posts\/(\w+)\?_last/,
+        apiRegExpMap: ['clientId'],
+        api: 'client-posts/<%= clientId %>\?_last',
+        apiType: 'list',
+      },
+      {
+        name: 'user',
+        apiRegExp: /\/user\/(\w+)/,
+        apiRegExpMap: ['userId'],
+        api: 'user/<%= userId %>',
+        apiType: 'detail',
+      },
 
     ];
 

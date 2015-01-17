@@ -1,15 +1,7 @@
-ion-view(view-title='{{game.description}}')
+ion-view(view-title='{{channel.name}}')
   ion-content.padding
-    .list.card
-      .item.item-divider Recent Updates
+    .list.card(ng-repeat="post in posts")
+      .item.item-divider {{post.userData.email}}
       .item.item-image
-        img(src="img/ionic.png")
-    .list.card
-      .item.item-divider Health
-      .item.item-image
-        img(src="img/ionic.png")
-    .list.card
-      .item.item-divider Upcoming
-      .item.item-image
-        img(src="img/ionic.png")
+        img(src="{{post.img}}")
 
