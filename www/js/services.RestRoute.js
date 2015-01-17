@@ -40,6 +40,20 @@ define(['app', 'services.Modal'], function(app)
         api: 'user/<%= userId %>',
         apiType: 'detail',
       },
+      {
+        name: 'follow-posts',
+        apiRegExp: /\/followposts\/(\w+)\?_last/,
+        apiRegExpMap: ['userId'],
+        api: 'followposts/<%= userId %>?_last',
+        apiType: 'list',
+      },
+      {
+        name: 'post',
+        apiRegExp: /\/post\/(\w+)/,
+        apiRegExpMap: ['postId'],
+        api: 'post/<%= postId %>',
+        apiType: 'detail',
+      },
 
     ];
 

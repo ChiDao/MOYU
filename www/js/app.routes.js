@@ -18,11 +18,13 @@ define(['app'], function(app){
           $scope.hideTabs = function(){
             switch ($state.current.name) {
               case 'tab.channel':
-                  return true;
+                return true;
               case 'tab.chat':
-                  return true;
+                return true;
+              case 'tab.channel-chat':
+                return true;
               default:
-                  return false;
+                return false;
             }
           };
         };
