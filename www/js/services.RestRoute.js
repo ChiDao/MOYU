@@ -54,7 +54,34 @@ define(['app', 'services.Modal'], function(app)
         api: 'post/<%= postId %>',
         apiType: 'detail',
       },
-
+      {
+        name: 'post-new-comment',
+        apiRegExp: /\/new-comment\/(\w+)/,
+        apiRegExpMap: ['postId'],
+        api: 'new-comment/<%= postId %>',
+        apiType: 'post',
+      },
+      
+      //---------
+      //  POST
+      //---------
+      {
+        name: 'signup',
+        apiRegExp: /\/signup/,
+        api: 'signup',
+        apiType: 'postModal',
+        modalFormData: {email: ''}, 
+        modalTemplate: 'templates/modal-signup.html',
+      },
+      {
+        name: 'pre-register',
+        apiRegExp: /\/pre-register/,
+        api: 'pre-register',
+        apiType: 'postModal',
+        modalFormData: {password: ''}, 
+        modalFormDataMap: {email: 'email'},
+        modalTemplate: 'templates/modal-login.html',
+      },
     ];
 
     this.$get = function(Restangular, Modal, $state, $stateParams){
@@ -201,6 +228,35 @@ define(['app', 'services.Modal'], function(app)
               console.debug('get link data:' + JSON.stringify($scope[scopeDataField]));
             })
           }
+        },
+        postDataToLink: function(apiLink, data){
+          var params;
+          var options = options || {};
+          //匹配路由并获得参数
+          var apiConfig = _.find(apiConfigs, function(apiConfig) {
+            // console.debug(apiConfig.apiRegExp, apiConfig.apiRegExp.exec(apiLink));
+            var matches = apiConfig.apiRegExp.exec(apiLink);
+            if (matches){
+              matches.shift();
+              params = _.zipObject(apiConfig.apiRegExpMap, matches);
+              console.debug('Post data to link params: ' + JSON.stringify(params));
+              console.log(apiConfig.apiRegExp);
+            }
+            return matches;
+          });
+          if (!apiConfig) {
+            console.log("Can't post data to link: "+ apiLink);
+            return {
+              then: function(callback){
+                callback();
+              }
+            };
+          };
+          Restangular.allUrl(_.template(apiConfig.api, params)).post(data).then(function(response){
+            console.debug('Post data to link:' + JSON.stringify(response));
+          }, function(error){
+            console.debug('Post data to link error:' + JSON.stringify(error));
+          })
         },
         //根据api跳转到对应的state
         jumpToLink: function(apiLink){

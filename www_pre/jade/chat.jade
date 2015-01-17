@@ -7,4 +7,7 @@ ion-view(hide-nav-bar="true")
 		//- button.button.icon.ion-ios7-arrow-back.button-clear(ng-click="backButton()")
 		ol.messages
 			li(ng-repeat='message in messages', ng-bind-html='message.content')
-
+	ion-footer-bar
+		input(type="text" ng-model="formData.content")
+		button.button.icon.ion-happy.button-clear
+		button.button-clear.icon.ion-paper-airplane(ng-click="send()")

@@ -8,11 +8,16 @@
 define([
     'cordova',
     'restangular',
+    'angular-messages',
+    'angular-translate',
     ], function(){
 
   var starter = angular.module('starter', [
     'ionic', 
-    'restangular'
+    'restangular',
+    'ngMessages', 
+    'ngCookies', 
+    'pascalprecht.translate',
     ]);
 
 
@@ -30,6 +35,21 @@ define([
     });
   });
   
+
+  //角色配置
+  (function(exports){
+    var userRoles = {
+        public: 1, // 001
+        user:   2 // 010
+    };
+    exports.userRoles = userRoles;
+    exports.accessLevels = {
+        public: userRoles.public | // 11
+                userRoles.user,
+        user:   userRoles.user     // 10
+    };
+    })(typeof exports === 'undefined'? starter.routingConfig={}: exports);
+
   return starter;
 });
 

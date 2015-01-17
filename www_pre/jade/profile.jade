@@ -1,10 +1,4 @@
 ion-view(view-title='Account')
   ion-content
     ion-list
-      ion-item.item-toggle
-        | Enable Friends
-        label.toggle
-          input(type='checkbox', ng-model='settings.enableFriends')
-          .track
-            .handle
-
+      button.button(ng-click="Auth.login()") Login

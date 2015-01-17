@@ -2,6 +2,8 @@ define(['app'], function(app){
 
   app.config(function($stateProvider, $urlRouterProvider) {
 
+
+    var access = app.routingConfig.accessLevels;
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
     // Set up the various states which the app can be in.
@@ -40,6 +42,9 @@ define(['app'], function(app){
           templateUrl: 'templates/channels.html',
           controller: 'ChannelsCtrl'
         }
+      },
+      data: {
+        access: access.public
       }
     })
       .state('tab.channel', {
@@ -49,6 +54,9 @@ define(['app'], function(app){
             templateUrl: 'templates/channel.html',
             controller: 'ChannelCtrl'
           }
+        },
+        data: {
+          access: access.public
         }
       })
       .state('tab.add-channel', {
@@ -58,6 +66,9 @@ define(['app'], function(app){
             templateUrl: 'templates/add-channel.html',
             controller: 'AddChannelCtrl'
           }
+        },
+        data: {
+          access: access.public
         }
       })
       .state('tab.channel-chat', {
@@ -67,6 +78,9 @@ define(['app'], function(app){
             templateUrl: 'templates/chat.html',
             controller: 'ChatCtrl'
           }
+        },
+        data: {
+          access: access.public
         }
       })
 
@@ -77,6 +91,9 @@ define(['app'], function(app){
             templateUrl: 'templates/chats.html',
             controller: 'ChatsCtrl'
           }
+        },
+        data: {
+          access: access.public
         }
       })
       .state('tab.chat', {
@@ -86,6 +103,9 @@ define(['app'], function(app){
             templateUrl: 'templates/chat.html',
             controller: 'ChatCtrl'
           }
+        },
+        data: {
+          access: access.public
         }
       })
 
@@ -96,6 +116,9 @@ define(['app'], function(app){
             templateUrl: 'templates/discover.html',
             controller: 'DiscoverCtrl'
           }
+        },
+        data: {
+          access: access.public
         }
       })
 
@@ -106,6 +129,9 @@ define(['app'], function(app){
           templateUrl: 'templates/profile.html',
           controller: 'ProfileCtrl'
         }
+      },
+      data: {
+        access: access.public
       }
     });
 
