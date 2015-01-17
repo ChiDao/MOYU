@@ -3,8 +3,6 @@ define(['app', 'services.Modal'], function(app)
     app.provider('RestRoute', function($stateProvider) {
     // Might use a resource here that returns a JSON array
 
-    var serverAddress = 'http://42.120.45.236:8485/';
-
     var apiConfigs = [
       {
         name: 'game',
@@ -21,10 +19,17 @@ define(['app', 'services.Modal'], function(app)
         api: 'client/<%= clentId %>',
         apiType: 'detail',
       },
+      {
+        name: 'all-clients-last',
+        apiRegExp: /\/all-clients\/(\w+)\?_last/,
+        apiRegExpMap: ['platform'],
+        api: 'all-clients/<%= platform %>\?_last',
+        apiType: 'list',
+      },
+
     ];
 
     this.$get = function(Restangular, Modal, $state, $stateParams){
-      Restangular.setBaseUrl(serverAddress);
       return {
         getData1: function($scope, scopeDataField){
           var getLinkData = this.getLinkData;
@@ -123,6 +128,7 @@ define(['app', 'services.Modal'], function(app)
           var options = options || {};
           //匹配路由并获得参数
           var apiConfig = _.find(apiConfigs, function(apiConfig) {
+            // console.debug(apiConfig.apiRegExp, apiConfig.apiRegExp.exec(apiLink));
             var matches = apiConfig.apiRegExp.exec(apiLink);
             if (matches){
               matches.shift();
@@ -132,6 +138,14 @@ define(['app', 'services.Modal'], function(app)
             }
             return matches;
           });
+          if (!apiConfig) {
+            console.log("Can't get link's data: "+ apiLink);
+            return {
+              then: function(callback){
+                callback();
+              }
+            };
+          };
           if (apiConfig.apiType === 'list'){
             return Restangular.allUrl(_.template(apiConfig.api, params)).getList().then(function(response){
               console.debug('get link data options: ' + JSON.stringify(options)); 

@@ -49,6 +49,15 @@ define(['app'], function(app){
           }
         }
       })
+      .state('tab.add-channel', {
+        url: '/add-channel',
+        views: {
+          'tab-channels': {
+            templateUrl: 'templates/add-channel.html',
+            controller: 'AddChannelCtrl'
+          }
+        }
+      })
 
     .state('tab.chats', {
         url: '/chats',
