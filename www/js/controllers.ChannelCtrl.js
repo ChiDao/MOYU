@@ -2,8 +2,10 @@ define(['app', 'services.RestRoute'], function(app)
 {
 	app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout',
 		function($scope, $stateParams, UI, RestRoute, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout) {
-			RestRoute.getLinkData('/client/' + $stateParams.channelId, $scope, 'channel').then(function(){
-				console.log($scope.channel);
+			$scope.$on("$ionicView.afterEnter", function() {
+				RestRoute.getLinkData('/client/' + $stateParams.channelId, $scope, 'channel').then(function(){
+					console.log($scope.channel);
+				});
 			});
 			RestRoute.getLinkData('/client-posts/' + $stateParams.channelId + '?_last', $scope, 'posts').then(function(){
 				_.forEach($scope.posts, function(post){
