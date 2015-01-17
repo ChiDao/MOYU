@@ -3,5 +3,6 @@ ion-view(view-title='{{channel.name}}')
     .list.card(ng-repeat="post in posts")
       .item.item-divider {{post.userData.email}}
       .item.item-image
-        img(src="{{post.img}}")
+        a(href='#/tab/channel-chat/{{post._id}}')
+          img(src="{{post.img}}")
 

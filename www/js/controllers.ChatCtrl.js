@@ -31,9 +31,9 @@ define(['app', 'services.RestRoute','services.Data'], function(app)
 				$ionicScrollDelegate.resize();
 				$ionicFrostedDelegate.update();
 				$timeout(function() {
-				$ionicScrollDelegate.scrollBottom(true);
-			}, 1);
-		};
-		$scope.add();
+					$ionicScrollDelegate.scrollBottom(true);
+				}, 1);
+			};
+			$scope.add();
 	}]);
 });

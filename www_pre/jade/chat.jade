@@ -1,10 +1,10 @@
 ion-view(hide-nav-bar="true")
-	ion-header-bar(frosted-bar='', type='bar-frosted')
+	ion-header-bar
 		button.button.icon.ion-ios7-arrow-back.button-clear(ng-click="backButton()")
 		div.title.title-center
 			| 讨论
 	ion-content(has-header='true', has-footer='true', padding='true', start-y='120')
-		button.button.icon.ion-ios7-arrow-back.button-clear(ng-click="backButton()")
+		//- button.button.icon.ion-ios7-arrow-back.button-clear(ng-click="backButton()")
 		ol.messages
 			li(ng-repeat='message in messages', ng-bind-html='message.content')
 
