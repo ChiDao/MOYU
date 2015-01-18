@@ -6,3 +6,8 @@ ion-modal-view
 			.item.item-image
 				div(ng-click="getPicture()")
 					img#newPostImage(src="cover.jpg" alt="点击选择图片")
+			form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
+				input(type="text" ng-model="imageURI" required ng-show="false")
+				input(type="text" ng-model="formData.content" required)
+				button#buttonOk.a-button.button.main-button.right-arrows(type='submit') 发表
+				button.button(ng-click="cancelModal()") 取消

@@ -304,6 +304,7 @@ define(['app', 'services.Modal'], function(app)
             }
             return matches;
           });
+          console.log(apiConfig, params);
           if (!apiConfig) {
             console.log("Can't show post modal: "+ apiLink);
             return {
@@ -318,28 +319,36 @@ define(['app', 'services.Modal'], function(app)
             $scope.formData = apiConfig.modalFormData;
             tmpInitFunc($scope);
           }
-          var tmpOkFunc = _.isFunction(eventHandles.onOk)?eventHandles.onOk:function(){};
+          var tmpOkFunc = _.isFunction(eventHandles.onOk)?eventHandles.onOk:function(){
+            return Thenjs(function(defer){
+              defer(undefined);
+            })
+          };
           eventHandles.onOk = function(form, $scope){
             //校验表单是否正确
             if (form.$invalid) return;
             //回调传入的onOk函数
-            tmpOkFunc(form, $scope);
-            console.log('Commit form data:' + JSON.stringify($scope.formData));
-            Restangular.all(apiConfig.api).post($scope.formData).then(function(data){
-              console.log('Commit success, get data:', data.data.rawData);
-              //提交成功
-              if (_.isFunction(eventHandles.onSuccess)){
-                eventHandles.onSuccess(form, $scope);
-              }
-              //提交失败
-              else{
-                $scope.hideModal();
-              }
-            }, function(error){
-              console.log('Commit form error:' + JSON.stringify(error));
-              if (_.isFunction(eventHandles.onError)){
-                eventHandles.onError(error, form, $scope);
-              }
+            tmpOkFunc(form, $scope).then(function(defer){
+              console.log('Commit form data:' + JSON.stringify($scope.formData));
+              Restangular.all(_.template(apiConfig.api, params)).post($scope.formData).then(function(data){
+                console.log('Commit success, get data:', data.data.rawData);
+                //提交成功
+                if (_.isFunction(eventHandles.onSuccess)){
+                  eventHandles.onSuccess(form, $scope);
+                  defer(null);
+                }
+                //提交失败
+                else{
+                  $scope.hideModal();
+                  defer("Commit form error");
+                }
+              }, function(error){
+                console.log('Commit form error:' + JSON.stringify(error));
+                if (_.isFunction(eventHandles.onError)){
+                  eventHandles.onError(error, form, $scope);
+                  defer("Commit form error");
+                }
+              })
             })
           }
           Modal.okCancelModal(apiConfig.modalTemplate, options, eventHandles)

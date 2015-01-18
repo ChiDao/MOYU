@@ -66,7 +66,10 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
                   }
                 },
                 onOk: function(form, scope){
-                  scope.commitFormError = false;
+                  return Thenjs(function(defer){
+                    scope.commitFormError = false;
+                    defer(undefined);
+                  });
                 },
                 onSuccess: function(form, scope){
                   var Me = Restangular.one("me");
