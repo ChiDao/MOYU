@@ -5,4 +5,6 @@ ion-view(view-title='{{channel.name}}')
       .item.item-image
         a(href='#/tab/channel-chat/{{post._id}}')
           img(src="{{post.img}}")
+  ion-footer-bar
+    button.button(ng-click="newPost()") 发表截图
 

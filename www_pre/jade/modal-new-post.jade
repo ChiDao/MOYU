@@ -1,0 +1,8 @@
+ion-modal-view
+	ion-header-bar.bar
+		div.title.title-center 发表截图
+	ion-content
+		.list.card
+			.item.item-image
+				div(ng-click="getPicture()")
+					img#newPostImage(src="cover.jpg" alt="点击选择图片")

@@ -89,6 +89,14 @@ define(['app', 'services.Modal'], function(app)
         modalFormDataMap: {email: 'email'},
         modalTemplate: 'templates/modal-login.html',
       },
+      {
+        name: 'new-post',
+        apiRegExp: /\/new-post\/(\w+)/,
+        apiRegExpMap: ['clientId'],
+        api: 'new-post/<%= clientId %>',
+        apiType: 'postModal',
+        modalTemplate: 'templates/modal-new-post.html',
+      },
     ];
 
     this.$get = function(Restangular, Modal, $state, $stateParams){
@@ -296,6 +304,14 @@ define(['app', 'services.Modal'], function(app)
             }
             return matches;
           });
+          if (!apiConfig) {
+            console.log("Can't show post modal: "+ apiLink);
+            return {
+              then: function(callback){
+                callback();
+              }
+            };
+          };
           //初始化表单数据
           var tmpInitFunc = _.isFunction(eventHandles.init)? _.clone(eventHandles.init):function(){};
           eventHandles.init = function($scope){

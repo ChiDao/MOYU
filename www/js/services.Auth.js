@@ -47,7 +47,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
         login: function(success, error, close){ 
           //填写邮箱signup对话框
           (function(preRegistModal){
-            RestRoute.postModal('http://42.120.45.236:8485/signup', {}, {
+            RestRoute.postModal('/signup', {}, {
               onSuccess: function(form, signupScope){
                 signupScope.hideModal();
                 preRegistModal(signupScope.formData.email);
@@ -57,7 +57,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
           //填写验证码pre-register对话框
           ((function(allowNotification){
             return function(email){
-              RestRoute.postModal('http://42.120.45.236:8485/pre-register', {}, {
+              RestRoute.postModal('/pre-register', {}, {
                 init: function(scope){
                   scope.formData.email = email
                   scope.mustChoise = false;

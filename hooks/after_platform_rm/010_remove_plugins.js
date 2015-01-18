@@ -10,6 +10,7 @@ var pluginlist = [
     "org.apache.cordova.statusbar",
     "org.apache.cordova.splashscreen",
     "com.ionic.keyboard",
+    "org.apache.cordova.camera",
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
     "com.ohh2ahh.plugins.appavailability",

@@ -1,4 +1,4 @@
-define(['app', 'services.RestRoute'], function(app)
+define(['app', 'services.RestRoute', 'services.Modal'], function(app)
 {
 	app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout',
 		function($scope, $stateParams, UI, RestRoute, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout) {
@@ -14,6 +14,30 @@ define(['app', 'services.RestRoute'], function(app)
 					});
 				})
 			});
+			$scope.newPost = function(){
+				RestRoute.postModal('/new-post/' + $stateParams.channelId, {}, {
+					init: function(scope){
+						console.log('xxxxxx')
+						scope.getPicture = function(){
+							navigator.camera.getPicture(onSuccess, onFail, { 
+								quality: 50, 
+								destinationType: Camera.DestinationType.FILE_URI,
+								sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM	
+							}); 
+
+							function onSuccess(imageURI) {
+								var image = document.getElementById('newPostImage');
+								image.src = imageURI;
+								$scope.imageURI = imageURI;
+							}
+
+							function onFail(message) {
+								alert('Failed because: ' + message);
+							}
+						}
+					}
+				})
+			}
 		}
 	]);
 });
