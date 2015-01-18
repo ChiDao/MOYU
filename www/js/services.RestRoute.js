@@ -55,16 +55,23 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'detail',
       },
       {
+        name: 'post-comments-last',
+        apiRegExp: /\/post-comments\/(\w+)\?_last/,
+        apiRegExpMap: ['postId'],
+        api: 'post-comments/<%= postId %>?_last',
+        apiType: 'list',
+      },
+      
+      //---------
+      //  POST
+      //---------
+      {
         name: 'post-new-comment',
         apiRegExp: /\/new-comment\/(\w+)/,
         apiRegExpMap: ['postId'],
         api: 'new-comment/<%= postId %>',
         apiType: 'post',
       },
-      
-      //---------
-      //  POST
-      //---------
       {
         name: 'signup',
         apiRegExp: /\/signup/,
@@ -252,7 +259,7 @@ define(['app', 'services.Modal'], function(app)
               }
             };
           };
-          Restangular.allUrl(_.template(apiConfig.api, params)).post(data).then(function(response){
+          return Restangular.allUrl(_.template(apiConfig.api, params)).post(data).then(function(response){
             console.debug('Post data to link:' + JSON.stringify(response));
           }, function(error){
             console.debug('Post data to link error:' + JSON.stringify(error));

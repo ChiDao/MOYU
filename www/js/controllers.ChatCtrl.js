@@ -35,10 +35,18 @@ define(['app', 'services.RestRoute','services.Data'], function(app)
 			// 	}, 1);
 			// };
 			// $scope.add();
+			$scope.getComment = function(){
+				RestRoute.getLinkData('/post-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
+					
+				});
+			};
+			$scope.getComment();
 			$scope.formData = {content:''};
 			$scope.send = function(){
 				console.log($scope.formData);
-				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData);
+				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(){
+					$scope.getComment();
+				});
 			}
 	}]);
 });
