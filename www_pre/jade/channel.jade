@@ -2,7 +2,7 @@ ion-view#channel(view-title='{{channel.name}}')
   ion-nav-buttons(side="right")
     button.button.icon.ion-plus.button-clear(ng-click="newClip()")
   ion-content
-    ion-refresher(pulling-text='Pull to refresh...', on-refresh='doRefresh()')
+    ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     .list.card(ng-repeat="clip in clips")
       .item.item-avatar
         img(src='img/mcfly.jpg')
