@@ -3,6 +3,12 @@ ion-view(view-title='频道')
     button.button.icon.ion-plus.button-clear(ng-click="addChannel()")
   ion-content
     ion-list
-      ion-item.item-thumbnail-left(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel._id}}')
-        img.radius(src='{{channel.logo}}')
-        | {{channel.name}}
+      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel._id}}')
+        img(src='{{channel.logo}}')
+        h2 {{channel.name}}
+        p Back off, man. I'm a scientist.
+
+  //-   ion-list
+  //-     ion-item.item-thumbnail-left(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel._id}}')
+  //-       img.radius(src='{{channel.logo}}')
+  //-       | {{channel.name}}
