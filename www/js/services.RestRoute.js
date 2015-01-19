@@ -27,10 +27,10 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'list',
       },
       {
-        name: 'client-posts-last',
-        apiRegExp: /\/client-posts\/(\w+)\?_last/,
+        name: 'client-clips-last',
+        apiRegExp: /\/client-clips\/(\w+)\?_last/,
         apiRegExpMap: ['clientId'],
-        api: 'client-posts/<%= clientId %>\?_last',
+        api: 'client-clips/<%= clientId %>\?_last',
         apiType: 'list',
       },
       {
@@ -41,25 +41,32 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'detail',
       },
       {
-        name: 'follow-posts',
-        apiRegExp: /\/followposts\/(\w+)\?_last/,
+        name: 'user-subscribes-last',
+        apiRegExp: /\/user-subscribes\/(\w+)\?_last/,
         apiRegExpMap: ['userId'],
-        api: 'followposts/<%= userId %>?_last',
+        api: 'user-subscribes/<%= userId %>?_last',
         apiType: 'list',
       },
       {
-        name: 'post',
-        apiRegExp: /\/post\/(\w+)/,
-        apiRegExpMap: ['postId'],
-        api: 'post/<%= postId %>',
+        name: 'clip',
+        apiRegExp: /\/clip\/(\w+)/,
+        apiRegExpMap: ['clipId'],
+        api: 'clip/<%= clipId %>',
         apiType: 'detail',
       },
       {
-        name: 'post-comments-last',
-        apiRegExp: /\/post-comments\/(\w+)\?_last/,
-        apiRegExpMap: ['postId'],
-        api: 'post-comments/<%= postId %>?_last',
+        name: 'clip-comments-last',
+        apiRegExp: /\/clip-comments\/(\w+)\?_last/,
+        apiRegExpMap: ['clipId'],
+        api: 'clip-comments/<%= clipId %>?_last',
         apiType: 'list',
+      },
+      {
+        name: 'is-subscribed',
+        apiRegExp: /\/is-subscribed\/(\w+)/,
+        apiRegExpMap: ['postId'],
+        api: 'is-subscribed/<%= postId %>',
+        apiType: 'detail',
       },
       
       //---------
@@ -90,26 +97,30 @@ define(['app', 'services.Modal'], function(app)
         modalTemplate: 'templates/modal-login.html',
       },
       {
-        name: 'new-post',
-        apiRegExp: /\/new-post\/(\w+)/,
+        name: 'new-clip',
+        apiRegExp: /\/new-clip\/(\w+)/,
         apiRegExpMap: ['clientId'],
-        api: 'new-post/<%= clientId %>',
+        api: 'new-clip/<%= clientId %>',
         apiType: 'postModal',
-        modalTemplate: 'templates/modal-new-post.html',
+        modalTemplate: 'templates/modal-new-clip.html',
       },
       {
-        name: 'new-followpost',
-        apiRegExp: /\/new-followpost\/(\w+)/,
-        apiRegExpMap: ['postId'],
-        api: 'new-followpost/<%= postId %>',
+        name: 'new-subscribe',
+        apiRegExp: /\/new-subscribe\/(\w+)/,
+        apiRegExpMap: ['clipId'],
+        api: 'new-subscribe/<%= clipId %>',
         apiType: 'post',
       },
+
+      //---------
+      //  DELETE
+      //---------
       {
-        name: 'has-followed-post',
-        apiRegExp: /\/has-followed-post\/(\w+)\/(\w+)/,
-        apiRegExpMap: ['postId', 'userId'],
-        api: 'has-followed-post/<%= postId %>/<%= userId %>',
-        apiType: 'detail',
+        name: 'subscribe-edit',
+        apiRegExp: /\/subscribe-edit\/(\w+)/,
+        apiRegExpMap: ['subscribeId'],
+        api: 'subscribe-edit/<%= subscribeId %>',
+        apiType: 'delete',
       },
     ];
 
@@ -286,6 +297,36 @@ define(['app', 'services.Modal'], function(app)
           }, function(error){
             console.debug('Post data to link error:' + JSON.stringify(error));
           })
+        },
+        deleteDataFromLink: function(apiLink){
+          var params;
+          var options = options || {};
+          //匹配路由并获得参数
+          var apiConfig = _.find(apiConfigs, function(apiConfig) {
+            // console.debug(apiConfig.apiRegExp, apiConfig.apiRegExp.exec(apiLink));
+            var matches = apiConfig.apiRegExp.exec(apiLink);
+            if (matches){
+              matches.shift();
+              params = _.zipObject(apiConfig.apiRegExpMap, matches);
+              console.debug('Post data to link params: ' + JSON.stringify(params));
+              console.log(apiConfig.apiRegExp);
+            }
+            return matches;
+          });
+          if (!apiConfig) {
+            console.log("Can't post data to link: "+ apiLink);
+            return {
+              then: function(callback){
+                callback();
+              }
+            };
+          };
+          return Restangular.oneUrl(_.template(apiConfig.api, params)).remove().then(function(response){
+            console.debug('Delete data from link:' + JSON.stringify(response));
+          }, function(error){
+            console.debug('Delete data from link error:' + JSON.stringify(error));
+          })
+
         },
         //根据api跳转到对应的state
         jumpToLink: function(apiLink){

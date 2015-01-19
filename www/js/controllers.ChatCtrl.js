@@ -36,13 +36,15 @@ define(['app', 'services.RestRoute','services.Data'], function(app)
 			// };
 			// $scope.add();
 			$scope.checkHasFollowedPost = function(){
-				RestRoute.getLinkData('/has-followed-post/' + $stateParams.chatId + '/' + Auth.currentUser().userData._id, $scope, 'hasFollowedPost').then(function(){
-					console.log($scope.hasFollowedPost);
+				RestRoute.getLinkData('/is-subscribed/' + $stateParams.chatId, $scope, 'followedPost').then(function(){
+					$scope.hasFollowedPost = true;
+				}, function(){
+					$scope.hasFollowedPost = false;
 				});
 			};
 			$scope.checkHasFollowedPost();
 			$scope.getComment = function(){
-				RestRoute.getLinkData('/post-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
+				RestRoute.getLinkData('/clip-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
 					
 				});
 			};
@@ -55,10 +57,17 @@ define(['app', 'services.RestRoute','services.Data'], function(app)
 					$scope.getComment();
 				});
 			}
-			$scope.followPost = function(){
-				RestRoute.postDataToLink('/new-followpost/' + $stateParams.chatId, {followedPost: $stateParams.chatId, user:Auth.currentUser().userData._id}).then(function(){
-					$scope.getComment();
-				});
+			$scope.toggleSubscribe = function(){
+				if ($scope.hasFollowedPost){
+					RestRoute.deleteDataFromLink($scope.followedPost.edit).then(function(){
+						$scope.checkHasFollowedPost();
+					});
+				}
+				else{
+					RestRoute.postDataToLink('/new-subscribe/' + $stateParams.chatId, {followedPost: $stateParams.chatId}).then(function(){
+						$scope.checkHasFollowedPost();
+					});
+				}
 			}
 	}]);
 });

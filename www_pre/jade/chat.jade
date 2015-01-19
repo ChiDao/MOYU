@@ -10,7 +10,7 @@ ion-view(hide-nav-bar="true")
 				p {{comment.content}}
 	ion-footer-bar
 		//- form(name="newCommentForm", novalidate="", ng-submit='send(newCommentForm)')
-		button.button.button-icon.ion-ios7-star-outline(ng-class="{'ion-ios7-star': hasFollowedPost, 'ion-ios7-star-outline':!hasFollowedPost}" ng-click="followPost()")
+		button.button.button-icon.ion-ios7-star-outline(ng-class="{'ion-ios7-star': hasFollowedPost, 'ion-ios7-star-outline':!hasFollowedPost}" ng-click="toggleSubscribe()")
 		input(type="text" ng-model="formData.content" required)
 		button.button.button-icon.ion-paper-airplane(ng-click="send()")
 			//- button.button.button-icon.ion-happy

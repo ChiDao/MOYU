@@ -1,24 +1,24 @@
 define(['app', 'services.RestRoute', 'services.Modal'], function(app)
 {
-	app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout',
-		function($scope, $stateParams, UI, RestRoute, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout) {
+	app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', 'Restangular', 
+		function($scope, $stateParams, UI, RestRoute, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, Restangular) {
 			$scope.$on("$ionicView.afterEnter", function() {
 				RestRoute.getLinkData('/client/' + $stateParams.channelId, $scope, 'channel').then(function(){
 					console.log($scope.channel);
 				});
 			});
-			$scope.getPosts = function(){
-				RestRoute.getLinkData('/client-posts/' + $stateParams.channelId + '?_last', $scope, 'posts').then(function(){
-					_.forEach($scope.posts, function(post){
-						RestRoute.getLinkData(post.user, post, 'userData').then(function(){
-							console.log(post.userData);
+			$scope.getClips = function(){
+				RestRoute.getLinkData('/client-clips/' + $stateParams.channelId + '?_last', $scope, 'clips').then(function(){
+					_.forEach($scope.clips, function(clip){
+						RestRoute.getLinkData(clip.user, clip, 'userData').then(function(){
+							console.log(clip.userData);
 						});
 					})
 				});
 			};
-			$scope.getPosts();
-			$scope.newPost = function(){
-				RestRoute.postModal('/new-post/' + $stateParams.channelId, {}, {
+			$scope.getClips();
+			$scope.newClip = function(){
+				RestRoute.postModal('/new-clip/' + $stateParams.channelId, {}, {
 					init: function(scope){
 						scope.formData = {};
 						scope.getPicture = function(){
@@ -65,11 +65,12 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
 							//options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
 
 							var ft = new FileTransfer();
+							//Restangular.configuration.baseUrl
 							ft.upload(scope.imageURI, encodeURI("http://42.120.45.236:8485/upload"), win, fail, options);
 						});
 					},
 					onSuccess: function(scope){
-						$scope.getPosts();
+						$scope.getClips();
 						scope.hideModal();
 					}
 				})
