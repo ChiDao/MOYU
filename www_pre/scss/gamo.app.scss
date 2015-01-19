@@ -3,7 +3,7 @@
 	程式樣式設定
 */
 
-.bar-stable {
+.bar-stable,ion-header-bar {
 	background-color: #f5f5f5 !important;
 	@include shadow();
 }

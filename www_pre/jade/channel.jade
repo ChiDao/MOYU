@@ -1,4 +1,6 @@
 ion-view#channel(view-title='{{channel.name}}')
+  ion-nav-buttons(side="right")
+    button.button.icon.ion-plus.button-clear(ng-click="newClip()")
   ion-content
     .list.card(ng-repeat="clip in clips")
       .item.item-avatar
