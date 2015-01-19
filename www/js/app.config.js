@@ -56,6 +56,6 @@ define(['app', 'restangular'], function(app){
           httpConfig: httpConfig
         };
       });
-	});
+  });
 
 });

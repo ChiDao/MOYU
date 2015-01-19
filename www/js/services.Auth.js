@@ -149,25 +149,6 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
           localStorage.removeItem('user', null);
           success();
         },
-        testModal: function(modelName) {
-          console.log(modelName);
-          Modal.okCancelModal('templates/'+modelName+'.html', {}, {
-            init: function(scope){
-            }
-          });//End of okCancelModal
-        },
-        testNoti: function (argument) {
-          (function(){
-            PushProcessingService.initialize(); 
-            Modal.okCancelModal('templates/modal-how-to-notification.html', {}, {
-              init: function(scope){                            
-                scope.push = false;               
-                //循环检查                
-                recheck(scope);
-              }
-            });//End of okCancelModal
-          })
-        },
 
         ssoAuth: function(ssoData){
           //Todo: 返回授权结果给第三方应用

@@ -21,54 +21,55 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent'], funct
 			// { content: '<p>I think I like Ionic more than I like ice cream!</p>' },
 			// ];
 
-			// var messageIter = 0;
-			// $scope.messages = messageOptions.slice(0, messageOptions.length);
 
-			// $scope.add = function() {
-			// 	var nextMessage = messageOptions[messageIter++ % messageOptions.length];
-			// 	$scope.messages.push(angular.extend({}, nextMessage));
+      // var messageIter = 0;
+      // $scope.messages = messageOptions.slice(0, messageOptions.length);
 
-			// 	// Update the scroll area and tell the frosted glass to redraw itself
-			// 	$ionicScrollDelegate.resize();
-			// 	$ionicFrostedDelegate.update();
-			// 	$timeout(function() {
-			// 		$ionicScrollDelegate.scrollBottom(true);
-			// 	}, 1);
-			// };
-			// $scope.add();
-			$scope.checkHasFollowedPost = function(){
-				RestRoute.getLinkData('/is-subscribed/' + $stateParams.chatId, $scope, 'followedPost').then(function(){
-					$scope.hasFollowedPost = true;
-				}, function(){
-					$scope.hasFollowedPost = false;
-				});
-			};
-			$scope.checkHasFollowedPost();
-			$scope.getComment = function(){
-				RestRoute.getLinkData('/clip-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
-					
-				});
-			};
-			$scope.getComment();
-			$scope.formData = {content:''};
-			$scope.send = function(newCommentForm){
-				// if (newCommentForm.$invalid) return;
-				console.log($scope.formData);
-				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(){
-					$scope.getComment();
-				});
-			}
-			$scope.toggleSubscribe = function(){
-				if ($scope.hasFollowedPost){
-					RestRoute.deleteDataFromLink($scope.followedPost.edit).then(function(){
-						$scope.checkHasFollowedPost();
-					});
-				}
-				else{
-					RestRoute.postDataToLink('/new-subscribe/' + $stateParams.chatId, {followedPost: $stateParams.chatId}).then(function(){
-						$scope.checkHasFollowedPost();
-					});
-				}
-			}
-	}]);
+      // $scope.add = function() {
+      //   var nextMessage = messageOptions[messageIter++ % messageOptions.length];
+      //   $scope.messages.push(angular.extend({}, nextMessage));
+
+      //   // Update the scroll area and tell the frosted glass to redraw itself
+      //   $ionicScrollDelegate.resize();
+      //   $ionicFrostedDelegate.update();
+      //   $timeout(function() {
+      //     $ionicScrollDelegate.scrollBottom(true);
+      //   }, 1);
+      // };
+      // $scope.add();
+      $scope.checkHasFollowedPost = function(){
+        RestRoute.getLinkData('/is-subscribed/' + $stateParams.chatId, $scope, 'followedPost').then(function(){
+          $scope.hasFollowedPost = true;
+        }, function(){
+          $scope.hasFollowedPost = false;
+        });
+      };
+      $scope.checkHasFollowedPost();
+      $scope.getComment = function(){
+        RestRoute.getLinkData('/clip-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
+          
+        });
+      };
+      $scope.getComment();
+      $scope.formData = {content:''};
+      $scope.send = function(newCommentForm){
+        // if (newCommentForm.$invalid) return;
+        console.log($scope.formData);
+        RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(){
+          $scope.getComment();
+        });
+      }
+      $scope.toggleSubscribe = function(){
+        if ($scope.hasFollowedPost){
+          RestRoute.deleteDataFromLink($scope.followedPost.edit).then(function(){
+            $scope.checkHasFollowedPost();
+          });
+        }
+        else{
+          RestRoute.postDataToLink('/new-subscribe/' + $stateParams.chatId, {followedPost: $stateParams.chatId}).then(function(){
+            $scope.checkHasFollowedPost();
+          });
+        }
+      }
+  }]);
 });

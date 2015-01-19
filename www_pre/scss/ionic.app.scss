@@ -1,0 +1,14 @@
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Var
+@import "www_pre/scss/_variables.scss";
+
+// Libs
+@import "www/lib/ionic/scss/ionic";
+@import "www_pre/scss/lib.animate.scss";
+
+// App
+@import "www_pre/scss/gamo.base.scss";
+@import "www_pre/scss/gamo.app.scss";
+@import "www_pre/scss/gamo.screen.scss";
+@import "www_pre/scss/gamo.animate.scss";

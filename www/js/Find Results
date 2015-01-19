@@ -1,0 +1,41 @@
+Searching 19 files for "modal-new-clip.jade"
+
+0 matches across 0 files
+
+
+Searching 19 files for "modal-new-clip"
+
+/Users/qw/Sites/Gamo/www/js/controllers.ChannelsCtrl.js:
+    4  		function($scope, $state, $stateParams, UI, RestRoute) {
+    5  
+    6: 			UI.testModal('modal-new-clip');
+    7  
+    8  			RestRoute.getLinkData('/all-clients/ios?_last', $scope, 'channels').then(function(){
+
+/Users/qw/Sites/Gamo/www/js/services.RestRoute.js:
+  103          api: 'new-clip/<%= clientId %>',
+  104          apiType: 'postModal',
+  105:         modalTemplate: 'templates/modal-new-clip.html',
+  106        },
+  107        {
+
+2 matches across 2 files
+
+
+Searching 19 files for "modal-new-clip"
+
+/Users/qw/Sites/Gamo/www/js/controllers.ChannelsCtrl.js:
+    4  		function($scope, $state, $stateParams, UI, RestRoute) {
+    5  
+    6: 			UI.testModal('modal-new-clip');
+    7  
+    8  			RestRoute.getLinkData('/all-clients/ios?_last', $scope, 'channels').then(function(){
+
+/Users/qw/Sites/Gamo/www/js/services.RestRoute.js:
+  103          api: 'new-clip/<%= clientId %>',
+  104          apiType: 'postModal',
+  105:         modalTemplate: 'templates/modal-new-clip.html',
+  106        },
+  107        {
+
+2 matches across 2 files

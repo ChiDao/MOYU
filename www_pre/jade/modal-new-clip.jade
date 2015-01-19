@@ -1,13 +1,28 @@
 ion-modal-view
-	ion-header-bar.bar
-		div.title.title-center 发表截图
-	ion-content
-		.list.card
-			.item.item-image
-				div(ng-click="getPicture()")
-					img#newPostImage(src="cover.jpg" alt="点击选择图片")
-			form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
-				input(type="text" ng-model="imageURI" required ng-show="false")
-				input(type="text" ng-model="formData.content" required)
-				button#buttonOk.a-button.button.main-button.right-arrows(type='submit') 发表
-				button.button(ng-click="cancelModal()") 取消
+  ion-header-bar.bar
+    div.title.title-center 上傳截圖
+    .buttons
+      button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') 取消
+  ion-content
+    form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
+      input(type="text" ng-model="imageURI" required ng-show="false")
+    .list
+      .item.item-icon-right(ng-click="getPicture()")
+        | 添加圖像
+        i.icon.ion-ios-arrow-right
+      label.item.item-input.item-stacked-label
+        span.input-label 描述文字
+        //- input(type="text" ng-model="formData.content" required)
+        textarea(type="text" ng-model="formData.content" required placeholder='Comments')
+    .padding
+      button.button.button-block.button-positive.activated(type='submit') 發送
+    //- .list.card
+    //-   .item.item-image
+    //-     div(ng-click="getPicture()")
+    //-       img#newPostImage(src="cover.jpg" alt="点击选择图片")
+    //-   form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
+    //-     input(type="text" ng-model="imageURI" required ng-show="false")
+    //-     input(type="text" ng-model="formData.content" required)
+    //-     .padding
+    //-       button.button.button-block.button-positive.activated(type='submit') 发表
+    //-     button.button(ng-click="cancelModal()") 取消
