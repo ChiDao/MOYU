@@ -1,0 +1,302 @@
+/*
+	base
+	基礎樣式
+*/
+
+// Color
+$height-color:				#ff7e86;
+$sec-height-color:			#4da3ff;
+
+// 尺寸
+$f-size:					13px;
+$f-small:					11px;
+$f-big:						16px;
+$margin-bottom:				24px;
+$margin-left:				16px;
+$background-padding:		16px;
+
+
+// 
+
+/*
+	重寫
+*/
+
+.button:hover {
+	color: #999;
+}
+
+.button.active, .button.activated {
+	color: #FFF;
+	background-color: #262626;
+	box-shadow: inset 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
+}
+
+input::-webkit-input-placeholder {
+	opacity: 0.4;
+	font-size: $f-big;
+}
+
+/*
+	mixin
+*/
+
+@mixin border-box() {
+	box-sizing: border-box; /* Opera/IE 8+ */
+	-webkit-box-sizing: border-box; /* Safari, Chrome et al */
+	-moz-box-sizing: border-box; /* Firefox */
+}
+
+@mixin at2x($path, $ext: "png", $w: auto, $h: auto) {
+	$at1x_path: "#{$path}.#{$ext}";
+	$at2x_path: "#{$path}@2x.#{$ext}";
+
+	background-image: url("#{$at1x_path}") !important;
+	background-image: -webkit-image-set(
+		url("#{$at1x_path}") 1x,
+		url("#{$at2x_path}") 2x
+		) !important;
+	background-image: image-set(
+		url("#{$at1x_path}") 1x,
+		url("#{$at2x_path}") 2x
+		) !important;
+}
+
+@mixin shadow {
+	box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
+}
+
+
+@mixin t-indent {
+	text-indent: $f-size * 2 !important;
+}
+
+@mixin auto-l-height ($height) {
+	height: $height;
+	line-height: $height;
+}
+
+@mixin full-width ($mb) {
+	width: calc(100% + (#{$mb} * 2));
+}
+
+@mixin right-arrows () {
+	background-repeat: no-repeat !important;
+	background-position: 97% 50% !important;
+	@include at2x("../img/app/right-arrows");
+}
+
+@mixin page-padding() {
+	padding: 0 $margin-left;
+}
+
+@mixin page-margin() {
+	margin: 0 $margin-left;
+}
+
+/*
+	組件
+*/
+
+h1,h2,h3,h4 {
+	font-size: $f-big;
+	font-weight: 800;
+}
+
+h4,.b-pink {
+	font-weight: 500;
+	b {
+		color: $height-color;
+		margin: 0 0.2em;
+	}
+}
+
+h5 {
+	padding-top: 1.4em;
+	font-weight: 800;
+}
+
+.t-indent {
+	@include t-indent();
+}
+
+.auto-l-height {
+	@include auto-l-height(calc(100%));
+}
+
+.auto-c-height-w {
+	display:table;
+}
+
+.auto-c-height-c {
+	display:table-cell;
+	vertical-align:middle;
+}
+
+.over-hide {
+	overflow: hidden;
+}
+
+.auto-size {
+	width: auto;
+}
+
+.auto-width {
+	width: auto;
+}
+
+.full-width {
+	img {
+		width: 100%;
+	}
+	margin: 0 (-1 * $margin-left);
+
+	@include full-width($margin-left);
+}
+
+.color-w {
+	color: #fff;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-center {
+	text-align: center !important;
+}
+
+.margin-0-auto {
+	margin: 0 auto;
+}
+
+.background-padding {
+	padding: 0 $background-padding;
+}
+
+.margin-bottom {
+	margin-bottom: $margin-bottom;
+}
+
+.h2000 {
+	height: 2000px;
+}
+
+.w26 {
+	width: 26px;
+}
+
+.h100 {
+	height: 100%;
+}
+
+.color-bule {
+	color: $sec-height-color !important;
+}
+
+.color-pink {
+	color: $height-color;
+}
+
+.screen-h100 {
+
+}
+
+.screen-bottom {
+	
+}
+
+.page-padding {
+	@include page-padding();
+}
+
+.block-empty {
+	display: block;
+	height: 1em;
+	width: 100%;
+}
+
+.margin-top {
+	margin-top: 40px;
+}
+
+.margin-bottom {
+	margin-bottom: 40px;
+}
+
+.no-padding {
+	padding: 0 !important;
+}
+
+.no-margin {
+	margin: 0 !important;
+}
+
+.padding-top {
+	padding-top: 50px;
+}
+
+.blur {
+	-webkit-filter:blur(6px);
+	opacity:.75;
+}
+
+.z-top {
+	z-index: 500;
+}
+
+.delay-4 {
+    -webkit-animation-delay: 4s; /* Chrome, Safari, Opera */
+    animation-delay: 4s;
+}
+
+.delay {
+    -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
+    animation-delay: 2s;
+}
+
+.center{
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-direction: normal;
+	-moz-box-direction: normal;
+	-webkit-box-orient: horizontal;
+	-moz-box-orient: horizontal;
+	-webkit-flex-direction: row;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-flex-wrap: nowrap;
+	-ms-flex-wrap: nowrap;
+	flex-wrap: nowrap;
+	-webkit-box-pack: center;
+	-moz-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-align-content: stretch;
+	-ms-flex-line-pack: stretch;
+	align-content: stretch;
+	-webkit-box-align: center;
+	-moz-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.page-footer {
+	display: flex;
+	flex-wrap: wrap;
+	position: absolute;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background: none;
+	background: transparent;
+	.button {
+		margin-bottom: 30px !important;
+	}
+}
