@@ -1,24 +1,47 @@
-ion-modal-view.Pages
-  ion-header-bar.bar
-    .title {{'captcha'|translate}}
+ion-modal-view#Passcode.Pages
+  ion-header-bar
+    .title {{'email'|translate}}
     .buttons
       button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') {{'cancel'|translate}}
-  form(name='loginForm', novalidate="", ng-submit='ok(loginForm)')
-    ion-content
-      .row
-        .col
-          .input(ng-class="{'has-error': loginForm.password.$invalid}")
-            input.right-arrows(name='password',placeholder="驗證碼",type='number',pattern="[0-9]*", ng-keyup="resetcommitFormError($event)",ng-model='formData.password',ng-minlength='4', ng-maxlength='4', required)
-          hr
-          div(ng-messages='loginForm.password.$error', ng-messages-include='templates/form-errors.html')
+  form(name='signUpForm', novalidate="", ng-submit='ok(signUpForm)')
+    ion-content(ng-class="{'has-error': signUpForm.email.$invalid}")
+      ion-list
+        label.item.item-input.item-stacked-label
+          span.input-label 驗證碼
+          input(name='password',placeholder="驗證碼",type='number',pattern="[0-9]*", ng-keyup="resetcommitFormError($event)",ng-model='formData.password',ng-minlength='4', ng-maxlength='4', required)
+      
+        label.item(ng-messages='signUpForm.email.$error', ng-messages-include='templates/form-errors.html')
             p.message.form-error(ng-message='required') 請輸入郵箱收到的驗證碼
             p.message.form-error(ng-message='number') 需要 4 位驗證碼
             p.message.form-error(ng-message='minlength') 最少 4 位驗證碼
             p.message.form-error(ng-message='maxlength') 最大 4 位驗證碼
             p.message.form-error(ng-if="commitFormError") {{commitFormErrorMsg}}
-        
-    footer.page-footer.page-padding
-        .row
-          .col
-            button#buttonOk.a-button.button.main-button.right-arrows(type='submit') {{'next'|translate}}
+
+      .padding
+        button.button.button-block.button-positive.activated(type='submit') {{'next'|translate}}
       
+
+//- ion-modal-view.Pages
+//-   ion-header-bar.bar
+//-     .title {{'captcha'|translate}}
+//-     .buttons
+//-       button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') {{'cancel'|translate}}
+//-   form(name='loginForm', novalidate="", ng-submit='ok(loginForm)')
+//-     ion-content
+//-       .row
+//-         .col
+//-           .input(ng-class="{'has-error': loginForm.password.$invalid}")
+//-             input.right-arrows(name='password',placeholder="驗證碼",type='number',pattern="[0-9]*", ng-keyup="resetcommitFormError($event)",ng-model='formData.password',ng-minlength='4', ng-maxlength='4', required)
+//-           hr
+//-           div(ng-messages='loginForm.password.$error', ng-messages-include='templates/form-errors.html')
+//-             p.message.form-error(ng-message='required') 請輸入郵箱收到的驗證碼
+//-             p.message.form-error(ng-message='number') 需要 4 位驗證碼
+//-             p.message.form-error(ng-message='minlength') 最少 4 位驗證碼
+//-             p.message.form-error(ng-message='maxlength') 最大 4 位驗證碼
+//-             p.message.form-error(ng-if="commitFormError") {{commitFormErrorMsg}}
+        
+//-     footer.page-footer.page-padding
+//-         .row
+//-           .col
+//-             button#buttonOk.a-button.button.main-button.right-arrows(type='submit') {{'next'|translate}}
+//-       
