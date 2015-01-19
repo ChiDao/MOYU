@@ -1,7 +1,7 @@
 define(['app', 'services.RestRoute','services.Data'], function(app)
 {
-	app.controller('ChatCtrl', ['$scope', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', '$ionicHistory', 'RestRoute', '$stateParams',
-		function($scope, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, $ionicHistory, RestRoute, $stateParams) {
+	app.controller('ChatCtrl', ['$scope', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', '$ionicHistory', 'RestRoute', '$stateParams', 'Auth',
+		function($scope, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, $ionicHistory, RestRoute, $stateParams, Auth) {
 			$scope.backButton = function() {
 				console.log('back');
 				$ionicHistory.goBack();
@@ -35,6 +35,12 @@ define(['app', 'services.RestRoute','services.Data'], function(app)
 			// 	}, 1);
 			// };
 			// $scope.add();
+			$scope.checkHasFollowedPost = function(){
+				RestRoute.getLinkData('/has-followed-post/' + $stateParams.chatId + '/' + Auth.currentUser().userData._id, $scope, 'hasFollowedPost').then(function(){
+					console.log($scope.hasFollowedPost);
+				});
+			};
+			$scope.checkHasFollowedPost();
 			$scope.getComment = function(){
 				RestRoute.getLinkData('/post-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
 					
@@ -42,9 +48,15 @@ define(['app', 'services.RestRoute','services.Data'], function(app)
 			};
 			$scope.getComment();
 			$scope.formData = {content:''};
-			$scope.send = function(){
+			$scope.send = function(newCommentForm){
+				// if (newCommentForm.$invalid) return;
 				console.log($scope.formData);
 				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(){
+					$scope.getComment();
+				});
+			}
+			$scope.followPost = function(){
+				RestRoute.postDataToLink('/new-followpost/' + $stateParams.chatId, {followedPost: $stateParams.chatId, user:Auth.currentUser().userData._id}).then(function(){
 					$scope.getComment();
 				});
 			}

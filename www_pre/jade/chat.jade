@@ -9,6 +9,10 @@ ion-view(hide-nav-bar="true")
 			li(ng-repeat='comment in comments')
 				p {{comment.content}}
 	ion-footer-bar
-		input(type="text" ng-model="formData.content")
-		button.button.icon.ion-happy.button-clear
-		button.button-clear.icon.ion-paper-airplane(ng-click="send()")
+		//- form(name="newCommentForm", novalidate="", ng-submit='send(newCommentForm)')
+		button.button.button-icon.ion-ios7-star-outline(ng-class="{'ion-ios7-star': hasFollowedPost, 'ion-ios7-star-outline':!hasFollowedPost}" ng-click="followPost()")
+		input(type="text" ng-model="formData.content" required)
+		button.button.button-icon.ion-paper-airplane(ng-click="send()")
+			//- button.button.button-icon.ion-happy
+
+		

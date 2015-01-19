@@ -97,6 +97,20 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'postModal',
         modalTemplate: 'templates/modal-new-post.html',
       },
+      {
+        name: 'new-followpost',
+        apiRegExp: /\/new-followpost\/(\w+)/,
+        apiRegExpMap: ['postId'],
+        api: 'new-followpost/<%= postId %>',
+        apiType: 'post',
+      },
+      {
+        name: 'has-followed-post',
+        apiRegExp: /\/has-followed-post\/(\w+)\/(\w+)/,
+        apiRegExpMap: ['postId', 'userId'],
+        api: 'has-followed-post/<%= postId %>/<%= userId %>',
+        apiType: 'detail',
+      },
     ];
 
     this.$get = function(Restangular, Modal, $state, $stateParams){
