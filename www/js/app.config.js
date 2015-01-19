@@ -12,8 +12,8 @@ define(['app', 'restangular'], function(app){
       });
 
       RestangularProvider.setFullResponse(true);
-      RestangularProvider.setBaseUrl('http://42.120.45.236:8485');
-      //RestangularProvider.setBaseUrl('http://localhost:8485');
+      // RestangularProvider.setBaseUrl('http://42.120.45.236:8485');
+      RestangularProvider.setBaseUrl('http://localhost:8485');
       // RestangularProvider.setBaseUrl('http://192.168.10.100:8485');
 
       // add a response intereceptor
@@ -23,7 +23,9 @@ define(['app', 'restangular'], function(app){
         if (operation === "getList") {
           // .. and handle the data and meta data
           extractedData = data.slice;
-          //extractedData.meta = data.data.meta;
+          extractedData.meta = _.pick(data, function(value, key){
+            return key !== 'slice';
+          });
         } else {
           extractedData = data;
         }

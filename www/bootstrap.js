@@ -14,6 +14,7 @@ require.config({
         'routes': 'js/app.routes',
         'config': 'js/app.config',
 
+        'services.ApiEvent': 'js/services.ApiEvent',
         'services.Auth': 'js/services.Auth',
         'services.Modal': 'js/services.Modal',
         'services.Push': 'js/services.Push',
@@ -61,6 +62,7 @@ require
     [
         'app',
 
+        'services.ApiEvent',
         'services.Auth',
         'services.Modal',
         'services.RestRoute',

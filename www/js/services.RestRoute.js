@@ -68,6 +68,20 @@ define(['app', 'services.Modal'], function(app)
         api: 'is-subscribed/<%= postId %>',
         apiType: 'detail',
       },
+      {
+        name: 'event-user-last',
+        apiRegExp: /\/event-user\?_last/,
+        apiRegExpMap: [],
+        api: 'event-user?_last',
+        apiType: 'list',
+      },
+      {
+        name: 'event-user-next',
+        apiRegExp: /\/event-user\?.+_next=(\w+)/,
+        apiRegExpMap: ['lastEventId'],
+        api: 'event-user?_next=<?= lastEventId %>',
+        apiType: 'list',
+      },
       
       //---------
       //  POST
@@ -244,6 +258,7 @@ define(['app', 'services.Modal'], function(app)
           if (apiConfig.apiType === 'list'){
             return Restangular.allUrl(_.template(apiConfig.api, params)).getList().then(function(response){
               console.debug('get link data options: ' + JSON.stringify(options)); 
+              // console.log(JSON.stringify(response.data.meta));
               var tmpData = response.data;
               var filter = {};
               _.forOwn(options.extraFilter, function(rule, fieldName){

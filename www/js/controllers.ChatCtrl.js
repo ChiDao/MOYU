@@ -1,11 +1,12 @@
-define(['app', 'services.RestRoute','services.Data'], function(app)
+define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent'], function(app)
 {
-	app.controller('ChatCtrl', ['$scope', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', '$ionicHistory', 'RestRoute', '$stateParams', 'Auth',
-		function($scope, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, $ionicHistory, RestRoute, $stateParams, Auth) {
+	app.controller('ChatCtrl', ['$scope', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', '$ionicHistory', 'RestRoute', '$stateParams', 'Auth', 'ApiEvent',
+		function($scope, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, $ionicHistory, RestRoute, $stateParams, Auth, ApiEvent) {
 			$scope.backButton = function() {
 				console.log('back');
 				$ionicHistory.goBack();
 			};
+			ApiEvent.connect();
 			// var messageOptions = [
 			// { content: '<p>Wow, this is really something huh?</p>' },
 			// { content: '<p>Yea, it\'s pretty sweet</p>' },
