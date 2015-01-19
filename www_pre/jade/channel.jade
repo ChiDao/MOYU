@@ -1,10 +1,37 @@
-ion-view(view-title='{{channel.name}}')
-  ion-content.padding
+ion-view#channel(view-title='{{channel.name}}')
+  ion-content
     .list.card(ng-repeat="clip in clips")
-      .item.item-divider {{clip.userData.email}}
-      .item.item-image
+      .item.item-avatar
+        img(src='img/mcfly.jpg')
+        h2 Marty McFly
+        p November 05, 1955
+      .item.item-body
         a(href='#/tab/channel-chat/{{clip._id}}')
-          img(src="{{clip.img}}")
-  ion-footer-bar
-    button.button(ng-click="newClip()") 发表截图
+          img.full-image(src="{{clip.img}}")
+        p {{clip.content}}
+        p
+          a.subdued(href='#') 1 Like
+          a.subdued(href='#') 5 Comments
+      .item.tabs.tabs-secondary.tabs-icon-left
+        a.tab-item(href='#')
+          i.icon.ion-chatbox
+          |       Comment
+        a.tab-item(href='#')
+          i.icon.ion-share
+          |       Share
+
+
+
+//- ion-view#channel(view-title='{{channel.name}}')
+//-   ion-content.padding
+//-     .list.card(ng-repeat="clip in clips")
+//-       .item.item-divider
+//-         {{clip.userData.email}}
+//-       .item.item-image
+//-         a(href='#/tab/channel-chat/{{clip._id}}')
+//-           img(src="{{clip.img}}")
+//-       .item.item-text-wrap
+//-         p {{clip.content}}
+//-   ion-footer-bar
+//-     button.button(ng-click="newClip()") 发表截图
 
