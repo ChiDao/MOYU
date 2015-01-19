@@ -4,5 +4,5 @@ ion-view(view-title='频道')
   ion-content
     ion-list
       ion-item.item-thumbnail-left(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel._id}}')
-        img(src='{{channel.logo}}')
+        img.radius(src='{{channel.logo}}')
         | {{channel.name}}

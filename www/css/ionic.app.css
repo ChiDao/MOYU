@@ -10234,6 +10234,9 @@ h5 {
 .z-top {
   z-index: 500; }
 
+.radius {
+  border-radius: 12px; }
+
 .delay-4 {
   -webkit-animation-delay: 4s;
   /* Chrome, Safari, Opera */
