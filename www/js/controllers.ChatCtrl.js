@@ -18,7 +18,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 			$scope.checkHasFollowedPost();
 			$scope.getComment = function(){
 				RestRoute.getLinkData('/clip-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
-
+					$ionicScrollDelegate.scrollBottom();
 				});
 			};
 			$scope.getComment();
@@ -27,6 +27,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				// if (data && data._id) console.debug(data._id, _.filter($scope.comments, {_id:data._id}).length);
 				if (data && data._id && !_.filter($scope.comments, {_id:data._id}).length){
 					$scope.comments.push(data);
+					$ionicScrollDelegate.scrollBottom();
 				}
 			});
 			$scope.formData = {content:''};
@@ -35,6 +36,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(defer, response){
 					// console.debug(response.data.rawData);
 					$scope.comments.push(response.data.rawData);
+					$ionicScrollDelegate.scrollBottom();
 				});
 			}
       		$scope.toggleSubscribe = function(){
