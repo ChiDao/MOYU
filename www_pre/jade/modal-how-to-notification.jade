@@ -1,0 +1,72 @@
+ion-modal-view#Tutorial.Pages
+  ion-header-bar.bar
+    .title.color-w 如何打開通知
+  ion-content.center.z-top(ng-if="push")
+    //- css close: .delay.animated.fadeOutDown
+    .message-box.delay-4.animated.fadeOutDown 
+      .checkbox-ani
+        input#cb(type='checkbox', name='cb')
+        label(for='cb')
+      .p2
+        h1 Gamo 已經檢測到你開啟了通知
+        p 現在加載主界面
+  ion-slide-box(ng-class="{'blur': push}")
+    ion-slide
+      .row.how-title.row-center
+        .col
+          p.small 請跟隨教程打開程式通知功能。
+          h3 1.
+          p 從你的移動電話中，打開<b>設定</b> 》 進入<b>通知</b>。
+      .how-image
+          img(src="img/app/Tutorial-1.png",srcset="img/app/Tutorial-1@2x.png 2x")
+      .page-footer.page-padding.color-w.text-center
+        .row
+          .col
+            p 向左滑查看下一步
+    ion-slide
+      .row.how-title.row-center
+        .col
+          h3 2.
+          p 在列表中，找到<b>Gamo</b>并點擊。
+      .how-image
+          img(src="img/app/Tutorial-2.png",srcset="img/app/Tutorial-2@2x.png 2x")
+    ion-slide
+      .row.how-title.row-center
+        .col
+          h3 3.
+          p 將允許通知的開關切換為<b>打開</b>狀態
+      .how-image
+          img(src="img/app/Tutorial-3.png",srcset="img/app/Tutorial-3@2x.png 2x")
+    ion-slide
+      .row.how-title.row-center
+        .col
+          h3 4.
+          p 就是這樣了，操作完畢後請記得返回<b>Gamo</b>哦！
+      .how-image
+          img(src="img/app/Tutorial-4.png",srcset="img/app/Tutorial-4@2x.png 2x")
+      .page-footer.page-padding.color-w.text-center
+        .row
+          .col
+            p 請現在按下 Home 返回桌面開始操作吧
+            img.bounce.forever.animated(src="img/app/click-home.png",srcset="img/app/click-home@2x.png 2x")
+
+
+
+
+  //-   .row
+  //-     .col
+  //-       h5.color-w 進入 OS 的設定界面
+  //-       img.full-width(src="img/app/P1.png")
+  //-   .row
+  //-     .col
+  //-       h5.color-w 進入 OS 的設定界面
+  //-       img.full-width(src="img/app/P1.png")
+  //-   .row
+  //-     .col
+  //-       h5.color-w 進入 OS 的設定界面
+  //-       img.full-width(src="img/app/P1.png")
+  //-   .row
+  //-     .col
+  //-       h5.color-w 進入 OS 的設定界面
+  //-       img.full-width(src="img/app/P1.png")
+  //- .page-footer.page-padding
