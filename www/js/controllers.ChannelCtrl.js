@@ -3,25 +3,19 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
   app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', 'Restangular', 
     function($scope, $stateParams, UI, RestRoute, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, Restangular) {
 
+      // pull refresh
       $scope.doRefresh = function() {
-        console.log('document.referrer');
         $scope.$broadcast('scroll.refreshComplete');
-        console.log('document.referrer');
-        // $http.get()
-        //  .success(function(newItems) {
-        //    $scope.items = newItems;
-        //  })
-        //  .finally(function() {
-        //    // Stop the ion-refresher from spinning
-        //    $scope.$broadcast('scroll.refreshComplete');
-        //  });
       };
       
+      //
       $scope.$on("$ionicView.afterEnter", function() {
         RestRoute.getLinkData('/client/' + $stateParams.channelId, $scope, 'channel').then(function(){
           console.log($scope.channel);
         });
       });
+
+      // get clips
       $scope.getClips = function(){
         RestRoute.getLinkData('/client-clips/' + $stateParams.channelId + '?_last', $scope, 'clips').then(function(){
           _.forEach($scope.clips, function(clip){
@@ -35,6 +29,9 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       $scope.newClip = function(){
         RestRoute.postModal('/new-clip/' + $stateParams.channelId, {}, {
           init: function(scope){
+            // var
+            scope.imageURI = 'img/upload-photo.png';
+            console.log($scope.imageURI);
             scope.formData = {};
             scope.getPicture = function(){
               navigator.camera.getPicture(onSuccess, onFail, { 

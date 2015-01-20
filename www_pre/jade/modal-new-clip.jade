@@ -1,30 +1,18 @@
 ion-modal-view#Newclip
-  ion-header-bar.bar
-    div.title.title-center 上傳截圖
-    .buttons
-      button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') 取消
-  ion-content
-    form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
-      input(type="text" ng-model="imageURI" required ng-show="false")
-    .list
-      .item.item-icon-right(ng-click="getPicture()")
-        | 添加圖像
-        i.icon.ion-ios-arrow-right
-      .item
-        img#newPostImage(src="img/upload-photo.png")
-      .item.item-input.item-stacked-label
-        span.input-label 描述文字
-        //- input(type="text" ng-model="formData.content" required)
-        textarea(type="text" ng-model="formData.content" required placeholder='Comments')
-    .padding
-      button.button.button-block.button-positive.activated(type='submit') 發送
-    //- .list.card
-    //-   .item.item-image
-    //-     div(ng-click="getPicture()")
-    //-       img#newPostImage(src="cover.jpg")
-    //-   form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
-    //-     input(type="text" ng-model="imageURI" required ng-show="false")
-    //-     input(type="text" ng-model="formData.content" required)
-    //-     .padding
-    //-       button.button.button-block.button-positive.activated(type='submit') 发表
-    //-     button.button(ng-click="cancelModal()") 取消
+  form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
+    ion-header-bar.bar
+      .buttons
+        button.button-clear.button(ng-click='mustChoise?cancelModal():closeModal()') 取消
+      h1.title 瞬間
+      .buttons
+        button.color-bule.button-clear.button(type='submit') 發佈
+    ion-content
+      .list
+        .item.item-input.item-stacked-label
+          span.input-label 描述
+          //- input(type="text" ng-model="formData.content" required)
+          textarea.hight(type="text" ng-model="formData.content" required placeholder='Comments')
+        .item
+          img#newPostImage(ng-src="{{imageURI}}",ng-click="getPicture()")
+        .hide
+          input(type="text" ng-model="imageURI" required ng-show="false")
