@@ -324,11 +324,15 @@ define(['app', 'services.Modal'], function(app)
               }
             };
           };
-          return Restangular.allUrl(_.template(apiConfig.api, params)).post(data).then(function(response){
-            console.debug('Post data to link:' + JSON.stringify(response));
-          }, function(error){
-            console.debug('Post data to link error:' + JSON.stringify(error));
-          })
+          return Thenjs(function(defer){
+            Restangular.allUrl(_.template(apiConfig.api, params)).post(data).then(function(response){
+              console.debug('Post data to link:' + JSON.stringify(response));
+              defer(undefined, response);
+            }, function(error){
+              console.debug('Post data to link error:' + JSON.stringify(error));
+              defer("Post data to link error:" + JSON.stringify(error));
+            });
+          });
         },
         deleteDataFromLink: function(apiLink){
           var params;

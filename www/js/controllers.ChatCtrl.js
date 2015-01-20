@@ -6,9 +6,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				console.log('back');
 				$ionicHistory.goBack();
 			};
-			ApiEvent.registerByApi('new-comment', function(data){
-				console.log(JSON.stringify(data));
-			});
+			
 
 			$scope.checkHasFollowedPost = function(){
 				RestRoute.getLinkData('/is-subscribed/' + $stateParams.chatId, $scope, 'followedPost').then(function(){
@@ -24,11 +22,19 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				});
 			};
 			$scope.getComment();
+			if (!$scope.comments) $scope.comments = [];
+			ApiEvent.registerByApi('new-comment', function(data){
+				// if (data && data._id) console.debug(data._id, _.filter($scope.comments, {_id:data._id}).length);
+				if (data && data._id && !_.filter($scope.comments, {_id:data._id}).length){
+					$scope.comments.push(data);
+				}
+			});
 			$scope.formData = {content:''};
 			$scope.send = function(newCommentForm){
-				// if (newCommentForm.$invalid) return;
-				// console.log($scope.formData);
-				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(){
+				//提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
+				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(defer, response){
+					// console.debug(response.data.rawData);
+					$scope.comments.push(response.data.rawData);
 				});
 			}
       		$scope.toggleSubscribe = function(){
