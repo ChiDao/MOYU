@@ -6,7 +6,9 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent'], funct
 				console.log('back');
 				$ionicHistory.goBack();
 			};
-			ApiEvent.connect();
+			ApiEvent.registerByApi('new-comment', function(data){
+				console.log(JSON.stringify(data));
+			});
 			// var messageOptions = [
 			// { content: '<p>Wow, this is really something huh?</p>' },
 			// { content: '<p>Yea, it\'s pretty sweet</p>' },
@@ -54,9 +56,8 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent'], funct
       $scope.formData = {content:''};
       $scope.send = function(newCommentForm){
         // if (newCommentForm.$invalid) return;
-        console.log($scope.formData);
+        // console.log($scope.formData);
         RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(){
-          $scope.getComment();
         });
       }
       $scope.toggleSubscribe = function(){
