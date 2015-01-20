@@ -1,4 +1,4 @@
-ion-modal-view
+ion-modal-view#Newclip
   ion-header-bar.bar
     div.title.title-center 上傳截圖
     .buttons
@@ -10,7 +10,9 @@ ion-modal-view
       .item.item-icon-right(ng-click="getPicture()")
         | 添加圖像
         i.icon.ion-ios-arrow-right
-      label.item.item-input.item-stacked-label
+      .item
+        img#newPostImage(src="img/upload-photo.png")
+      .item.item-input.item-stacked-label
         span.input-label 描述文字
         //- input(type="text" ng-model="formData.content" required)
         textarea(type="text" ng-model="formData.content" required placeholder='Comments')
@@ -19,7 +21,7 @@ ion-modal-view
     //- .list.card
     //-   .item.item-image
     //-     div(ng-click="getPicture()")
-    //-       img#newPostImage(src="cover.jpg" alt="点击选择图片")
+    //-       img#newPostImage(src="cover.jpg")
     //-   form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
     //-     input(type="text" ng-model="imageURI" required ng-show="false")
     //-     input(type="text" ng-model="formData.content" required)
