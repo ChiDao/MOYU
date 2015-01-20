@@ -13,7 +13,7 @@ define(['app'], function(app)
     		var apiData = RestRoute.parseApiLink(event.path);
     		if (apiData.apiConfig && apiCallbacks[apiData.apiConfig.name]){
     			_.forEach(apiCallbacks[apiData.apiConfig.name], function(callback){
-    				callback(event.data);
+    				callback(event);
     			})
     		}
     	}

@@ -62,6 +62,13 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'list',
       },
       {
+        name: 'clip-comments-next',
+        apiRegExp: /\/clip-comments\/(\w+)\?.*_next=(\w+)/,
+        apiRegExpMap: ['clipId', 'commentId'],
+        api: 'clip-comments/<%= clipId %>?_next=<%= commentId %>',
+        apiType: 'list',
+      },
+      {
         name: 'is-subscribed',
         apiRegExp: /\/is-subscribed\/(\w+)/,
         apiRegExpMap: ['postId'],

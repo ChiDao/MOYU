@@ -7,7 +7,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				$ionicHistory.goBack();
 			};
 			
-
+			//检测是否关注该话题
 			$scope.checkHasFollowedPost = function(){
 				RestRoute.getLinkData('/is-subscribed/' + $stateParams.chatId, $scope, 'followedPost').then(function(){
 					$scope.hasFollowedPost = true;
@@ -16,26 +16,49 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				});
 			};
 			$scope.checkHasFollowedPost();
+
+			//初始化获取讨论内容
+			var commentNextRul = '';
 			$scope.getComment = function(){
 				RestRoute.getLinkData('/clip-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
 					$ionicScrollDelegate.scrollBottom();
+					commentNextRul = $scope.comments.meta.next;
 				});
 			};
-			$scope.getComment();
-			if (!$scope.comments) $scope.comments = [];
-			ApiEvent.registerByApi('new-comment', function(data){
-				// if (data && data._id) console.debug(data._id, _.filter($scope.comments, {_id:data._id}).length);
-				if (data && data._id && !_.filter($scope.comments, {_id:data._id}).length){
-					$scope.comments.push(data);
-					$ionicScrollDelegate.scrollBottom();
+			var tmp = {};
+			$scope.refreshComment = function(){
+				if (commentNextRul){
+					RestRoute.getLinkData(commentNextRul, tmp, 'comments').then(function(){
+						$scope.comments = $scope.comments.concat(tmp.comments);
+						$ionicScrollDelegate.scrollBottom();
+						commentNextRul = tmp.comments.meta.next;
+						$timeout(function(){
+							$scope.refreshComment();
+						},1)
+					});
 				}
+			}
+			$scope.getComment();
+
+			//在讨论页面内，根据comet更新数据
+			if (!$scope.comments) $scope.comments = [];
+			ApiEvent.registerByApi('new-comment', function(event){
+				$scope.refreshComment();
+
+				// if (data && data._id) console.debug(data._id, _.filter($scope.comments, {_id:data._id}).length);
+				// if (data && data._id && !_.filter($scope.comments, {_id:data._id}).length){
+				// 	$scope.comments.push(data);
+				// 	$ionicScrollDelegate.scrollBottom();
+				// }
 			});
+
+			//发送新消息
 			$scope.formData = {content:''};
 			$scope.send = function(newCommentForm){
 				//提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
 				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(defer, response){
 					// console.debug(response.data.rawData);
-					$scope.comments.push(response.data.rawData);
+					// $scope.comments.push(response.data.rawData);
 					$ionicScrollDelegate.scrollBottom();
 				});
 			}
