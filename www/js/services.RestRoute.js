@@ -96,9 +96,11 @@ define(['app', 'services.Modal'], function(app)
       {
         name: 'new-comment',
         apiRegExp: /\/new-comment\/(\w+)/,
-        apiRegExpMap: ['postId'],
-        api: 'new-comment/<%= postId %>',
+        apiRegExpMap: ['clipId'],
+        api: 'new-comment/<%= clipId %>',
         apiType: 'post',
+        resource: 'clip',
+        resourceId: 'clipId'
       },
       {
         name: 'signup',
@@ -155,7 +157,7 @@ define(['app', 'services.Modal'], function(app)
             var matches = apiConfig.apiRegExp.exec(apiLink);
             if (matches){
               matches.shift();
-              params = _.zipObject(apiConfig.apiRegExpMap, matches);
+              apiData.params = _.zipObject(apiConfig.apiRegExpMap, matches);
               // console.debug('get link data params: ' + JSON.stringify(apiData.params));
               console.log(apiConfig.apiRegExp);
             }

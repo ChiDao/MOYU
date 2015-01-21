@@ -1,7 +1,7 @@
 define(['app', 'services.RestRoute'], function(app)
 {
-  app.controller('ChatsCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', 'Auth', 'ApiData',
-    function($scope, $stateParams, UI, RestRoute, Auth, ApiData) {
+  app.controller('ChatsCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', 'Auth', 'ApiData', 'ApiEvent',
+    function($scope, $stateParams, UI, RestRoute, Auth, ApiData, ApiEvent) {
       //Todo: 用户id从auth模块获取
 
       //获取关注话题
@@ -13,7 +13,7 @@ define(['app', 'services.RestRoute'], function(app)
       else{
         $scope.subscribes = ApiData.all('subscribes');
       }
-      
+
 
       $scope.$on("$ionicView.afterEnter", function() {
         // RestRoute.getLinkData('/user-subscriptions/' + Auth.currentUser().userData._id + '?_last', $scope, 'subscribes').then(function(){

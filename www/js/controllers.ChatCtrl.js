@@ -42,7 +42,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 
 			//在讨论页面内，根据comet更新数据
 			if (!$scope.comments) $scope.comments = [];
-			ApiEvent.registerByApi('new-comment', function(event){
+			ApiEvent.registerByResource('clip', $stateParams.chatId, function(event){
 				$scope.refreshComment();
 
 				// if (data && data._id) console.debug(data._id, _.filter($scope.comments, {_id:data._id}).length);

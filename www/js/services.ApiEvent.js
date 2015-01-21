@@ -11,10 +11,22 @@ define(['app'], function(app)
     	//执行回调函数
     	var runCallbacks = function(event){
     		var apiData = RestRoute.parseApiLink(event.path);
-    		if (apiData.apiConfig && apiCallbacks[apiData.apiConfig.name]){
-    			_.forEach(apiCallbacks[apiData.apiConfig.name], function(callback){
-    				callback(event);
-    			})
+    		if (apiData.apiConfig){
+                //根据api进行注册的回调函数
+                if (apiCallbacks[apiData.apiConfig.name]){
+        			_.forEach(apiCallbacks[apiData.apiConfig.name], function(callback){
+        				callback(event);
+        			})
+                }
+                //根据资源进行注册的回调函数
+                var tmpResourceCallbacks = resourceCallbacks[apiData.apiConfig.resource];
+                var resourceId = apiData.params[apiData.apiConfig.resourceId];
+                console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
+                if (tmpResourceCallbacks && resourceId && tmpResourceCallbacks[resourceId]){
+                    _.forEach(tmpResourceCallbacks[resourceId], function(callback){
+                        callback(event);
+                    })
+                }
     		}
     	}
 
@@ -49,10 +61,11 @@ define(['app'], function(app)
 	    		// console.debug('Register', apiConfigName, apiCallbacks[apiConfigName])
 	    	},
 	    	//注册资源回调函数，Todo:检查是否重复
-	    	// registerByResource: function(resourceName, callback){
-	    	// 	if (!resourceCallbacks['apiConfigName']) resourceCallbacks['apiConfigName'] = [];
-	    	// 	resourceCallbacks['apiConfigName'].push(callback);
-	    	// }
+	    	registerByResource: function(resourceName, resourceId, callback){
+	    		if (!resourceCallbacks[resourceName]) resourceCallbacks[resourceName] = {};
+                if (!resourceCallbacks[resourceName][resourceId]) resourceCallbacks[resourceName][resourceId] = [];
+	    		resourceCallbacks[resourceName][resourceId].push(callback);
+	    	}
 	    	//Todo: 取消注册
 	    }
 	}
