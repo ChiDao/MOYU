@@ -2,12 +2,16 @@ define(['app'], function(app)
 {
   app.factory('ApiData', ['RestRoute', '$timeout', 'Auth',
 
-  	//Todo: 根据配置进行处理
-  	// var resourceConfig = {
-
-  	// }
-
   	function(RestRoute, $timeout, Auth) {
+
+  		var dataSetConfig = {
+
+  		}
+
+  		var resourceConfig = {
+
+  		};
+
   		var datas = {};
   		var next = {};
 
@@ -20,21 +24,49 @@ define(['app'], function(app)
 				var tmp = {};
 				datas[resourceName] = [];
 				next[resourceName] = undefined;
-				return Thenjs(function(defer){
-					RestRoute.getLinkData('/user-subscriptions/' + Auth.currentUser().userData._id + '?_last', tmp, resourceName).then(function(){
-						_.forEach(tmp[resourceName], function(resourceData){
-							datas[resourceName].push(resourceData);
-							//Todo: 可配置化
-							RestRoute.getLinkData(resourceData.clip, resourceData, 'clipData').then(function(){
-          					});
+
+				//检测是否有缓存
+				var localSubscriptions = localStorage.getItem('subscriptions');
+				if (localSubscriptions !== null){
+					return Thenjs(function(defer){
+						console.log('Read subscriptions from localStorage.');
+						_.forEach(JSON.parse(localSubscriptions), function(subscription){
+							datas[resourceName].push(subscription);
 						})
-						next[resourceName] = tmp[resourceName].meta.next;
-						console.debug(datas[resourceName]);
+						// console.debug("Read subscriptions from localStorage", datas[resourceName]);
+						localStorage.removeItem('subscriptions');
 						defer(undefined);
-					}, function(){
-						defer("Init resource error");
 					});
-				});
+				}else{
+					return Thenjs(function(defer){
+						RestRoute.getLinkData('/user-subscriptions/' + Auth.currentUser().userData._id + '?_last', tmp, resourceName).then(function(){
+							async.each(tmp[resourceName], function(resourceData, callback){
+								datas[resourceName].push(resourceData);
+								//Todo: 可配置化
+								RestRoute.getLinkData(resourceData.clip, resourceData, 'clipData').then(function(){
+									console.debug("get clipData", resourceData.clipData);
+
+									//获取最后一个comment
+									var tmpData = {};
+									RestRoute.getLinkData('/clip-comments/' + resourceData.clipData._id + '?_last', tmpData, 'tmpData').then(function(){
+										resourceData.clipData.lastComment = tmpData.tmpData.pop();
+										callback(undefined);
+									});
+	          					});
+							}, function(){
+								next[resourceName] = tmp[resourceName].meta.next;
+								console.debug(datas[resourceName]);
+								defer(undefined);
+							});
+						}, function(){
+							defer("Init resource error");
+						});
+					}).then(function(defer){
+						console.log('Save subscriptions to localStorage');
+						localStorage.setItem('subscriptions', JSON.stringify(datas[resourceName]));
+						defer(undefined);
+					});
+				}
 			},
 			// refresh: function(resourceName){
 			// 	var tmp = {};
