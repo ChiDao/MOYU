@@ -24,7 +24,6 @@ define([
   starter.run(function($ionicPlatform,PushProcessingService) {
     PushProcessingService.checkinitialize();
     if(localStorage.getItem('apnToken') != null){
-
           PushProcessingService.initialize();
     }
     $ionicPlatform.ready(function() {
