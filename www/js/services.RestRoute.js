@@ -300,13 +300,13 @@ define(['app', 'services.Modal'], function(app)
               }else{
                 $scope[scopeDataField] = tmpData;
               }
-              console.debug('get link data:' + JSON.stringify($scope[scopeDataField]));
+              // console.debug('get link data:' + JSON.stringify($scope[scopeDataField]));
             });
           }
           else if (apiConfig.apiType === 'detail'){
             return Restangular.oneUrl(_.template(apiConfig.api, params)).get().then(function(response){
               $scope[scopeDataField] = response.data.rawData;
-              console.debug('get link data:' + JSON.stringify($scope[scopeDataField]));
+              // console.debug('get link data:' + JSON.stringify($scope[scopeDataField]));
             })
           }
         },

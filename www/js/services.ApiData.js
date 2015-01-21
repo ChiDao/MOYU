@@ -1,8 +1,8 @@
-define(['app'], function(app)
+define(['app', 'services.ApiEvent'], function(app)
 {
-  app.factory('ApiData', ['RestRoute', '$timeout', 'Auth',
+  app.factory('ApiData', ['RestRoute', '$timeout', 'Auth', 'ApiEvent',
 
-  	function(RestRoute, $timeout, Auth) {
+  	function(RestRoute, $timeout, Auth, ApiEvent) {
 
   		var dataSetConfig = {
 
@@ -17,7 +17,7 @@ define(['app'], function(app)
 
 		return {
 			all: function(resourceName){
-				console.debug(datas[resourceName]);
+				// console.debug(datas[resourceName]);
 				return datas[resourceName];
 			},
 			init: function(resourceName){
@@ -31,10 +31,14 @@ define(['app'], function(app)
 					return Thenjs(function(defer){
 						console.log('Read subscriptions from localStorage.');
 						_.forEach(JSON.parse(localSubscriptions), function(subscription){
+							ApiEvent.registerByResource('clip', subscription.clipData._id, function(event){
+								console.debug("update Comment Count" +subscription.clipData.newCommentCount);
+								subscription.clipData.newCommentCount++;
+							});;
 							datas[resourceName].push(subscription);
 						})
+						// localStorage.removeItem('subscriptions');
 						// console.debug("Read subscriptions from localStorage", datas[resourceName]);
-						localStorage.removeItem('subscriptions');
 						defer(undefined);
 					});
 				}else{
@@ -50,6 +54,13 @@ define(['app'], function(app)
 									var tmpData = {};
 									RestRoute.getLinkData('/clip-comments/' + resourceData.clipData._id + '?_last', tmpData, 'tmpData').then(function(){
 										resourceData.clipData.lastComment = tmpData.tmpData.pop();
+										// console.debug("registerByResource" + resourceData.clipData._id)
+										resourceData.clipData.newCommentCount = 0;
+										ApiEvent.registerByResource('clip', resourceData.clipData._id, function(event){
+											console.debug("update Comment Count" +resourceData.clipData.newCommentCount);
+											resourceData.clipData.newCommentCount++;
+										});
+
 										callback(undefined);
 									});
 	          					});
@@ -68,7 +79,8 @@ define(['app'], function(app)
 					});
 				}
 			},
-			// refresh: function(resourceName){
+			refresh: function(resourceName){
+				console.log("Refresh apiData: " + resourceName);
 			// 	var tmp = {};
 			// 	if (next[resourceName]){
 			// 		RestRoute.getLinkData('/user-subscriptions' + Auth.currentUser().userData._id + '?_last', tmp, resourceName).then(function(){
@@ -76,7 +88,7 @@ define(['app'], function(app)
 			// 		}, function(){
 			// 		});
 			// 	}
-			// }
+			}
 		}
   	}
   ]);

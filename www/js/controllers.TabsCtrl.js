@@ -8,27 +8,40 @@ define(['app', 'services.RestRoute'], function(app)
     	$scope.subscribes = ApiData.all('subscribes');
     	console.debug($scope.subscribes);
 
-    	$scope.badgeContent = 0;
+    	var checkedNewEvent = function(){
+	    	ApiEvent.checkedNewEvent().then(function(defer, hasNewEvent){
+				$scope.badgeContent = hasNewEvent?'+':'';
+	    	});
+	    };
+	    checkedNewEvent();
     	ApiEvent.registerByApi('new-comment', function(event){
-    		console.log('refresh');
-    		if ($state.current.name === 'tab.chat'){
-    			$scope.badgeContent = undefined;
-    		}
-    		$scope.badgeContent ++ ;
+    		if ($state.current.name === 'tab.chat' || $state.current.name === 'tab.chats'){
+    			ApiEvent.updateEventId();
+    			$scope.badgeContent = '';
+    		}else{
+	    		checkedNewEvent();
+	    	}
     	});
-
-
-    	//根据路由判断是否显示Tabs
+    	
     	$scope.hideTabs = function(){
+    		//根据路由判断是否清理badge
+    		switch ($state.current.name) {
+    			case 'tab.chat':
+    				$scope.badgeContent = '';
+    			case 'tab.chats':
+    				$scope.badgeContent = '';
+    			default:
+    		}
+    		//根据路由判断是否显示Tabs
     		switch ($state.current.name) {
     			case 'tab.channel':
-    			return true;
+    				return true;
     			case 'tab.chat':
-    			return true;
+    				return true;
     			case 'tab.channel-chat':
-    			return true;
+    				return true;
     			default:
-    			return false;
+    				return false;
     		}
     	};
     }

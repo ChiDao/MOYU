@@ -14,8 +14,11 @@ define(['app', 'services.RestRoute'], function(app)
         $scope.subscribes = ApiData.all('subscribes');
       }
 
+      ApiEvent.updateEventId();
+
 
       $scope.$on("$ionicView.afterEnter", function() {
+        ApiData.refresh('subscribes');
         // RestRoute.getLinkData('/user-subscriptions/' + Auth.currentUser().userData._id + '?_last', $scope, 'subscribes').then(function(){
         //   // console.debug($scope.chats);
         //   _.forEach($scope.subscribes, function(subscribe){

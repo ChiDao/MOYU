@@ -1,6 +1,8 @@
 ion-view(view-title='讨论')
   ion-content.padding
     .list.card(ng-repeat='subscribe in subscribes')
+      .item.item-avatar
+        | {{subscribe.clipData.newCommentCount}}
       .item.item-image
         a(href='#/tab/chats/{{subscribe.clipData._id}}')
           img(src="{{subscribe.clipData.img}}")

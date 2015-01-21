@@ -5,8 +5,12 @@ define(['app'], function(app)
 
 	  	console.log('Load ApiEvent Service');
 	  	var tmp = {};
+        var lastEventId = localStorage.getItem('lastEventId');
     	var apiCallbacks = {};
     	var resourceCallbacks = {};
+
+        if (lastEventId === null) 
+            lastEventId = '';
 
     	//执行回调函数
     	var runCallbacks = function(event){
@@ -23,6 +27,7 @@ define(['app'], function(app)
                 var resourceId = apiData.params[apiData.apiConfig.resourceId];
                 // console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
                 if (tmpResourceCallbacks && resourceId && tmpResourceCallbacks[resourceId]){
+                    // console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
                     _.forEach(tmpResourceCallbacks[resourceId], function(callback){
                         callback(event);
                     })
@@ -54,6 +59,51 @@ define(['app'], function(app)
     	request('/event-user?_last');
 
 	    return {
+            //检查是否有新的评论
+            checkedNewEvent: function(){
+                console.debug("checkedNewEvent: " + lastEventId);
+                return Thenjs(function(defer){
+                    if (!lastEventId){
+                        // console.debug('checkedNewEvent 1');
+                        RestRoute.getLinkData('/event-user?_last', tmp, 'events').then(function(){
+                            if (tmp.events.length > 0){ 
+                                var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
+                                lastEventId = tmpLastEventId;
+                                localStorage.setItem('lastEventId', lastEventId);
+                                defer(undefined, false);
+                            }
+                        });
+                    }else{
+                        console.debug('checkedNewEvent 2');
+                        RestRoute.getLinkData('/event-user?_last', tmp, 'events').then(function(){
+                            if (tmp.events.length > 0){ 
+                                var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
+                                if (lastEventId === tmpLastEventId){
+                                    defer(undefined, false);
+                                }else{
+                                    // console.debug('checkedNewEvent', 'newEventId:' + tmpLastEventId);
+                                    lastEventId = tmpLastEventId;
+                                    localStorage.setItem('lastEventId', lastEventId);
+                                    defer(undefined, true);
+                                }
+                            }
+                            //没有任何event
+                            else{
+                                defer(undefined, false);
+                            }
+                        });
+                    }
+                });
+            },
+            updateEventId: function(){
+                RestRoute.getLinkData('/event-user?_last', tmp, 'events').then(function(){
+                    if (tmp.events.length > 0){ 
+                        var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
+                        lastEventId = tmpLastEventId;
+                        localStorage.setItem('lastEventId', lastEventId);
+                    }
+                });
+            },
 	    	//注册api回调函数，Todo:检查是否重复
 	    	registerByApi: function(apiConfigName, callback){
 	    		if (!apiCallbacks[apiConfigName]) apiCallbacks[apiConfigName] = [];
