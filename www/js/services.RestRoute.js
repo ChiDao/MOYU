@@ -62,6 +62,13 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'list',
       },
       {
+        name: 'clip-comments-next',
+        apiRegExp: /\/clip-comments\/(\w+)\?.*_next=(\w+)/,
+        apiRegExpMap: ['clipId', 'commentId'],
+        api: 'clip-comments/<%= clipId %>?_next=<%= commentId %>',
+        apiType: 'list',
+      },
+      {
         name: 'is-subscribed',
         apiRegExp: /\/is-subscribed\/(\w+)/,
         apiRegExpMap: ['postId'],
@@ -79,7 +86,7 @@ define(['app', 'services.Modal'], function(app)
         name: 'event-user-next',
         apiRegExp: /\/event-user\?.+_next=(\w+)/,
         apiRegExpMap: ['lastEventId'],
-        api: 'event-user?_next=<?= lastEventId %>',
+        api: 'event-user?_next=<%= lastEventId %>',
         apiType: 'list',
       },
       
@@ -87,7 +94,7 @@ define(['app', 'services.Modal'], function(app)
       //  POST
       //---------
       {
-        name: 'post-new-comment',
+        name: 'new-comment',
         apiRegExp: /\/new-comment\/(\w+)/,
         apiRegExpMap: ['postId'],
         api: 'new-comment/<%= postId %>',
@@ -140,6 +147,22 @@ define(['app', 'services.Modal'], function(app)
 
     this.$get = function(Restangular, Modal, $state, $stateParams){
       return {
+        parseApiLink: function(apiLink){
+          var apiData = {};
+          //匹配路由并获得参数
+          apiData.apiConfig = _.find(apiConfigs, function(apiConfig) {
+            // console.debug(apiConfig.apiRegExp, apiConfig.apiRegExp.exec(apiLink));
+            var matches = apiConfig.apiRegExp.exec(apiLink);
+            if (matches){
+              matches.shift();
+              params = _.zipObject(apiConfig.apiRegExpMap, matches);
+              // console.debug('get link data params: ' + JSON.stringify(apiData.params));
+              console.log(apiConfig.apiRegExp);
+            }
+            return matches;
+          });
+          return apiData;
+        },
         getData1: function($scope, scopeDataField){
           var getLinkData = this.getLinkData;
           //获取当前路由对应的api数据
@@ -255,6 +278,7 @@ define(['app', 'services.Modal'], function(app)
               }
             };
           };
+              console.debug('get data from link: ' + _.template(apiConfig.api, params)); 
           if (apiConfig.apiType === 'list'){
             return Restangular.allUrl(_.template(apiConfig.api, params)).getList().then(function(response){
               console.debug('get link data options: ' + JSON.stringify(options)); 
@@ -307,11 +331,15 @@ define(['app', 'services.Modal'], function(app)
               }
             };
           };
-          return Restangular.allUrl(_.template(apiConfig.api, params)).post(data).then(function(response){
-            console.debug('Post data to link:' + JSON.stringify(response));
-          }, function(error){
-            console.debug('Post data to link error:' + JSON.stringify(error));
-          })
+          return Thenjs(function(defer){
+            Restangular.allUrl(_.template(apiConfig.api, params)).post(data).then(function(response){
+              console.debug('Post data to link:' + JSON.stringify(response));
+              defer(undefined, response);
+            }, function(error){
+              console.debug('Post data to link error:' + JSON.stringify(error));
+              defer("Post data to link error:" + JSON.stringify(error));
+            });
+          });
         },
         deleteDataFromLink: function(apiLink){
           var params;

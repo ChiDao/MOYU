@@ -10341,6 +10341,9 @@ ion-content {
   max-width: 65%;
   border-radius: 0.75rem; }
 
+#Newclip #newPostImage {
+  width: 80px; }
+
 /*
 	screen
 	兼容性
