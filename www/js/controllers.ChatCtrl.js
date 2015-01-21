@@ -18,20 +18,20 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 			$scope.checkHasFollowedPost();
 
 			//初始化获取讨论内容
-			var commentNextRul = '';
+			var commentNextUrl = '';
 			$scope.getComment = function(){
 				RestRoute.getLinkData('/clip-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
 					$ionicScrollDelegate.scrollBottom();
-					commentNextRul = $scope.comments.meta.next;
+					commentNextUrl = $scope.comments.meta.next;
 				});
 			};
 			var tmp = {};
 			$scope.refreshComment = function(){
-				if (commentNextRul){
-					RestRoute.getLinkData(commentNextRul, tmp, 'comments').then(function(){
+				if (commentNextUrl){
+					RestRoute.getLinkData(commentNextUrl, tmp, 'comments').then(function(){
 						$scope.comments = $scope.comments.concat(tmp.comments);
 						$ionicScrollDelegate.scrollBottom();
-						commentNextRul = tmp.comments.meta.next;
+						commentNextUrl = tmp.comments.meta.next;
 						$timeout(function(){
 							$scope.refreshComment();
 						},1)

@@ -14,6 +14,7 @@ require.config({
         'routes': 'js/app.routes',
         'config': 'js/app.config',
 
+        'services.ApiData': 'js/services.ApiData',
         'services.ApiEvent': 'js/services.ApiEvent',
         'services.Auth': 'js/services.Auth',
         'services.Modal': 'js/services.Modal',
@@ -24,6 +25,7 @@ require.config({
         'services.Data': 'js/services.Data',
         'services.FrostedGlass': 'js/services.FrostedGlass',
 
+        'controllers.TabsCtrl': 'js/controllers.TabsCtrl',
         'controllers.ChannelsCtrl': 'js/controllers.ChannelsCtrl',
         'controllers.ChannelCtrl': 'js/controllers.ChannelCtrl',
         'controllers.AddChannelCtrl': 'js/controllers.AddChannelCtrl',
@@ -45,6 +47,7 @@ require.config({
         },
         'routes': {
             deps: [
+                'controllers.TabsCtrl',
                 'controllers.ChannelsCtrl',
                 'controllers.ChannelCtrl',
                 'controllers.AddChannelCtrl',
@@ -62,6 +65,7 @@ require
     [
         'app',
 
+        'services.ApiData',
         'services.ApiEvent',
         'services.Auth',
         'services.Modal',
