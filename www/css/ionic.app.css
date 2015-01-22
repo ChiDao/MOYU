@@ -10349,8 +10349,10 @@ ion-content {
   font-size: 14px;
   line-height: 30px;
   min-height: 32px;
-  color: #000; }
+  color: #000;
+  font-weight: 600; }
   #Channels ion-list .item .item-note {
+    font-weight: 500;
     color: #0975d9;
     font-size: 12px;
     text-align: right;
