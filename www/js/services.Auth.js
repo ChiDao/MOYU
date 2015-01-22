@@ -91,7 +91,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
                   .then(function(){
                     var checkPush = PushProcessingService.checkResult();
                     console.log("checkPush"+checkPush);
-                    if(checkPush != "Yes"){
+                    if(checkPush == "No"){
                       allowNotification();
                     }else{
                       $ionicHistory.nextViewOptions({

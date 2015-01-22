@@ -86,7 +86,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				    	$timeout(function() {                        
 					   	    var checkPush =  PushProcessingService.checkResult();                         
 					   	    console.log("checkPush is "+checkPush);                         
-					   	    if(checkPush != "Yes"){                        
+					   	    if(checkPush == "No"){                        
 					    	    console.log("循环检查");                         
 					    	    recheck(scope);                         
 					    	}else{
