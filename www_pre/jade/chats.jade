@@ -4,6 +4,6 @@ ion-view(view-title='讨论')
       .item.item-avatar
         | {{subscribe.clipData.newCommentCount}}
       .item.item-image
-        a(href='#/tab/chats/{{subscribe.clipData._id}}')
-          img(src="{{subscribe.clipData.img}}")
+        a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
+          img(src="{{subscribe['@clip'].img}}")
 

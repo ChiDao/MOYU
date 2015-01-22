@@ -3,11 +3,7 @@ define(['app', 'services.RestRoute'], function(app)
   app.controller('TabsCtrl', ['$scope', '$state', 'RestRoute', '$timeout', 'ApiData', 'ApiEvent',
     function($scope, $state, RestRoute, $timeout, ApiData, ApiEvent) {
 
-    	//获取关注话题
-    	if (ApiData.all('subscribes') === undefined) ApiData.init('subscribes');
-    	$scope.subscribes = ApiData.all('subscribes');
-    	console.debug($scope.subscribes);
-
+    	//处理新增评论事件
     	var checkedNewEvent = function(){
 	    	ApiEvent.checkedNewEvent().then(function(defer, hasNewEvent){
 				$scope.badgeContent = hasNewEvent?'+':'';

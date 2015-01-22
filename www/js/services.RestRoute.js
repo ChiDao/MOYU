@@ -267,7 +267,7 @@ define(['app', 'services.Modal'], function(app)
             if (matches){
               matches.shift();
               params = _.zipObject(apiConfig.apiRegExpMap, matches);
-              console.debug('get link data params: ' + JSON.stringify(params));
+              // console.debug('get link data params: ' + JSON.stringify(params));
               console.log(apiConfig.apiRegExp);
             }
             return matches;
@@ -283,7 +283,7 @@ define(['app', 'services.Modal'], function(app)
               console.debug('get data from link: ' + _.template(apiConfig.api, params)); 
           if (apiConfig.apiType === 'list'){
             return Restangular.allUrl(_.template(apiConfig.api, params)).getList().then(function(response){
-              console.debug('get link data options: ' + JSON.stringify(options)); 
+              // console.debug('get link data options: ' + JSON.stringify(options)); 
               // console.log(JSON.stringify(response.data.meta));
               var tmpData = response.data;
               var filter = {};
@@ -293,7 +293,7 @@ define(['app', 'services.Modal'], function(app)
                   filter[fieldName] = platform;
                 }
               });
-              console.debug('get link data filter:' + JSON.stringify(filter));
+              // console.debug('get link data filter:' + JSON.stringify(filter));
               if (_.keys(filter).length) tmpData = _.filter(tmpData, filter);
               if (options.toDetail){
                 $scope[scopeDataField] = tmpData[0];
