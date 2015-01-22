@@ -1,7 +1,8 @@
 define(['app', 'services.RestRoute'], function(app)
 {
-  app.controller('ChatsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'UI', 'RestRoute', 'Auth', 'ApiData', 'ApiEvent', '$http', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, UI, RestRoute, Auth, ApiData, ApiEvent, $http, $timeout) {
+  app.controller('ChatsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'UI', 'RestRoute', 'Restangular',
+    'Auth', 'ApiData', 'ApiEvent', '$http', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, UI, RestRoute, Restangular, Auth, ApiData, ApiEvent, $http, $timeout) {
       //Todo: 用户id从auth模块获取
 
       var subscribeLastCommentId = {};
@@ -57,7 +58,7 @@ define(['app', 'services.RestRoute'], function(app)
       //更新列表
       var getSubscribes = function(){
         $http({method:'GET',
-            url:'http://localhost:8485/user-subscriptions/14af80f4ced1684f?_last' + '&r=' + Math.random(),
+            url:Restangular.configuration.baseUrl + '/user-subscriptions/14af80f4ced1684f?_last' + '&r=' + Math.random(),
             withCredentials: true,
             headers: {
               'Content-Type': 'application/json',
