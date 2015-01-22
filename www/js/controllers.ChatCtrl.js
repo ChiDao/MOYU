@@ -64,7 +64,9 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 
 	      		var checkPush =  PushProcessingService.checkResult();
 	    		if(checkPush == "No"){
+
 	    			Auth.disallow();
+
 	    		}
 					
 		        if ($scope.hasFollowedPost){
