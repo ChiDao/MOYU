@@ -20,10 +20,10 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'detail',
       },
       {
-        name: 'all-clients-last',
-        apiRegExp: /\/all-clients\/(\w+)\?_last/,
+        name: 'clients-by-platform-last',
+        apiRegExp: /\/clients-by-platform\/(\w+)\?_last/,
         apiRegExpMap: ['platform'],
-        api: 'all-clients/<%= platform %>\?_last',
+        api: 'clients-by-platform/<%= platform %>\?_last',
         apiType: 'list',
       },
       {
@@ -46,6 +46,34 @@ define(['app', 'services.Modal'], function(app)
         apiRegExpMap: ['userId'],
         api: 'user-subscriptions/<%= userId %>?_last',
         apiType: 'list',
+
+        getData: [
+          {
+            name: 'game',
+            deps: [],
+            attr: 'game',
+            saveAs: 'game',
+          }
+        ]
+        // getAttrData: [
+          // {
+          //   name: 'game',
+          //   deps: ['apiDataField'],
+          //   attr: 'game',
+          //   saveAs: 'game'
+          // },
+          // {
+          //   name: 'clients-last',
+          //   deps: ['clients'],
+          //   attr: 'last',
+          //   options: {
+          //     extraFilter: {
+          //       platform: 'local.platform'
+          //     },
+          //     toDetail: true
+          //   }
+          // },
+        // ]
       },
       {
         name: 'clip',
@@ -166,7 +194,7 @@ define(['app', 'services.Modal'], function(app)
           });
           return apiData;
         },
-        getData1: function($scope, scopeDataField){
+        getData: function($scope, scopeDataField){
           var getLinkData = this.getLinkData;
           //获取当前路由对应的api数据
           return Thenjs(function(defer){

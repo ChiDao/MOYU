@@ -10,9 +10,10 @@ define(['app', 'services.RestRoute'], function(app)
     	}
 
     	if (!Auth.isLoggedIn()) $state.go('tab.add-channel')
-		RestRoute.getLinkData('/all-clients/ios?_last', $scope, 'channels').then(function(){
-			console.log($scope.channels);
-		});
+    	RestRoute.getData();
+		// RestRoute.getLinkData('/all-clients/ios?_last', $scope, 'channels').then(function(){
+		// 	console.log($scope.channels);
+		// });
     }
   ]);
 });
