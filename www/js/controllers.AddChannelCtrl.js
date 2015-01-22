@@ -12,8 +12,10 @@ define(['app', 'services.RestRoute'], function(app)
 				Auth.login();
 			}
 			else{
-				console.debug(channle);
-				// RestRoute.postDataToLink(channle.follow);
+
+				var parsedUrl = /(\w+)$/.exec(channle.follow);
+				// console.debug(parsedUrl[1]);
+				RestRoute.putDataToLink(channle.follow, {game:parsedUrl[1], user:Auth.currentUser().userData._id});
 			}
 		}
     }

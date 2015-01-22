@@ -117,10 +117,38 @@ define(['app', 'services.Modal'], function(app)
         api: 'event-user?_next=<%= lastEventId %>',
         apiType: 'list',
       },
+      {
+        name: 'recent-played-games',
+        apiRegExp: /\/recent-played-games\/(\w+)?.*_start=(\d+)/,
+        apiRegExpMap: ['userId', 'startNum'],
+        api: 'recent-played-games/<%= userId %>?_start=<%= startNum %>',
+        apiType: 'list',
+      },
+      {
+        name: 'user-interests-last',
+        apiRegExp: /\/user-interests\/(\w+)?.*_last=/,
+        apiRegExpMap: ['userId'],
+        api: 'user-interests/<%= userId %>?_last=',
+        apiType: 'list',
+      },
+      {
+        name: 'user-interests',
+        apiRegExp: /\/user-interests\/(\w+)/,
+        apiRegExpMap: ['userId'],
+        api: 'user-interests/<%= userId %>',
+        apiType: 'detail',
+      },
       
       //---------
       //  POST
       //---------
+      {
+        name: 'follow-game',
+        apiRegExp: /\/follow-game\/(\w+)/,
+        apiRegExpMap: ['gameId'],
+        api: 'follow-game/<%= gameId %>',
+        apiType: 'post',
+      },
       {
         name: 'new-comment',
         apiRegExp: /\/new-comment\/(\w+)/,
@@ -369,6 +397,39 @@ define(['app', 'services.Modal'], function(app)
             }, function(error){
               console.debug('Post data to link error:' + JSON.stringify(error));
               defer("Post data to link error:" + JSON.stringify(error));
+            });
+          });
+        },
+        putDataToLink: function(apiLink, data){
+          var params;
+          var options = options || {};
+          //匹配路由并获得参数
+          var apiConfig = _.find(apiConfigs, function(apiConfig) {
+            // console.debug(apiConfig.apiRegExp, apiConfig.apiRegExp.exec(apiLink));
+            var matches = apiConfig.apiRegExp.exec(apiLink);
+            if (matches){
+              matches.shift();
+              params = _.zipObject(apiConfig.apiRegExpMap, matches);
+              console.debug('Post data to link params: ' + JSON.stringify(params));
+              console.log(apiConfig.apiRegExp);
+            }
+            return matches;
+          });
+          if (!apiConfig) {
+            console.log("Can't post data to link: "+ apiLink);
+            return {
+              then: function(callback){
+                callback();
+              }
+            };
+          };
+          return Thenjs(function(defer){
+            Restangular.one(_.template(apiConfig.api, params)).put(data).then(function(response){
+              console.debug('Put data to link:' + JSON.stringify(response));
+              defer(undefined, response);
+            }, function(error){
+              console.debug('Put data to link error:' + JSON.stringify(error));
+              defer("Put data to link error:" + JSON.stringify(error));
             });
           });
         },

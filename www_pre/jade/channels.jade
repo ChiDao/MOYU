@@ -3,9 +3,9 @@ ion-view#Channels(view-title='游戏')
     button.button.icon.ion-ios-plus-empty.button-clear(ng-click="addChannel()")
   ion-content
     ion-list
-      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel._id}}')
-        img(src='{{channel.logo}}')
-        | {{channel.name}}
+      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel.gameData._id}}')
+        img(src='{{channel.gameData.logo}}')
+        | {{channel.gameData.name}}
         span.item-note(ng-class='{first:$first}')
           | 18 <br>
           b <hide>上個瞬間：</hide>三個月前

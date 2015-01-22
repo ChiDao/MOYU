@@ -10,10 +10,18 @@ define(['app', 'services.RestRoute'], function(app)
     	}
 
     	if (!Auth.isLoggedIn()) $state.go('tab.add-channel');
+
+        var tmp = {};
+        RestRoute.getLinkData('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels').then(function(){
+            console.debug($scope.channels);
+            _.forEach($scope.channels, function(interest){
+                RestRoute.getLinkData(interest.game, interest, 'gameData').then(function(){
+                    console.debug(interest.gameData);
+                });
+            })
+        });
     	// RestRoute.getData();
-		// RestRoute.getLinkData('/all-clients/ios?_last', $scope, 'channels').then(function(){
-		// 	console.log($scope.channels);
-		// });
+		// 
     }
   ]);
 });
