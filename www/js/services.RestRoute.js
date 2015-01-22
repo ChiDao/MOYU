@@ -27,10 +27,10 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'list',
       },
       {
-        name: 'client-clips-last',
-        apiRegExp: /\/client-clips\/(\w+)\?_last/,
+        name: 'game-clips-last',
+        apiRegExp: /\/game-clips\/(\w+)\?_last/,
         apiRegExpMap: ['clientId'],
-        api: 'client-clips/<%= clientId %>\?_last',
+        api: 'game-clips/<%= clientId %>\?_last',
         apiType: 'list',
       },
       {

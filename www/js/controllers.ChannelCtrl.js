@@ -10,14 +10,14 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       
       //
       $scope.$on("$ionicView.afterEnter", function() {
-        RestRoute.getLinkData('/client/' + $stateParams.channelId, $scope, 'channel').then(function(){
+        RestRoute.getLinkData('/game/' + $stateParams.channelId, $scope, 'channel').then(function(){
           console.log($scope.channel);
         });
       });
 
       // get clips
       $scope.getClips = function(){
-        RestRoute.getLinkData('/client-clips/' + $stateParams.channelId + '?_last', $scope, 'clips').then(function(){
+        RestRoute.getLinkData('/game-clips/' + $stateParams.channelId + '?_last', $scope, 'clips').then(function(){
           _.forEach($scope.clips, function(clip){
             RestRoute.getLinkData(clip.user, clip, 'userData').then(function(){
               console.log(clip.userData);
