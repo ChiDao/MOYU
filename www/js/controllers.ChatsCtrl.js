@@ -11,13 +11,13 @@ define(['app', 'services.RestRoute'], function(app)
 
       //检查新增comment函数
       var checkNewComments = function(subscribe){
-        console.debug("subscribeLastCommentId 1", subscribe._id, subscribeLastCommentId[subscribe._id]);
+        // console.debug("subscribeLastCommentId 1", subscribe._id, subscribeLastCommentId[subscribe._id]);
         //读取缓存
         var localLastCommentsId = localStorage.getItem('subscribeLastCommentId'+subscribe._id);
         if (!subscribeLastCommentId[subscribe._id] && localLastCommentsId !== null){
           subscribeLastCommentId[subscribe._id] = localLastCommentsId;
         }
-        console.debug("subscribeLastCommentId 2", subscribe._id, subscribeLastCommentId[subscribe._id]);
+        // console.debug("subscribeLastCommentId 2", subscribe._id, subscribeLastCommentId[subscribe._id]);
 
         if (subscribe['@clip'] && subscribe['@clip']['@comments'] && subscribe['@clip']['@comments'].slice){
           console.debug(subscribe['@clip']['@comments'].slice);
@@ -45,7 +45,7 @@ define(['app', 'services.RestRoute'], function(app)
           localStorage.setItem('subscribeLastCommentId'+subscribe._id, '');
         }
         // console.debug(subscribe._id, subscribe["@clip"]._id, $scope.hasNewComments[subscribe["@clip"]._id])
-        console.debug("subscribeLastCommentId 3", subscribe._id, subscribeLastCommentId[subscribe._id]);
+        // console.debug("subscribeLastCommentId 3", subscribe._id, subscribeLastCommentId[subscribe._id]);
       };
 
 

@@ -36,14 +36,16 @@ define(['app'], function(app)
     	}
 
     	//递归请求数据
-	  	var request = function(apiLink){
+	  	var request = function(apiLink, isInit){
     		console.debug('ApiEvent running');
     		RestRoute.getLinkData(apiLink, tmp, 'events').then(function(){
     			if (tmp.events && tmp.events.length && tmp.events.meta.next){
     				$timeout(function(){
-    					_.forEach(tmp.events, function(event){
-    						runCallbacks(event);
-    					})
+                        if (!isInit){
+        					_.forEach(tmp.events, function(event){
+        						runCallbacks(event);
+        					})
+                        }
     					request(tmp.events.meta.next);
 					},1);
     			}else{
@@ -56,12 +58,12 @@ define(['app'], function(app)
 				request(apiLink);
     		})
     	};
-    	request('/event-user?_last');
+    	request('/event-user?_last', true);
 
 	    return {
             //检查是否有新的评论
             checkedNewEvent: function(){
-                console.debug("checkedNewEvent: " + lastEventId);
+                // console.debug("checkedNewEvent: " + lastEventId);
                 return Thenjs(function(defer){
                     if (!lastEventId){
                         // console.debug('checkedNewEvent 1');
@@ -74,7 +76,7 @@ define(['app'], function(app)
                             }
                         });
                     }else{
-                        console.debug('checkedNewEvent 2');
+                        // console.debug('checkedNewEvent 2');
                         RestRoute.getLinkData('/event-user?_last', tmp, 'events').then(function(){
                             if (tmp.events.length > 0){ 
                                 var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;

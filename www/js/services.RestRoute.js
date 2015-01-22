@@ -280,7 +280,7 @@ define(['app', 'services.Modal'], function(app)
               }
             };
           };
-              console.debug('get data from link: ' + _.template(apiConfig.api, params)); 
+          // console.debug('get data from link: ' + _.template(apiConfig.api, params)); 
           if (apiConfig.apiType === 'list'){
             return Restangular.allUrl(_.template(apiConfig.api, params)).getList().then(function(response){
               // console.debug('get link data options: ' + JSON.stringify(options)); 
