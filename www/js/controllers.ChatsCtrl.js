@@ -57,7 +57,7 @@ define(['app', 'services.RestRoute'], function(app)
       //更新列表
       var getSubscribes = function(){
         $http({method:'GET',
-            url:'http://localhost:8485/user-subscriptions/14af80f4ced1684f?_last' + '&r=' + Math.random(),
+            url:'http://42.120.45.236:8485/user-subscriptions?_last' + '&r=' + Math.random(),
             withCredentials: true,
             headers: {
               'Content-Type': 'application/json',

@@ -64,12 +64,12 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 
 	      		var checkPush =  PushProcessingService.checkResult();
 	    		if(checkPush == "No"){
-	    			Modal.okCancelModal('templates/modal-allow-notification.html', {}, {
+	    			Modal.okCancelModal('templates/modal-a-notification.html', {}, {
 	    				onOk: function(form, scope){     
 	    					PushProcessingService.initialize();                                                
 	    					scope.push = false;
 	    					scope.hideModal();
-	    					Modal.okCancelModal('templates/modal-how-to-notification.html', {}, {
+	    					Modal.okCancelModal('templates/modal-b-notification.html', {}, {
 	    						init: function(scope){
 	    							scope.push = false;
 								//循环检查

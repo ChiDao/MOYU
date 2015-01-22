@@ -64,6 +64,17 @@ ion-content {
 	border-radius:.75rem;
 }
 
+#Channels {
+	ion-list {
+		.item:first-childb {
+			background-color: #e5f2ff !important;
+		}
+		img {
+			border-radius: 7px;
+		}
+	}
+}
+
 #channel {
 	.item-image {
 		img {

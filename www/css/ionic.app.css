@@ -10341,6 +10341,11 @@ ion-content {
   max-width: 65%;
   border-radius: 0.75rem; }
 
+#Channels ion-list .item:first-childb {
+  background-color: #e5f2ff !important; }
+#Channels ion-list img {
+  border-radius: 7px; }
+
 #Newclip #newPostImage {
   width: 80px; }
 
