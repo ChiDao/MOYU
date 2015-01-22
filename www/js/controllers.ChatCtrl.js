@@ -63,7 +63,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
       		$scope.toggleSubscribe = function(){
 
 	      		var checkPush =  PushProcessingService.checkResult();
-	    		if(checkPush != "Yes"){
+	    		if(checkPush == "No"){
 	    			Modal.okCancelModal('templates/modal-allow-notification.html', {}, {
 	    				onOk: function(form, scope){     
 	    					PushProcessingService.initialize();                                                
@@ -86,7 +86,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				    	$timeout(function() {                        
 					   	    var checkPush =  PushProcessingService.checkResult();                         
 					   	    console.log("checkPush is "+checkPush);                         
-					   	    if(checkPush == "No"){                        
+					   	    if(checkPush != "Yes"){                        
 					    	    console.log("循环检查");                         
 					    	    recheck(scope);                         
 					    	}else{
