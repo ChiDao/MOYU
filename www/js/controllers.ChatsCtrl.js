@@ -4,11 +4,6 @@ define(['app', 'services.RestRoute'], function(app)
     'Auth', 'ApiData', 'ApiEvent', '$http', '$timeout',
     function($scope, $rootScope, $state, $stateParams, UI, RestRoute, Restangular, Auth, ApiData, ApiEvent, $http, $timeout) {
 
-      // pull refresh
-      $scope.doRefresh = function() {
-        $scope.$broadcast('scroll.refreshComplete');
-      };
-
       //Todo: 用户id从auth模块获取
 
       var subscribeLastCommentId = {};
@@ -63,35 +58,39 @@ define(['app', 'services.RestRoute'], function(app)
 
       //更新列表
       var getSubscribes = function(){
-        $http({method:'GET',
-            url:Restangular.configuration.baseUrl + '/user-subscriptions/' + Auth.currentUser().userData._id + '?_last' + '&r=' + Math.random(),
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
-            }
-         }).success(function(data){
-          $scope.subscribes = data.slice;
-          // console.debug($scope.subscribes);
+        return Thenjs(function(defer){
+          $http({method:'GET',
+              url:Restangular.configuration.baseUrl + '/user-subscriptions/' + Auth.currentUser().userData._id + '?_last' + '&r=' + Math.random(),
+              withCredentials: true,
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              }
+           }).success(function(data){
+            $scope.subscribes = data.slice;
+            // console.debug($scope.subscribes);
 
-          _.forEach($scope.subscribes, function(subcribe){
-            checkNewComments(subcribe);
+            _.forEach($scope.subscribes, function(subcribe){
+              checkNewComments(subcribe);
 
-            //注册comet事件，只在本页时进行刷新
-            // console.debug("clipId", subcribe['@clip']._id);
-            if (!hasRegisterSubscribe[subcribe['@clip']._id]){
-              ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
-                // console.debug("checkNewComments", $state.current.name, $state.current);
-                if ($state.current.name === 'tab.chats'){
-                  $timeout(function(){
-                    getSubscribes();
-                  },1); 
-                }
-              });
-              hasRegisterSubscribe[subcribe['@clip']._id] = true;
-            }
+              //注册comet事件，只在本页时进行刷新
+              // console.debug("clipId", subcribe['@clip']._id);
+              if (!hasRegisterSubscribe[subcribe['@clip']._id]){
+                ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
+                  // console.debug("checkNewComments", $state.current.name, $state.current);
+                  if ($state.current.name === 'tab.chats'){
+                    $timeout(function(){
+                      getSubscribes();
+                    },1); 
+                  }
+                });
+                hasRegisterSubscribe[subcribe['@clip']._id] = true;
+              }
+
+              defer(undefined);
+            });
           });
-        });
+          })
        };
 
       $scope.$on("$ionicView.afterEnter", function() {
@@ -105,6 +104,14 @@ define(['app', 'services.RestRoute'], function(app)
           fromDetailSubcribe = fromParams.chatId;
         }
       });
+
+      // pull refresh
+      $scope.doRefresh = function() {
+        getSubscribes().then(function(defer){
+          $scope.$broadcast('scroll.refreshComplete');
+        })
+        
+      };
 
     }
   ]);

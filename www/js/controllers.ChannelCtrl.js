@@ -5,7 +5,9 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
 
       // pull refresh
       $scope.doRefresh = function() {
-        $scope.$broadcast('scroll.refreshComplete');
+        $scope.getClips().then(function(){
+          $scope.$broadcast('scroll.refreshComplete');
+        });
       };
       
       //
@@ -17,7 +19,7 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
 
       // get clips
       $scope.getClips = function(){
-        RestRoute.getLinkData('/game-clips/' + $stateParams.channelId + '?_last', $scope, 'clips').then(function(){
+        return RestRoute.getLinkData('/game-clips/' + $stateParams.channelId + '?_last', $scope, 'clips').then(function(){
           _.forEach($scope.clips, function(clip){
             RestRoute.getLinkData(clip.user, clip, 'userData').then(function(){
               console.log(clip.userData);
