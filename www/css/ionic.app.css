@@ -10360,6 +10360,10 @@ ion-content {
     #Channels ion-list .item .item-note b {
       font-size: 9px;
       color: #646464; }
+      #Channels ion-list .item .item-note b hide {
+        opacity: 0; }
+  #Channels ion-list .item .first hide {
+    opacity: 1 !important; }
 #Channels ion-list img {
   border-radius: 7px;
   height: 30px;

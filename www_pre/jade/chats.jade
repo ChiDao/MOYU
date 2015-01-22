@@ -1,5 +1,6 @@
 ion-view(view-title='讨论')
-  ion-content.padding
+  ion-content
+    ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     .list.card(ng-repeat='subscribe in subscribes')
       .item.item-avatar {{hasNewComments[subscribe["@clip"]._id]?'+':''}}
       .item.item-image

@@ -6,6 +6,9 @@ ion-view#Channels(view-title='游戏')
       a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel._id}}')
         img(src='{{channel.logo}}')
         | {{channel.name}}
-        span.item-note
+        span.item-note(ng-class='{first:$first}')
           | 18 <br>
-          b 三個月前
+          b <hide>上個瞬間：</hide>三個月前
+
+
+//- span.item-note(ng-class='{first:$first,hide:$last}')

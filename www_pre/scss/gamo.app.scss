@@ -86,6 +86,14 @@ ion-content {
 				b {
 					font-size: 9px;
 					color: #646464;
+					hide {
+						opacity: 0;
+					}
+				}
+			}
+			.first {
+				hide {
+					opacity: 1 !important;
 				}
 			}
 		}

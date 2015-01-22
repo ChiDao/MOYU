@@ -94,11 +94,11 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
                     if(checkPush == "No"){
                       allowNotification();
                     }else{
-                      $ionicHistory.nextViewOptions({
-                        disableAnimate: true,
-                        disableBack: true
-                      });
-                      $state.go('app.wait-open');
+                      // $ionicHistory.nextViewOptions({
+                      //   disableAnimate: true,
+                      //   disableBack: true
+                      // });
+                      // $state.go('app.wait-open');
                     }
                   })
                 },
@@ -287,11 +287,11 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
               $timeout(function() {
                 scope.hideModal();
               },5000)
-              $ionicHistory.nextViewOptions({
-                disableAnimate: true,
-                disableBack: true
-              });
-              $state.go('app.wait-open');
+              // $ionicHistory.nextViewOptions({
+              //   disableAnimate: true,
+              //   disableBack: true
+              // });
+              // $state.go('app.wait-open');
             }
           },1);
         }, 1000);
