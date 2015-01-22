@@ -4,7 +4,7 @@
   navigation history that also transitions its views in and out.
 ion-tabs.tabs-icon-top.tabs-color-active-positive(ng-class="{'tabs-item-hide':hideTabs()}")
   // Dashboard Tab
-  ion-tab(title='游戏', icon-off='ion-ios-game-controller-a-outline', icon-on='ion-ios-game-controller-a', href='#/tab/channels')
+  ion-tab(title='频道', icon-off='ion-ios7-photos-outline', icon-on='ion-ios7-photos', ng-click='channelRoute()')
     ion-nav-view(name='tab-channels')
   // Chats Tab
   ion-tab.has-badge(title='讨论', badge='badgeContent', badge-style='badge-assertive', icon-off='ion-ios-chatbubble-outline', icon-on='ion-ios-chatbubble', href='#/tab/chats')

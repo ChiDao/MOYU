@@ -21,7 +21,7 @@ define([
     ]);
 
 
-  starter.run(function($ionicPlatform,PushProcessingService) {
+  starter.run(function($state, $ionicPlatform,PushProcessingService) {
     PushProcessingService.checkinitialize();
     if(localStorage.getItem('apnToken') != null){
           PushProcessingService.initialize();
@@ -35,6 +35,11 @@ define([
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
+      }
+
+      console.debug(localStorage.getItem('user'));
+      if (localStorage.getItem('user') === null){
+        $state.go('tab.add-channel');
       }
     });
   });

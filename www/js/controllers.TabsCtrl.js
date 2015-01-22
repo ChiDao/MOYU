@@ -1,7 +1,7 @@
 define(['app', 'services.RestRoute'], function(app)
 {
-  app.controller('TabsCtrl', ['$scope', '$state', 'RestRoute', '$timeout', 'ApiData', 'ApiEvent',
-    function($scope, $state, RestRoute, $timeout, ApiData, ApiEvent) {
+  app.controller('TabsCtrl', ['$scope', '$state', 'RestRoute', '$timeout', 'ApiData', 'ApiEvent', 'Auth',
+    function($scope, $state, RestRoute, $timeout, ApiData, ApiEvent, Auth) {
 
     	//处理新增评论事件
     	var checkedNewEvent = function(){
@@ -18,6 +18,10 @@ define(['app', 'services.RestRoute'], function(app)
 	    		checkedNewEvent();
 	    	}
     	});
+
+        $scope.channelRoute = function(){
+            $state.go(Auth.isLoggedIn()? 'tab.channels': 'tab.add-channel');
+        }
     	
     	$scope.hideTabs = function(){
     		//根据路由判断是否清理badge

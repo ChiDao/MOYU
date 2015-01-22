@@ -58,7 +58,8 @@ define(['app'], function(app)
 				request(apiLink);
     		})
     	};
-    	request('/event-user?_last', true);
+        // console.debug("Auth.isLoggedIn()", Auth.isLoggedIn());
+        if (Auth.isLoggedIn()) request('/event-user?_last', true);
 
 	    return {
             //检查是否有新的评论
