@@ -66,19 +66,37 @@ ion-content {
 
 #Channels {
 	ion-list {
-		.item:first-childb {
+		.item:first-child {
 			background-color: #e5f2ff !important;
+		}
+		.item {
+			border-color: #d8d8d8;
+			padding-left: 58px;
+			font-size: 14px;
+			line-height: 30px;
+			min-height: 32px;
+			color: #000;
+			.item-note {
+				color: #0975d9;
+				font-size: 12px;
+			}
 		}
 		img {
 			border-radius: 7px;
+			height: 30px;
+			width: 30px;
+			box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
 		}
 	}
 }
 
 #channel {
-	.item-image {
-		img {
-			// width: 30%;
+	.item {
+
+	}
+	.item-body {
+		.full-image {
+			// margin: 0 -26px;s
 		}
 	}
 }

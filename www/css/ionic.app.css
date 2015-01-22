@@ -10341,10 +10341,23 @@ ion-content {
   max-width: 65%;
   border-radius: 0.75rem; }
 
-#Channels ion-list .item:first-childb {
+#Channels ion-list .item:first-child {
   background-color: #e5f2ff !important; }
+#Channels ion-list .item {
+  border-color: #d8d8d8;
+  padding-left: 58px;
+  font-size: 14px;
+  line-height: 30px;
+  min-height: 32px;
+  color: #000; }
+  #Channels ion-list .item .item-note {
+    color: #0975d9;
+    font-size: 12px; }
 #Channels ion-list img {
-  border-radius: 7px; }
+  border-radius: 7px;
+  height: 30px;
+  width: 30px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24); }
 
 #Newclip #newPostImage {
   width: 80px; }
