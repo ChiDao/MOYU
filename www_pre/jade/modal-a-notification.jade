@@ -1,0 +1,39 @@
+ion-modal-view#AllowNoti.Pages
+  ion-header-bar
+    .title {{'open_notification'|translate}}
+    .buttons
+      button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') {{'cancel'|translate}}
+  form(name='signUpForm', novalidate="", ng-submit='ok(signUpForm)')
+    ion-content(ng-class="{'has-error': signUpForm.email.$invalid}")
+      ion-list
+        label.item.item-input.item-stacked-label
+          span.input-label E-Mail
+          input(name='email', type='email', placeholder="{{'email_placeholder'|translate}}", ng-model='formData.email', required)
+      
+        label.item(ng-messages='signUpForm.email.$error', ng-messages-include='templates/form-errors.html')
+          p.message.form-error(ng-message='email') {{'email_form'|translate}}
+
+      .padding
+        button.button.button-block.button-positive.activated(type='submit') {{'next'|translate}}
+
+
+//- ion-modal-view#AllowNoti.Pages
+//-   ion-header-bar.bar
+//-     .title.color-w {{'open_notification'|translate}}
+//-     //- .buttons
+//-     //-   button.color-bule.button.button-clear(ng-click='ok()') {{'complete'|translate}}
+//-   form(name='signUpForm', novalidate="", ng-submit='commitForm(loginForm)')
+//-     ion-content.color-w.dark
+//-       .game-bg.screenHeight
+//-         div.top
+//-           img(src="img/data/soul-clash/logo.png",srcset="img/data/soul-clash/logo@2x.png 2x")
+//-         .black.text-center
+//-           div.icon.note
+//-             span.i-warning.margin-0-auto
+//-             b KEEP OPEN
+//-             p open notification
+//-           div.b-pink(ng-bind-html="'caution'|translate")
+//-     .page-footer.page-padding
+//-         .row
+//-           .col
+//-             button#buttonOk.a-button.button.main-button.right-arrows(ng-click='ok()')  {{'finish_open'|translate}}

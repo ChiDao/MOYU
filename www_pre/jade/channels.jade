@@ -1,14 +1,11 @@
-ion-view(view-title='频道')
+ion-view#Channels(view-title='游戏')
   ion-nav-buttons(side="right")
-    button.button.icon.ion-plus.button-clear(ng-click="addChannel()")
+    button.button.icon.ion-ios-plus-empty.button-clear(ng-click="addChannel()")
   ion-content
     ion-list
       a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel._id}}')
         img(src='{{channel.logo}}')
-        h2 {{channel.name}}
-        p Back off, man. I'm a scientist.
-
-  //-   ion-list
-  //-     ion-item.item-thumbnail-left(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel._id}}')
-  //-       img.radius(src='{{channel.logo}}')
-  //-       | {{channel.name}}
+        | {{channel.name}}
+        span.item-note
+          | 18 <br>
+          b 三個月前
