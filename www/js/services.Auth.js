@@ -319,7 +319,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
           console.log('具有权限访问' + toState.url);        
         }
       });
-      $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+      $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
         toState.params = $stateParams;
       });
   }]);
