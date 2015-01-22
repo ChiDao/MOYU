@@ -12,6 +12,9 @@ define(['app', 'services.ApiEvent'], function(app)
 
   		};
 
+  		var apiConfig = RestRoute.apiConfigs;
+  		// console.debug(apiConfig[12] = {});
+
   		var datas = {};
   		var next = {};
 

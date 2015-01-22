@@ -149,6 +149,7 @@ define(['app', 'services.Modal'], function(app)
 
     this.$get = function(Restangular, Modal, $state, $stateParams){
       return {
+        apiConfigs: apiConfigs,
         parseApiLink: function(apiLink){
           var apiData = {};
           //匹配路由并获得参数
