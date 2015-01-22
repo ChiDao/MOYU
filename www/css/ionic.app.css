@@ -10352,7 +10352,12 @@ ion-content {
   color: #000; }
   #Channels ion-list .item .item-note {
     color: #0975d9;
-    font-size: 12px; }
+    font-size: 12px;
+    text-align: right;
+    line-height: 14px; }
+    #Channels ion-list .item .item-note b {
+      font-size: 9px;
+      color: #646464; }
 #Channels ion-list img {
   border-radius: 7px;
   height: 30px;

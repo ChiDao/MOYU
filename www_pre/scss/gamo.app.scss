@@ -79,6 +79,12 @@ ion-content {
 			.item-note {
 				color: #0975d9;
 				font-size: 12px;
+				text-align: right;
+				line-height: 14px;
+				b {
+					font-size: 9px;
+					color: #646464;
+				}
 			}
 		}
 		img {
@@ -95,9 +101,10 @@ ion-content {
 
 	}
 	.item-body {
-		.full-image {
-			// margin: 0 -26px;s
-		}
+
+	}
+	.full-image {
+
 	}
 }
 
