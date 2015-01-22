@@ -3,6 +3,12 @@ define(['app', 'services.RestRoute'], function(app)
   app.controller('ChatsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'UI', 'RestRoute', 'Restangular',
     'Auth', 'ApiData', 'ApiEvent', '$http', '$timeout',
     function($scope, $rootScope, $state, $stateParams, UI, RestRoute, Restangular, Auth, ApiData, ApiEvent, $http, $timeout) {
+
+      // pull refresh
+      $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.refreshComplete');
+      };
+
       //Todo: 用户id从auth模块获取
 
       var subscribeLastCommentId = {};
