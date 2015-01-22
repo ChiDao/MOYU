@@ -1,1 +1,1 @@
-<ion-view view-title="新增频道"><ion-content><ion-list><a ng-repeat="channel in channels" type="item-text-wrap" class="item item-avatar"><img src="{{channel.logo}}"/><h2>{{channel.name}}</h2></a></ion-list></ion-content></ion-view>
+<ion-view view-title="新增频道"><ion-content><ion-list><a ng-repeat="channel in channels" type="item-text-wrap" ng-click="followGame(channel)" class="item item-avatar"><img src="{{channel.logo}}"/><h2>{{channel.name}}</h2></a></ion-list></ion-content></ion-view>
