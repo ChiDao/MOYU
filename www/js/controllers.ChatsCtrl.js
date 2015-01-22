@@ -1,7 +1,7 @@
 define(['app', 'services.RestRoute'], function(app)
 {
-  app.controller('ChatsCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', 'Auth', 'ApiData', 'ApiEvent', '$http', '$timeout',
-    function($scope, $stateParams, UI, RestRoute, Auth, ApiData, ApiEvent, $http, $timeout) {
+  app.controller('ChatsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'RestRoute', 'Auth', 'ApiData', 'ApiEvent', '$http', '$timeout',
+    function($scope, $state, $stateParams, UI, RestRoute, Auth, ApiData, ApiEvent, $http, $timeout) {
       //Todo: 用户id从auth模块获取
 
       var subscribeLastCommentId = {};
@@ -44,6 +44,7 @@ define(['app', 'services.RestRoute'], function(app)
           subscribeLastCommentId[subscribe._id] = '';
           localStorage.setItem('subscribeLastCommentId'+subscribe._id, '');
         }
+        // console.debug(subscribe._id, subscribe["@clip"]._id, $scope.hasNewComments[subscribe["@clip"]._id])
         console.debug("subscribeLastCommentId 3", subscribe._id, subscribeLastCommentId[subscribe._id]);
       };
 
@@ -64,14 +65,16 @@ define(['app', 'services.RestRoute'], function(app)
           _.forEach($scope.subscribes, function(subcribe){
             checkNewComments(subcribe);
 
-            //注册comet事件
+            //注册comet事件，只在本页时进行刷新
             // console.debug("clipId", subcribe['@clip']._id);
             if (!hasRegisterSubscribe[subcribe['@clip']._id]){
               ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
-                console.debug("checkNewComments");
-                $timeout(function(){
-                  getSubscribes();
-                },1);
+                // console.debug("checkNewComments", $state.current.name, $state.current);
+                if ($state.current.name === 'tab.chats'){
+                  $timeout(function(){
+                    getSubscribes();
+                  },1); 
+                }
               });
               hasRegisterSubscribe[subcribe['@clip']._id] = true;
             }

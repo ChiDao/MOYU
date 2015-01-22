@@ -298,28 +298,30 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
       }
     })
 
-  .run(['$rootScope', '$state', '$location', '$ionicNavBarDelegate', 'Auth', function ($rootScope, $state, $location, $ionicNavBarDelegate, Auth) {
+  .run(['$rootScope', '$state', '$stateParams', '$location', '$ionicNavBarDelegate', 'Auth', function ($rootScope, $state, $stateParams, $location, $ionicNavBarDelegate, Auth) {
 
       $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
 
-          console.log(toState.data.access);
-          if (!Auth.pageAuth(toState.data.access)) {
-            console.log('缺少权限访问' + toState.url);
-            Auth.login(function(){
-              console.log("登陆获得进入权限");
-            },function(){
-              //登陆失败
-            },function(){
-              //关闭登陆窗
-              //Todo: 跳转，但不记录本次state
-              alert('跳回上一页');
-              // $state.go('app.playlists');
-            });
-          }else{
-            console.log('具有权限访问' + toState.url);        
-          }
+        console.log(toState.data.access);
+        if (!Auth.pageAuth(toState.data.access)) {
+          console.log('缺少权限访问' + toState.url);
+          Auth.login(function(){
+            console.log("登陆获得进入权限");
+          },function(){
+            //登陆失败
+          },function(){
+            //关闭登陆窗
+            //Todo: 跳转，但不记录本次state
+            // alert('跳回上一页');
+            // $state.go('app.playlists');
+          });
+        }else{
+          console.log('具有权限访问' + toState.url);        
+        }
       });
-
+      $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+        toState.params = $stateParams;
+      });
   }]);
 });
 

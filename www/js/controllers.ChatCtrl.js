@@ -1,7 +1,7 @@
 define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'services.Push', 'services.Modal'], function(app)
 {
-	app.controller('ChatCtrl', ['$scope', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', '$ionicHistory', 'RestRoute', '$stateParams', 'Auth', 'ApiEvent','PushProcessingService','Modal',
-		function($scope, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, $ionicHistory, RestRoute, $stateParams, Auth, ApiEvent,PushProcessingService,Modal) {
+	app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', '$ionicHistory', 'RestRoute', '$stateParams', 'Auth', 'ApiEvent','PushProcessingService','Modal',
+		function($scope, $state, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, $ionicHistory, RestRoute, $stateParams, Auth, ApiEvent,PushProcessingService,Modal) {
 			$scope.backButton = function() {
 				console.log('back');
 				$ionicHistory.goBack();
@@ -43,13 +43,10 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 			//在讨论页面内，根据comet更新数据
 			if (!$scope.comments) $scope.comments = [];
 			ApiEvent.registerByResource('clip', $stateParams.chatId, function(event){
-				$scope.refreshComment();
-
-				// if (data && data._id) console.debug(data._id, _.filter($scope.comments, {_id:data._id}).length);
-				// if (data && data._id && !_.filter($scope.comments, {_id:data._id}).length){
-				// 	$scope.comments.push(data);
-				// 	$ionicScrollDelegate.scrollBottom();
-				// }
+				// console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
+				if ($state.current.name === 'tab.chat' && $state.current.params.chatId == $stateParams.chatId){
+					$scope.refreshComment();
+				}
 			});
 
 			//发送新消息
@@ -60,6 +57,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 					// console.debug(response.data.rawData);
 					// $scope.comments.push(response.data.rawData);
 					$ionicScrollDelegate.scrollBottom();
+					$scope.formData.content = '';
 				});
 			}
       		$scope.toggleSubscribe = function(){
