@@ -6,16 +6,45 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				console.log('back');
 				$ionicHistory.goBack();
 			};
+
+			RestRoute.getLinkData(/clip/ + $stateParams.chatId, $scope, 'clip').then(function(){
+				console.debug($scope.clip);
+				//检测是否关注该话题
+				$scope.checkHasFollowedPost = function(){
+					RestRoute.getLinkData($scope.clip.subscribe, $scope, 'followedPost').then(function(){
+						$scope.hasFollowedPost = true;
+					}, function(){
+						$scope.hasFollowedPost = false;
+					});
+				};
+				$scope.checkHasFollowedPost();
+
+
+	      		$scope.toggleSubscribe = function(){
+
+		      		var checkPush =  PushProcessingService.checkResult();
+		    		if(checkPush == "No"){
+		    			Auth.disallow();
+		    		}
+
+		    		if ($scope.hasFollowedPost){
+		    			var tmp = {};
+		    			RestRoute.getLinkData($scope.clip.subscribe, tmp, 'subscribe').then(function(){
+		    				console.debug(tmp.subscribe)
+		    			});
+		    			RestRoute.deleteDataFromLink($scope.clip.subscribe).then(function(){
+		    				$scope.checkHasFollowedPost();
+		    			});
+		    		}
+		    		else{
+		    			RestRoute.putDataToLink($scope.clip.subscribe, {}).then(function(){
+		    				$scope.checkHasFollowedPost();
+		    			});
+		    		}
+				}
+			})
 			
-			//检测是否关注该话题
-			$scope.checkHasFollowedPost = function(){
-				RestRoute.getLinkData('/is-subscribed/' + $stateParams.chatId, $scope, 'followedPost').then(function(){
-					$scope.hasFollowedPost = true;
-				}, function(){
-					$scope.hasFollowedPost = false;
-				});
-			};
-			$scope.checkHasFollowedPost();
+			
 
 			//初始化获取讨论内容
 			var commentNextUrl = '';
@@ -59,26 +88,6 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 					$ionicScrollDelegate.scrollBottom();
 					$scope.formData.content = '';
 				});
-			}
-      		$scope.toggleSubscribe = function(){
-
-	      		var checkPush =  PushProcessingService.checkResult();
-	    		if(checkPush == "No"){
-
-	    			Auth.disallow();
-
-	    		}
-					
-		        if ($scope.hasFollowedPost){
-		          RestRoute.deleteDataFromLink($scope.followedPost.edit).then(function(){
-		            $scope.checkHasFollowedPost();
-		          });
-		        }
-		        else{
-		          RestRoute.postDataToLink('/new-subscribe/' + $stateParams.chatId, {followedPost: $stateParams.chatId}).then(function(){
-		            $scope.checkHasFollowedPost();
-		          });
-		        }
 			}
   }]);
 });

@@ -97,10 +97,10 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'list',
       },
       {
-        name: 'is-subscribed',
-        apiRegExp: /\/is-subscribed\/(\w+)/,
-        apiRegExpMap: ['postId'],
-        api: 'is-subscribed/<%= postId %>',
+        name: 'follow-clip',
+        apiRegExp: /\/follow-clip\/(\w+)/,
+        apiRegExpMap: ['clipId'],
+        api: 'follow-clip/<%= clipId %>',
         apiType: 'detail',
       },
       {
