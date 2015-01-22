@@ -1,9 +1,21 @@
-ion-view(view-title='讨论')
+ion-view#Chats(view-title='讨论')
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
-    .list.card(ng-repeat='subscribe in subscribes')
-      .item.item-avatar {{hasNewComments[subscribe["@clip"]._id]?'+':''}}
-      .item.item-image
-        a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
-          img(src="{{subscribe['@clip'].img}}")
 
+    .list.card(ng-repeat='subscribe in subscribes')
+      .item.item-divider
+        | [圖標] 刀塔傳奇 - {{subscribe.content}}
+      .item.item-body
+        a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
+          img.full-image(src="{{subscribe['@clip'].img}}")
+      .item.item-avatar
+        img(src='img/mcfly.jpg')
+        h2 Marty McFly
+        p November 05, 1955
+
+
+    //- .list.card(ng-repeat='subscribe in subscribes')
+    //-   .item.item-avatar {{hasNewComments[subscribe["@clip"]._id]?'+':''}}
+    //-   .item.item-image
+    //-     a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
+    //-       img(src="{{subscribe['@clip'].img}}")
