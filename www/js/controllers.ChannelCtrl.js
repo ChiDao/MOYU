@@ -12,8 +12,14 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       
       //
       $scope.$on("$ionicView.afterEnter", function() {
+        var tmp = {};
         RestRoute.getLinkData('/game/' + $stateParams.channelId, $scope, 'channel').then(function(){
-          console.log('$scope.channel:'+ $scope.channel);
+          RestRoute.getLinkData($scope.channel.clients, tmp, 'client').then(function(){
+            RestRoute.getLinkData(tmp.client.last, tmp, 'clientsData').then(function(){
+              $scope.channel.clientsData = tmp.clientsData[0];
+              console.debug('$scope.channel:', $scope.channel.clientsData);
+            });
+          });
         });
       });
 
@@ -89,6 +95,10 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
             scope.hideModal();
           }
         })
+      };
+
+      $scope.playGame = function(){
+        window.open($scope.channel.clientsData.url + '://');
       }
     }
   ]);

@@ -13,10 +13,24 @@ define(['app', 'services.Modal'], function(app)
         state: 'app.game',
       },
       {
-        name: 'game-client',
+        name: 'client',
         apiRegExp: /\/client\/(\w+)/,
         apiRegExpMap: ['clentId'],
         api: 'client/<%= clentId %>',
+        apiType: 'detail',
+      },
+      {
+        name: 'game-clients-order',
+        apiRegExp: /\/game-clients\/(\w+).*(_first|_last)\=/,
+        apiRegExpMap: ['gameId', 'order'],
+        api: 'game-clients/<%= gameId %>?<%= order %>=',
+        apiType: 'list',
+      },
+      {
+        name: 'game-clients',
+        apiRegExp: /\/game-clients\/(\w+)/,
+        apiRegExpMap: ['gameId'],
+        api: 'game-clients/<%= gameId %>',
         apiType: 'detail',
       },
       {
