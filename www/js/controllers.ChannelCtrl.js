@@ -98,6 +98,23 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       };
 
       $scope.playGame = function(){
+        var now                  = new Date().getTime(),
+        _60_seconds_from_now = new Date(now + 5*1000);
+        var id = Math.random();
+
+        if (window.plugin && window.plugin.notification && window.plugin.notification.local){
+          window.plugin.notification.local.onclick = function(id, state, json){
+            $scope.newClip();
+          }
+          window.plugin.notification.local.add({
+            id:      id,
+            title:   'Reminder',
+            message: 'Dont forget to buy some flowers.',
+            repeat:  'secondly',
+            date:    _60_seconds_from_now
+          });
+        }
+
         window.open($scope.channel.clientsData.url + '://');
       }
     }
