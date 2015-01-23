@@ -34,7 +34,7 @@ define([
       }
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
-        StatusBar.styleDefault();
+        StatusBar.styleLightContent();
       }
 
       console.debug(localStorage.getItem('user'));
