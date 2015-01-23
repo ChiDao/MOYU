@@ -68,7 +68,7 @@ define(['app', 'services.RestRoute'], function(app)
                 'X-Requested-With': 'XMLHttpRequest'
               }
            }).success(function(data){
-            $scope.subscribes = data.slice;
+            $scope.subscribes = data.slice.reverse();
             console.debug($scope.subscribes);
 
             _.forEach($scope.subscribes, function(subcribe){
