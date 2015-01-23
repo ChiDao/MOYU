@@ -10395,11 +10395,12 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 #Chats ion-list .item {
   border-color: #d8d8d8;
   padding-left: 58px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 30px;
   min-height: 32px;
   color: #000;
-  font-weight: 300; }
+  font-weight: 300;
+  color: #666; }
   #Chats ion-list .item img {
     border-radius: 7px;
     height: 30px;
