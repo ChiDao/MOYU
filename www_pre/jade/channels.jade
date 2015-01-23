@@ -8,7 +8,7 @@ ion-view#Channels(view-title='游戏')
         | {{channel.gameData.name}}
         span.item-note(ng-class='{first:$first}')
           | <hide ng-if="channel.unread">更新</hide> {{channel.unread?channel.unread:''}} <br>
-          b <hide>你的瞬間：</hide>三個月前
+          b <hide>你的瞬間：</hide> {{channel.lastClip._created | timeBefore}}
 
 
 //- span.item-note(ng-class='{first:$first,hide:$last}')
