@@ -36,15 +36,19 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
                         //异步检测应用是否存在函数
                         function asyncCheck(channel){
                             var deferred = $q.defer();
-                            appAvailability.check(
-                                channel.url + "://", // URI Scheme
-                                function() {  // Success callback
-                                    deferred.resolve("Yes");
-                                },
-                                function() {  // Error callback
-                                    deferred.resolve("No");
-                                }
-                            );
+                            if (typeof(appAvailability) !== 'undefined'){
+                                appAvailability.check(
+                                    channel.url + "://", // URI Scheme
+                                    function() {  // Success callback
+                                        deferred.resolve("Yes");
+                                    },
+                                    function() {  // Error callback
+                                        deferred.resolve("No");
+                                    }
+                                );
+                            }else{
+                                deferred.resolve("Yes");
+                            }
                             return deferred.promise;
                         }
 

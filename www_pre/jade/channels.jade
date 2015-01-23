@@ -7,7 +7,7 @@ ion-view#Channels(view-title='游戏')
         img(src='{{channel.gameData.logo}}')
         | {{channel.gameData.name}}
         span.item-note(ng-class='{first:$first}')
-          | <hide>你的瞬間：</hide> {{channel.lastClip._created | timeBefore}}
+          | <hide>你的瞬間：</hide> {{channel.lastClip._modified | timeBefore}}
           b(ng-if="channel.unread"){{channel.unread?channel.unread:''}}
 
 
