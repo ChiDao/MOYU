@@ -20,7 +20,8 @@ define(['app', 'services.RestRoute'], function(app)
     	});
 
         $scope.channelRoute = function(){
-            $state.go(Auth.isLoggedIn()? 'tab.channels': 'tab.add-channel');
+            $state.go('tab.channels');
+            // $state.go(Auth.isLoggedIn()? 'tab.channels': 'tab.add-channel');
         }
     	
     	$scope.hideTabs = function(){
