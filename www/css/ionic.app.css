@@ -10298,14 +10298,27 @@ h5 {
 	app
 	程式樣式設定
 */
+html, body {
+  font-family: ''; }
+
 .bar-stable, ion-header-bar {
   background-color: #4dc3ff !important; }
   .bar-stable div, .bar-stable span, .bar-stable button, ion-header-bar div, ion-header-bar span, ion-header-bar button {
     color: #fff !important; }
 
 ion-content {
-  background-color: #efefef !important;
-  font-family: ''; }
+  background-color: #efefef !important; }
+
+.item-input {
+  background-color: #fff; }
+
+button {
+  background-color: #4dc3ff !important;
+  border-color: #1ab3ff !important;
+  box-shadow: none !important; }
+
+.button-clear {
+  border: none; }
 
 ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-color-active-positive .tab-item.activated {
   color: #4dc3ff !important; }
@@ -10379,8 +10392,18 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   width: 30px;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24); }
 
-#channel .card {
+#channel .card, .full-card .card {
   margin: 10px 0 !important; }
+#channel .top-card, .full-card .top-card {
+  margin-top: -10px !important;
+  border-radius: 0; }
+  #channel .top-card .item, .full-card .top-card .item {
+    background-color: #4dc3ff !important;
+    border-radius: 0; }
+    #channel .top-card .item h1, #channel .top-card .item h2, #channel .top-card .item h3, #channel .top-card .item h4, #channel .top-card .item h5, #channel .top-card .item p, #channel .top-card .item span, .full-card .top-card .item h1, .full-card .top-card .item h2, .full-card .top-card .item h3, .full-card .top-card .item h4, .full-card .top-card .item h5, .full-card .top-card .item p, .full-card .top-card .item span {
+      color: #fff !important; }
+#channel .item, .full-card .item {
+  color: #555; }
 
 #Chats .card {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);

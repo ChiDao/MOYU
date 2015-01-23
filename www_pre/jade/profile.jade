@@ -1,16 +1,31 @@
-ion-view(view-title='Account')
+ion-view.full-card(view-title='个人')
   ion-content
-    ion-list
-      label.item.item-input.item-stacked-label
-        span.input-label First Name
-        input(type='text', placeholder='John')
-      label.item.item-input.item-stacked-label
-        span.input-label Last Name
-        input(type='text', placeholder='Suhr')
-      label.item.item-input.item-stacked-label
-        span.input-label Email
-        input(type='text', placeholder='john@suhr.com')
-      //- button.button(ng-click="Auth.login()") Login
-      .padding
-        button.button.button-block.button-positive.activated(ng-click="Auth.login()") Login
+    .list.card.top-card
+      .item.item-avatar
+        img(src='img/mcfly.jpg')
+        h2 Marty McFly
+        p November 05, 1955
+    .list.card
+      a.item.item-icon-left.item-icon-right(href='#/tab/profile-edit')
+        i.icon.ion-ios-person
+        |     编辑资料
+        i.icon.ion-ios-arrow-right
+      a.item.item-icon-left.item-icon-right(href='#/tab/profile-setting')
+        i.icon.ion-ios-gear
+        |     設定
+        i.icon.ion-ios-arrow-right
 
+    .padding
+      button.button.button-block.button-positive.activated(ng-click="Auth.login()") 登出
+
+
+
+      //- label.item.item-input.item-stacked-label
+      //-   span.input-label First Name
+      //-   input(type='text', placeholder='John')
+      //- label.item.item-input.item-stacked-label
+      //-   span.input-label Last Name
+      //-   input(type='text', placeholder='Suhr')
+      //- label.item.item-input.item-stacked-label
+      //-   span.input-label Email
+      //-   input(type='text', placeholder='john@suhr.com')

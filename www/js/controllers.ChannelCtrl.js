@@ -13,7 +13,7 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       //
       $scope.$on("$ionicView.afterEnter", function() {
         RestRoute.getLinkData('/game/' + $stateParams.channelId, $scope, 'channel').then(function(){
-          console.log($scope.channel);
+          console.log('$scope.channel:'+ $scope.channel);
         });
       });
 

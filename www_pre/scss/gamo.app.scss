@@ -10,6 +10,10 @@ $height-color:				#4dc3ff;
 	程式樣式設定
 */
 
+html,body {
+	font-family: '';
+}
+
 .bar-stable,ion-header-bar {
 	background-color: $height-color !important;
 	div,span,button {
@@ -19,11 +23,24 @@ $height-color:				#4dc3ff;
 
 ion-content {
 	background-color: #efefef !important;
-	font-family: '';
 }
 
 .tab-nav {
 	// box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+.item-input {
+	background-color: #fff;
+}
+
+button {
+	background-color: $height-color !important;
+	border-color: darken($height-color,10%) !important;
+	box-shadow: none !important;
+}
+
+.button-clear {
+	border: none;
 }
 
 ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-color-active-positive .tab-item.activated {
@@ -120,12 +137,23 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 	}
 }
 
-#channel {
+#channel,.full-card {
 	.card {
 		margin: 10px 0 !important;
 	}
+	.top-card {
+		margin-top: -10px !important;
+		.item {
+			h1,h2,h3,h4,h5,p,span {
+				color: #fff !important;
+			}
+			background-color: $height-color !important;
+			border-radius: 0;
+		}
+		border-radius: 0;
+	}
 	.item {
-
+		color: #555;
 	}
 	.item-body {
 

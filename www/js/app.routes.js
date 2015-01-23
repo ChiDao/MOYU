@@ -107,6 +107,29 @@ define(['app'], function(app){
         }
       })
 
+    .state('tab.profile-edit', {
+      url: '/profile-edit',
+      views: {
+        'tab-profile': {
+          templateUrl: 'templates/profile-edit.html',
+        }
+      },
+      data: {
+        access: access.public
+      }
+    })
+
+    .state('tab.profile-setting', {
+      url: '/profile-setting',
+      views: {
+        'tab-profile': {
+          templateUrl: 'templates/profile-setting.html',
+        }
+      },
+      data: {
+        access: access.public
+      }
+    })
     .state('tab.profile', {
       url: '/profile',
       views: {
