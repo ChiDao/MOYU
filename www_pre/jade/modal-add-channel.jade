@@ -1,0 +1,14 @@
+ion-modal-view#AddChannel.Pages
+  ion-header-bar
+    .title 查找游戏
+    .buttons
+      button.button.button-clear(ng-click='complete()',class="{{ifAbled}}") 完成
+  ion-content
+    ion-list
+      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap')
+        img(src='{{channel.gameData.logo}}')
+        h2 {{channel.gameData.name}}
+        .col.text-right.no-padding
+            button.mini-button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'Yes' && channel.followed == 'No'") 关注
+            button.mini-button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'No'") 下载
+

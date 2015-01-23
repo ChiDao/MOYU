@@ -1,15 +1,100 @@
-define(['app', 'services.RestRoute'], function(app)
+define(['app', 'services.RestRoute','services.Modal'], function(app)
 {
-  app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'RestRoute', 'Auth',
-    function($scope, $state, $stateParams, UI, RestRoute, Auth) {
-
+  app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'RestRoute', 'Auth','$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q','Modal',
+    function($scope, $state, $stateParams, UI, RestRoute, Auth,$ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q,Modal) {
+ 
     	// UI.testModal('modal-new-clip');
 
     	$scope.addChannel = function(){
-    		$state.go('tab.add-channel');
+    		addChannelModal()
     	}
 
-    	if (!Auth.isLoggedIn()) $state.go('tab.add-channel');
+        function addChannelModal(){
+            Modal.okCancelModal('templates/modal-add-channel.html', {}, {
+                init: function(scope){  
+                    scope.ifAbled = "disabled";
+                    RestRoute.getLinkData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
+                        console.log("qqq"+scope.interests.length);
+                        if((scope.interests.length)>0) scope.ifAbled = "able";
+                    });
+
+                    RestRoute.getLinkData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
+                        console.log(scope.channels);
+                        _.forEach(scope.channels, function(add){
+                            add.installed = "checking";
+                            add.followed = "No";
+                            if(_.contains(_.pluck(scope.interests,'game'), add.game)){
+                                  console.log("qqq2"+JSON.stringify(scope.interests));
+                                  console.log("qqq1" + add.game);
+                                add.followed = "Yes";
+                            };
+
+                            RestRoute.getLinkData(add.game, add, 'gameData').then(function(){
+                                console.log(add.gameData);
+                            });
+                        })
+                        //异步检测应用是否存在函数
+                        function asyncCheck(channel){
+                            var deferred = $q.defer();
+                            appAvailability.check(
+                                channel.url + "://", // URI Scheme
+                                function() {  // Success callback
+                                    deferred.resolve("Yes");
+                                },
+                                function() {  // Error callback
+                                    deferred.resolve("No");
+                                }
+                            );
+                            return deferred.promise;
+                        }
+
+                        //加入到promises数组
+                        var promises=[];
+                        for(var key=0;key<scope.channels.length;key++){
+
+                            promises.push(asyncCheck(scope.channels[key]));
+                        }
+                        
+                        //同步检测应用是否存在
+                        $q.all(promises).then(function(infos){
+                            for(var key=0;key<infos.length;key++){
+                                scope.channels[key].installed = (infos[key]);
+                            }
+                        });
+                    });
+
+                    scope.followGame = function(channle){
+                        console.debug('followGame')
+                        if (channle.installed == "No"){
+                            window.open(channle.store, '_system');
+                        }else{
+                            if (!Auth.isLoggedIn()){
+                            Auth.login();
+                            }
+                            else{
+                                var parsedUrl = /(\w+)$/.exec(channle.follow);
+                            // console.debug(parsedUrl[1]);
+                                RestRoute.putDataToLink(channle.follow, {game:parsedUrl[1], user:Auth.currentUser().userData._id});
+                            }
+                        }//end else1
+                    } 
+
+                    // RestRoute.getLinkData('/user-interests/14b10ab5cb29dafe?_count=&r=' + Math.random(),scope, 'count').then(function(){
+                    //     console.log("qqq"+JSON.stringify(scope.count));
+                    //     if((scope.count.value)>0) scope.ifAbled = "able";
+                    // });                   
+                    scope.complete = function(){ 
+                        scope.hideModal();
+                    }
+
+                }
+            })
+        }
+
+
+    	if (!Auth.isLoggedIn()){
+            addChannelModal()
+        }
 
         var tmp = {};
         RestRoute.getLinkData('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels').then(function(){

@@ -39,9 +39,9 @@ define([
       }
 
       console.debug(localStorage.getItem('user'));
-      if (localStorage.getItem('user') === null){
-        $state.go('tab.add-channel');
-      }
+      // if (localStorage.getItem('user') === null){
+      //   $state.go('tab.add-channel');
+      // }
     });
   });
   
