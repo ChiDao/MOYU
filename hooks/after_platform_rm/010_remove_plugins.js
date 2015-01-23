@@ -16,6 +16,8 @@ var pluginlist = [
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
     "com.ohh2ahh.plugins.appavailability",
+    "nl.x-services.plugins.cameraroll",
+    "de.appplant.cordova.plugin.local-notification",
     "nl.x-services.plugins.launchmyapp",
 ];
 

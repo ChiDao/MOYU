@@ -16,6 +16,8 @@ var pluginlist = [
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
     "https://github.com/ohh2ahh/AppAvailability.git",
+    "https://github.com/EddyVerbruggen/CameraRoll-PhoneGap-Plugin",
+    "https://github.com/katzer/cordova-plugin-local-notifications",
     "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=gamo",
     "self-plugins/pushPluginEx",
 ];
