@@ -40,6 +40,8 @@ define(['app', 'services.RestRoute'], function(app)
     				return true;
     			case 'tab.channel-chat':
     				return true;
+                case 'tab.profile-chat':
+                    return true;
     			default:
     				return false;
     		}

@@ -1,0 +1,16 @@
+ion-view(view-title='Account')
+  ion-content
+    ion-list
+      label.item.item-input.item-stacked-label
+        span.input-label First Name
+        input(type='text', placeholder='John')
+      label.item.item-input.item-stacked-label
+        span.input-label Last Name
+        input(type='text', placeholder='Suhr')
+      label.item.item-input.item-stacked-label
+        span.input-label Email
+        input(type='text', placeholder='john@suhr.com')
+      //- button.button(ng-click="Auth.login()") Login
+      .padding
+        button.button.button-block.button-positive.activated(ng-click="Auth.login()") Login
+

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ion-view.full-card(view-title='个人')
   ion-content
     .list.card.top-card
@@ -29,3 +30,20 @@ ion-view.full-card(view-title='个人')
       //- label.item.item-input.item-stacked-label
       //-   span.input-label Email
       //-   input(type='text', placeholder='john@suhr.com')
+=======
+ion-view(view-title='我')
+	ion-content
+		ion-list
+			.item.item-avatar( type='item-text-wrap', href='#/tab/channels/{{channel.gameData._id}}')
+				img(src='img/mcfly.jpg')
+				| {{channel.gameData.name}}
+				span.item-note(ng-class='{first:$first}')
+				{{userData.email}}
+				b <hide>上個瞬間：</hide>三個月前
+			.list.card(ng-repeat='clip in clips')
+				.item.item-divider
+					| [圖標] 刀塔傳奇 - {{clip.content}}
+				.item.item-body
+					a(href='#/tab/profile-chat/{{clip._id}}')
+						img.full-image(src="{{clip.img}}")
+>>>>>>> FETCH_HEAD
