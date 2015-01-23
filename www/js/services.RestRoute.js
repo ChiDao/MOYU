@@ -41,6 +41,20 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'detail',
       },
       {
+        name: 'user-clips-last',
+        apiRegExp: /\/user-clips\/(\w+)\?.*_last/,
+        apiRegExpMap: ['userId'],
+        api: 'user-clips/<%= userId %>\?_last',
+        apiType: 'list',
+      },
+      {
+        name: 'user-clips',
+        apiRegExp: /\/user-clips\/(\w+)/,
+        apiRegExpMap: ['userId'],
+        api: 'user-clips/<%= userId %>',
+        apiType: 'detail',
+      },
+      {
         name: 'user-subscriptions-last',
         apiRegExp: /\/user-subscriptions\/(\w+)\?_last/,
         apiRegExpMap: ['userId'],

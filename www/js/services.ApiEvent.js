@@ -39,6 +39,7 @@ define(['app'], function(app)
 	  	var request = function(apiLink, isInit){
     		console.debug('ApiEvent running');
     		RestRoute.getLinkData(apiLink, tmp, 'events').then(function(){
+                console.debug('ApiEvent return');
     			if (tmp.events && tmp.events.length && tmp.events.meta.next){
     				$timeout(function(){
                         if (!isInit){

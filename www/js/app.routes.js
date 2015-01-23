@@ -118,7 +118,19 @@ define(['app'], function(app){
       data: {
         access: access.public
       }
-    });
+    })
+      .state('tab.profile-chat', {
+        url: '/profile-chat/:chatId',
+        views: {
+          'tab-profile': {
+            templateUrl: 'templates/chat.html',
+            controller: 'ChatCtrl'
+          }
+        },
+        data: {
+          access: access.public
+        }
+      });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/channels');
