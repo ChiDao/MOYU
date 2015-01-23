@@ -1,7 +1,8 @@
 define(['app'], function(app){
 
-  app.config(function($stateProvider, $urlRouterProvider) {
-
+  app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    $ionicConfigProvider.backButton.previousTitleText(false);
+    $ionicConfigProvider.backButton.text('')
 
     var access = app.routingConfig.accessLevels;
     // Ionic uses AngularUI Router which uses the concept of states

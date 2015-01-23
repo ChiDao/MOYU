@@ -3,7 +3,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 	app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', '$ionicHistory', 'RestRoute', '$stateParams', 'Auth', 'ApiEvent','PushProcessingService',
 		function($scope, $state, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, $ionicHistory, RestRoute, $stateParams, Auth, ApiEvent,PushProcessingService) {
 			$scope.backButton = function() {
-				console.log('back');
+				// console.log('back');
 				$ionicHistory.goBack();
 			};
 

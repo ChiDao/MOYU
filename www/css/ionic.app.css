@@ -10172,7 +10172,7 @@ h5 {
     width: 100%; }
 
 .color-w {
-  color: #fff; }
+  color: #fff !important; }
 
 .text-right {
   text-align: right; }
@@ -10365,6 +10365,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 
 #Channels ion-list .item:first-child {
   background-color: #ebf5ff !important; }
+
 #Channels ion-list .item {
   border-color: #d8d8d8;
   padding-left: 58px;
@@ -10392,6 +10393,32 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   width: 30px;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24); }
 
+#Chats ion-list .item {
+  border-color: #d8d8d8;
+  padding-left: 58px;
+  font-size: 14px;
+  line-height: 30px;
+  min-height: 32px;
+  color: #000;
+  font-weight: 300; }
+  #Chats ion-list .item img {
+    border-radius: 7px;
+    height: 30px;
+    width: 30px;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24); }
+  #Chats ion-list .item .item-note {
+    font-size: 12px;
+    line-height: 30px;
+    height: 30px; }
+    #Chats ion-list .item .item-note img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 62px;
+      width: 62px;
+      box-shadow: none;
+      border-radius: 0; }
+
 #channel .card, .full-card .card {
   margin: 10px 0 !important; }
 #channel .top-card, .full-card .top-card {
@@ -10404,20 +10431,6 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
       color: #fff !important; }
 #channel .item, .full-card .item {
   color: #555; }
-
-#Chats .card {
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
-  border-radius: 3px;
-  max-height: 250px;
-  position: relative; }
-#Chats .item-body {
-  padding: 0; }
-#Chats .item-avatar {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background: none;
-  background-color: rgba(255, 255, 255, 0.94); }
 
 #Newclip #newPostImage {
   width: 80px; }

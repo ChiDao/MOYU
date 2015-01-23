@@ -1,23 +1,18 @@
 ion-view.full-card(view-title='个人')
+  ion-nav-buttons(side="right")
+    a.button.icon.ion-ios-gear-outline.button-clear.color-w(href='#/tab/profile-feels')
   ion-content
     .list.card.top-card
-      a.item.item-avatar.item-icon-right(href='#/tab/profile-feels')
+      a.item.item-avatar.item-icon-right
         img(src='img/mcfly.jpg')
         h2 {{userData.email}}
         p Game: {{channel.gameData.name}}
-        i.icon.ion-ios-arrow-right.color-w
-    .list.card
-      a.item.item-icon-left.item-icon-right(href='#/tab/profile-edit')
-        i.icon.ion-ios-person
-        |     编辑资料
-        i.icon.ion-ios-arrow-right
-      a.item.item-icon-left.item-icon-right(href='#/tab/profile-setting')
-        i.icon.ion-ios-gear
-        |     設定
-        i.icon.ion-ios-arrow-right
-
-    .padding
-      button.button.button-block.button-positive.activated(ng-click="Auth.login()") 登出
+    .list.card(ng-repeat='clip in clips')
+      .item.item-divider
+        | [圖標] 刀塔傳奇 - {{clip.content}}
+      .item.item-body
+        a(href='#/tab/profile-chat/{{clip._id}}')
+          img.full-image(src="{{clip.img}}")
 
 //- ion-view(view-title='我')
 //- 	ion-content
