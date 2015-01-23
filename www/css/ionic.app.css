@@ -10430,6 +10430,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
       box-shadow: none;
       border-radius: 0; }
 
+#Chat .chat-images img {
+  width: 100%; }
+
 #channel .card, .full-card .card {
   margin: 10px 0 !important; }
 #channel .top-card, .full-card .top-card {

@@ -1,18 +1,15 @@
-ion-view(hide-nav-bar="true")
+ion-view#Chat(hide-nav-bar="true")
 	ion-header-bar
 		button.button.icon.ion-ios7-arrow-back.button-clear(ng-click="backButton()")
 		div.title.title-center
 			| 讨论
 	ion-content(has-header='true', has-footer='true', padding='true', start-y='120')
-		//- button.button.icon.ion-ios7-arrow-back.button-clear(ng-click="backButton()")
+		.chat-images
+			img(src="http://zuju.cc/images/uploads/gaea/1390549498_1436653066_16929_imageAddr.jpg")
 		ol.messages
 			li(ng-repeat='comment in comments')
 				p {{comment.content}}
 	ion-footer-bar
-		//- form(name="newCommentForm", novalidate="", ng-submit='send(newCommentForm)')
 		button.button.button-icon.ion-ios7-star-outline(ng-class="{'ion-ios7-star': hasFollowedPost, 'ion-ios7-star-outline':!hasFollowedPost}" ng-click="toggleSubscribe()")
 		input(type="text" ng-model="formData.content" required)
 		button.button.button-icon.ion-paper-airplane(ng-click="send()")
-			//- button.button.button-icon.ion-happy
-
-		
