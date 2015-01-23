@@ -10291,15 +10291,24 @@ h5 {
     margin-bottom: 30px !important; }
 
 /*
+	color
+	顏色設置
+*/
+/*
 	app
 	程式樣式設定
 */
 .bar-stable, ion-header-bar {
-  background-color: #f5f5f5 !important;
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1); }
+  background-color: #4dc3ff !important; }
+  .bar-stable div, .bar-stable span, .bar-stable button, ion-header-bar div, ion-header-bar span, ion-header-bar button {
+    color: #fff !important; }
 
 ion-content {
-  background-color: #fff !important; }
+  background-color: #efefef !important;
+  font-family: ''; }
+
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-color-active-positive .tab-item.activated {
+  color: #4dc3ff !important; }
 
 /*
 	Pages
@@ -10342,7 +10351,7 @@ ion-content {
   border-radius: 0.75rem; }
 
 #Channels ion-list .item:first-child {
-  background-color: #e5f2ff !important; }
+  background-color: #ebf5ff !important; }
 #Channels ion-list .item {
   border-color: #d8d8d8;
   padding-left: 58px;
@@ -10350,18 +10359,18 @@ ion-content {
   line-height: 30px;
   min-height: 32px;
   color: #000;
-  font-weight: 600; }
+  font-weight: 300; }
   #Channels ion-list .item .item-note {
-    font-weight: 500;
+    font-weight: 800;
     color: #0975d9;
     font-size: 12px;
     text-align: right;
     line-height: 14px; }
     #Channels ion-list .item .item-note b {
-      font-size: 9px;
+      font-size: 8px !important;
       color: #646464; }
-      #Channels ion-list .item .item-note b hide {
-        opacity: 0; }
+    #Channels ion-list .item .item-note hide {
+      opacity: 0; }
   #Channels ion-list .item .first hide {
     opacity: 1 !important; }
 #Channels ion-list img {
@@ -10369,6 +10378,9 @@ ion-content {
   height: 30px;
   width: 30px;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24); }
+
+#channel .card {
+  margin: 10px 0 !important; }
 
 #Chats .card {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);

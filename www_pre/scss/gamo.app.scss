@@ -1,19 +1,33 @@
 /*
+	color
+	顏色設置
+*/
+
+$height-color:				#4dc3ff;
+
+/*
 	app
 	程式樣式設定
 */
 
 .bar-stable,ion-header-bar {
-	background-color: #f5f5f5 !important;
-	@include shadow();
+	background-color: $height-color !important;
+	div,span,button {
+		color: #fff !important;
+	}
 }
 
 ion-content {
-	background-color: #fff !important;
+	background-color: #efefef !important;
+	font-family: '';
 }
 
 .tab-nav {
 	// box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-color-active-positive .tab-item.activated {
+	color: $height-color !important;
 }
 
 /*
@@ -67,7 +81,7 @@ ion-content {
 #Channels {
 	ion-list {
 		.item:first-child {
-			background-color: #e5f2ff !important;
+			background-color: #ebf5ff !important;
 		}
 		.item {
 			border-color: #d8d8d8;
@@ -76,19 +90,19 @@ ion-content {
 			line-height: 30px;
 			min-height: 32px;
 			color: #000;
-			font-weight: 600;
+			font-weight: 300;
 			.item-note {
-				font-weight: 500;
+				font-weight: 800;
 				color: #0975d9;
 				font-size: 12px;
 				text-align: right;
 				line-height: 14px;
 				b {
-					font-size: 9px;
+					font-size: 8px !important;
 					color: #646464;
-					hide {
+				}
+				hide {
 						opacity: 0;
-					}
 				}
 			}
 			.first {
@@ -107,6 +121,9 @@ ion-content {
 }
 
 #channel {
+	.card {
+		margin: 10px 0 !important;
+	}
 	.item {
 
 	}
