@@ -1,7 +1,7 @@
 define(['app', 'services.RestRoute'], function(app)
 {
-  app.controller('TabsCtrl', ['$scope', '$state', 'RestRoute', '$timeout', 'ApiData', 'ApiEvent', 'Auth',
-    function($scope, $state, RestRoute, $timeout, ApiData, ApiEvent, Auth) {
+  app.controller('TabsCtrl', ['$scope', '$state', 'RestRoute', '$timeout', 'ApiData', 'ApiEvent', 'Auth', 'Api',
+    function($scope, $state, RestRoute, $timeout, ApiData, ApiEvent, Auth, Api) {
 
     	//处理新增评论事件
     	var checkedNewEvent = function(){

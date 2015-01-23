@@ -59,6 +59,7 @@ define(['app', 'services.RestRoute'], function(app)
       //更新列表
       var getSubscribes = function(){
         return Thenjs(function(defer){
+          console.debug(Restangular.configuration.baseUrl + '/user-subscriptions/' + Auth.currentUser().userData._id + '?_last' + '&r=' + Math.random());
           $http({method:'GET',
               url:Restangular.configuration.baseUrl + '/user-subscriptions/' + Auth.currentUser().userData._id + '?_last' + '&r=' + Math.random(),
               withCredentials: true,
