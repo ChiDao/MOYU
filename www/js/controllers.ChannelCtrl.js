@@ -21,6 +21,7 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       $scope.getClips = function(){
         return RestRoute.getLinkData('/game-clips/' + $stateParams.channelId + '?_last', $scope, 'clips').then(function(){
           _.forEach($scope.clips, function(clip){
+            console.debug($scope.clips);
             RestRoute.getLinkData(clip.user, clip, 'userData').then(function(){
               console.log(clip.userData);
             });

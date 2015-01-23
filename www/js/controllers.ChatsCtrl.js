@@ -68,17 +68,22 @@ define(['app', 'services.RestRoute'], function(app)
                 'X-Requested-With': 'XMLHttpRequest'
               }
            }).success(function(data){
-            $scope.subscribes = data.slice;
+            $scope.subscribes = data.slice.reverse();
             console.debug($scope.subscribes);
 
             _.forEach($scope.subscribes, function(subcribe){
               // checkNewComments(subcribe);
+              RestRoute.getLinkData(subcribe['@clip'].user, subcribe['@clip'], 'userData').then(function(){
+              });
+              RestRoute.getLinkData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
+              });
 
               //注册comet事件，只在本页时进行刷新
               // console.debug("clipId", subcribe['@clip']._id);
               if (!hasRegisterSubscribe[subcribe['@clip']._id]){
                 ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
                   // console.debug("checkNewComments", $state.current.name, $state.current);
+
                   if ($state.current.name === 'tab.chats'){
                     $timeout(function(){
                       getSubscribes();

@@ -4,7 +4,7 @@ ion-view#Chats(view-title='讨论')
     ion-list
       a.item.item-avatar(ng-repeat='subscribe in subscribes',type='item-text-wrap', href='#/tab/chats/{{subscribe["@clip"]._id}}')
         img(src='http://zuju.cc/images/uploads/gaea/jiezoudashi.jpeg')
-        | [NEW] {{subscribe.content}} {{subscribe.unread}}
+        | {{subscribe["@clip"]._created | date: 'yyyy-MM-dd HH:mm'}}
         span.item-note(ng-class='{first:$first}')
           img(src="{{subscribe['@clip'].img}}")
 
@@ -21,15 +21,29 @@ ion-view#Chats(view-title='讨论')
     //-       | <hide>更新</hide> 18 <br>
     //-       b <hide>你的瞬間：</hide>三個月前
 
+//- <<<<<<< HEAD
+//- =======
+//-     .list.card(ng-repeat='subscribe in subscribes')
+//-       .item.item-divider
+//-         img(src='{{subscribe["@clip"].gameData.logo}}', style="width:20px")
+//-         | 刀塔傳奇 - {{subscribe.content}} {{subscribe.unread}}
+//-       .item.item-body
+//-         a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
+//-           img.full-image(src="{{subscribe['@clip'].img}}")
+//-       .item.item-avatar
+//-         img(src='img/mcfly.jpg')
+//-         h2 {{subscribe["@clip"].userData.email}}
+//-         p {{subscribe["@clip"]._created | date: 'yyyy-MM-dd HH:mm'}}
+//- >>>>>>> FETCH_HEAD
 
 
-    //- .list.card(ng-repeat='subscribe in subscribes')
-    //-   .item.item-divider
-    //-     | [圖標] 刀塔傳奇 - {{subscribe.content}} {{subscribe.unread}}
-    //-   .item.item-body
-    //-     a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
-    //-       img.full-image(src="{{subscribe['@clip'].img}}")
-    //-   .item.item-avatar
-    //-     img(src='img/mcfly.jpg')
-    //-     h2 Marty McFly
-    //-     p November 05, 1955
+//-     //- .list.card(ng-repeat='subscribe in subscribes')
+//-     //-   .item.item-divider
+//-     //-     | [圖標] 刀塔傳奇 - {{subscribe.content}} {{subscribe.unread}}
+//-     //-   .item.item-body
+//-     //-     a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
+//-     //-       img.full-image(src="{{subscribe['@clip'].img}}")
+//-     //-   .item.item-avatar
+//-     //-     img(src='img/mcfly.jpg')
+//-     //-     h2 Marty McFly
+//-     //-     p November 05, 1955

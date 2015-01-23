@@ -10375,14 +10375,13 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   color: #000;
   font-weight: 300; }
   #Channels ion-list .item .item-note {
-    font-weight: 800;
-    color: #0975d9;
     font-size: 12px;
+    font-weight: 800;
     text-align: right;
-    line-height: 14px; }
+    color: #646464; }
     #Channels ion-list .item .item-note b {
-      font-size: 8px !important;
-      color: #646464; }
+      margin-left: 0.4em;
+      color: #0975d9; }
     #Channels ion-list .item .item-note hide {
       opacity: 0; }
   #Channels ion-list .item .first hide {
