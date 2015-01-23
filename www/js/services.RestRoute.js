@@ -153,6 +153,13 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'list',
       },
       {
+        name: 'user-interests-count',
+        apiRegExp: /\/user-interests\/(\w+)?.*_count=/,
+        apiRegExpMap: ['userId'],
+        api: 'user-interests/<%= userId %>?_count=',
+        apiType: 'list',
+      },
+      {
         name: 'user-interests',
         apiRegExp: /\/user-interests\/(\w+)/,
         apiRegExpMap: ['userId'],
