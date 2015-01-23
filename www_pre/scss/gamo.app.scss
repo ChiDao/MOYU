@@ -143,15 +143,20 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 
 #Chats {
 	ion-list {
+		.icon {
+			margin-right: 0.2em;
+		}
 		.item {
 			border-color: #d8d8d8;
-			padding-left: 58px;
 			font-size: 12px;
-			line-height: 30px;
-			min-height: 32px;
+			line-height: 16px;
 			color: #000;
 			font-weight: 300;
 			color: #666;
+			height: 60px;
+			padding: 14px;
+			padding-left: 58px;
+			overflow: hidden;
 			img {
 				border-radius: 7px;
 				height: 30px;
@@ -166,15 +171,14 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 					position: absolute;
 					top: 0;
 					right: 0;
-					height: 62px;
-					width: 62px;
+					height: 70px;
+					width: 70px;
 					// clip: rect(0,60px,60px,0);
 					box-shadow: none;
 					border-radius: 0;
 				}
 			}
 		}
-
 	}
 }
 
