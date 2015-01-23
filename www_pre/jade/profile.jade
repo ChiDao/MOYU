@@ -1,10 +1,11 @@
 ion-view.full-card(view-title='个人')
   ion-content
     .list.card.top-card
-      a.item.item-avatar(href='#/tab/profile-feels')
+      a.item.item-avatar.item-icon-right(href='#/tab/profile-feels')
         img(src='img/mcfly.jpg')
         h2 {{userData.email}}
         p Game: {{channel.gameData.name}}
+        i.icon.ion-ios-arrow-right.color-w
     .list.card
       a.item.item-icon-left.item-icon-right(href='#/tab/profile-edit')
         i.icon.ion-ios-person
