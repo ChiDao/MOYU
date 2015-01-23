@@ -130,6 +130,20 @@ define(['app'], function(app){
         access: access.public
       }
     })
+
+    .state('tab.profile-feels', {
+      url: '/profile-feels',
+      views: {
+        'tab-profile': {
+          templateUrl: 'templates/profile-feels.html',
+          controller: 'ProfileCtrl'
+        }
+      },
+      data: {
+        access: access.public
+      }
+    })
+
     .state('tab.profile', {
       url: '/profile',
       views: {

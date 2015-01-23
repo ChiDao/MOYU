@@ -1,0 +1,8 @@
+ion-view.full-card(view-title='瞬间')
+  ion-content
+    .list.card(ng-repeat='clip in clips')
+      .item.item-divider
+        | [圖標] 刀塔傳奇 - {{clip.content}}
+      .item.item-body
+        a(href='#/tab/profile-chat/{{clip._id}}')
+          img.full-image(src="{{clip.img}}")
