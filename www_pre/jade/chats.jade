@@ -4,14 +4,15 @@ ion-view#Chats(view-title='讨论')
 
     .list.card(ng-repeat='subscribe in subscribes')
       .item.item-divider
-        | [圖標] 刀塔傳奇 - {{subscribe.content}} {{subscribe.unread}}
+        img(src='{{subscribe["@clip"].gameData.logo}}', style="width:20px")
+        | 刀塔傳奇 - {{subscribe.content}} {{subscribe.unread}}
       .item.item-body
         a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
           img.full-image(src="{{subscribe['@clip'].img}}")
       .item.item-avatar
         img(src='img/mcfly.jpg')
-        h2 Marty McFly
-        p November 05, 1955
+        h2 {{subscribe["@clip"].userData.email}}
+        p {{subscribe["@clip"]._created | date: 'yyyy-MM-dd HH:mm'}}
 
 
     //- .list.card(ng-repeat='subscribe in subscribes')
