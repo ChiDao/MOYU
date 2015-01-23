@@ -10280,6 +10280,10 @@ h5 {
   -ms-flex-align: center;
   align-items: center; }
 
+.small {
+  font-size: 12px !important;
+  font-weight: 600; }
+
 .page-footer {
   display: flex;
   flex-wrap: wrap;
@@ -10425,6 +10429,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
       width: 70px;
       box-shadow: none;
       border-radius: 0; }
+
+#Chat .chat-images img {
+  width: 100%; }
 
 #channel .card, .full-card .card {
   margin: 10px 0 !important; }

@@ -182,6 +182,14 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 	}
 }
 
+#Chat {
+	.chat-images {
+		img {
+			width: 100%;
+		}
+	}
+}
+
 #channel,.full-card {
 	.card {
 		margin: 10px 0 !important;
