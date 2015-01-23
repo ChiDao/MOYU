@@ -83,7 +83,7 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
               ft.upload(scope.imageURI, encodeURI("http://42.120.45.236:8485/upload"), win, fail, options);
             });
           },
-          onSuccess: function(scope){
+          onSuccess: function(form, scope){
             $scope.getClips();
             scope.hideModal();
           }

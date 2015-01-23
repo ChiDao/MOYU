@@ -4,7 +4,7 @@ ion-view#Chats(view-title='讨论')
 
     .list.card(ng-repeat='subscribe in subscribes')
       .item.item-divider
-        | [圖標] 刀塔傳奇 - {{subscribe.content}}
+        | [圖標] 刀塔傳奇 - {{subscribe.content}} {{subscribe.unread}}
       .item.item-body
         a(href='#/tab/chats/{{subscribe["@clip"]._id}}')
           img.full-image(src="{{subscribe['@clip'].img}}")

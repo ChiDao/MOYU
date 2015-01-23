@@ -55,6 +55,13 @@ define(['app', 'services.Modal'], function(app)
         apiType: 'detail',
       },
       {
+        name: 'recent-user-subscriptions',
+        apiRegExp: /\/recent-user-subscriptions\/(\w+)\?_start=0/,
+        apiRegExpMap: ['userId'],
+        api: 'recent-user-subscriptions/<%= userId %>?_start=0',
+        apiType: 'list',
+      },
+      {
         name: 'user-subscriptions-last',
         apiRegExp: /\/user-subscriptions\/(\w+)\?_last/,
         apiRegExpMap: ['userId'],
