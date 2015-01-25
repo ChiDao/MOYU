@@ -9,63 +9,70 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
     		addChannelModal()
     	}
 
+        function getGame(scope){
+            RestRoute.getLinkData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
+                console.log(scope.channels);
+                _.forEach(scope.channels, function(add){
+                    add.installed = "checking";
+                    add.followed = "No";
+                    if(_.contains(_.pluck(scope.interests,'game'), add.game)){
+                        add.followed = "Yes";
+                    };
+
+                    RestRoute.getLinkData(add.game, add, 'gameData').then(function(){
+                        console.log(add.gameData);
+                    });
+                })
+                //异步检测应用是否存在函数
+                function asyncCheck(channel){
+                    var deferred = $q.defer();
+                    appAvailability.check(
+                        channel.url + "://", // URI Scheme
+                        function() {  // Success callback
+                            deferred.resolve("Yes");
+                        },
+                        function() {  // Error callback
+                            deferred.resolve("No");
+                        }
+                    );
+                    return deferred.promise;
+                }
+
+                //加入到promises数组
+                var promises=[];
+                for(var key=0;key<scope.channels.length;key++){
+
+                    promises.push(asyncCheck(scope.channels[key]));
+                }
+                
+                //同步检测应用是否存在
+                $q.all(promises).then(function(infos){
+                    for(var key=0;key<infos.length;key++){
+                        scope.channels[key].installed = (infos[key]);
+                    }
+                });
+            });
+
+        }
+
         function addChannelModal(){
             Modal.okCancelModal('templates/modal-add-channel.html', {}, {
                 init: function(scope){  
                     scope.ifAbled = "disabled";
+                    //检查是否已有关注
                     RestRoute.getLinkData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
-                        console.log("qqq"+scope.interests.length);
                         if((scope.interests.length)>0) scope.ifAbled = "able";
                     });
 
-                    RestRoute.getLinkData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
-                        console.log(scope.channels);
-                        _.forEach(scope.channels, function(add){
-                            add.installed = "checking";
-                            add.followed = "No";
-                            if(_.contains(_.pluck(scope.interests,'game'), add.game)){
-                                  console.log("qqq2"+JSON.stringify(scope.interests));
-                                  console.log("qqq1" + add.game);
-                                add.followed = "Yes";
-                            };
+                    getGame(scope);
 
-                            RestRoute.getLinkData(add.game, add, 'gameData').then(function(){
-                                console.log(add.gameData);
-                            });
-                        })
-                        //异步检测应用是否存在函数
-                        function asyncCheck(channel){
-                            var deferred = $q.defer();
-                            if (typeof(appAvailability) !== 'undefined'){
-                                appAvailability.check(
-                                    channel.url + "://", // URI Scheme
-                                    function() {  // Success callback
-                                        deferred.resolve("Yes");
-                                    },
-                                    function() {  // Error callback
-                                        deferred.resolve("No");
-                                    }
-                                );
-                            }else{
-                                deferred.resolve("Yes");
-                            }
-                            return deferred.promise;
-                        }
+                    //监听返回应用的事件
+                    document.addEventListener("resume", onResume, false);
 
-                        //加入到promises数组
-                        var promises=[];
-                        for(var key=0;key<scope.channels.length;key++){
-
-                            promises.push(asyncCheck(scope.channels[key]));
-                        }
-                        
-                        //同步检测应用是否存在
-                        $q.all(promises).then(function(infos){
-                            for(var key=0;key<infos.length;key++){
-                                scope.channels[key].installed = (infos[key]);
-                            }
-                        });
-                    });
+                    function onResume() {
+                        console.log("qqqqq");
+                        getGame(scope);
+                    }
 
                     scope.followGame = function(channle){
                         console.debug('followGame')
@@ -75,10 +82,12 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
                             if (!Auth.isLoggedIn()){
                             Auth.login();
                             }
-                            else{
+                            else{                                
                                 var parsedUrl = /(\w+)$/.exec(channle.follow);
                             // console.debug(parsedUrl[1]);
                                 RestRoute.putDataToLink(channle.follow, {game:parsedUrl[1], user:Auth.currentUser().userData._id});
+                                scope.ifAbled = "able";
+                                channle.followed = "Yes";
                             }
                         }//end else1
                     } 

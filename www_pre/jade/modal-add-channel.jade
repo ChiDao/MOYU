@@ -2,7 +2,7 @@ ion-modal-view#AddChannel.Pages
   ion-header-bar
     .title 查找游戏
     .buttons
-      button.button.button-clear(ng-click='complete()',class="{{ifAbled}}") 完成
+      button.button.button-clear(ng-click='complete()',ng-show="ifAbled == 'able' ") 完成
   ion-content
     ion-list
       a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap')
