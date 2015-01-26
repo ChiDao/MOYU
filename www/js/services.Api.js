@@ -41,11 +41,13 @@ define(['app'], function(app)
     apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
     apis.push(createApi('object', 'game', ['gameId']));
     apis.push(createApi('object', 'clip', ['clipId']));
-    apis.push(createApi('object', 'recent-played-games', ['user']));
+    apis.push(createApi('stream', 'user-interests', ['user']));
+    apis.push(createApi('stream', 'recent-played-games', ['user']));
     apis.push(createApi('stream', 'clients-by-platform', ['platform']));
     apis.push(createApi('stream', 'recent-user-subscriptions', ['user']));
     apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'user-clips', ['user']));
+    apis.push(createApi('object', 'follow-game', ['game', 'user'], {'user':'$currentUser'}));
 
     setApiRouteMap('recent-played-games', {'default': 'tab.channels'});
     setApiRouteMap('recent-user-subscriptions', {'default': 'tab.chats'});
@@ -145,7 +147,23 @@ define(['app'], function(app)
             }
           });
         },
-
+        putData: function(apiLink, data){
+          //get api
+          var apiData = this.parse(apiLink);
+          if (!apiData.api){
+            console.debug("Can't find api:", apiLink);
+            return false;
+          }
+          return Thenjs(function(defer){
+            Restangular.one(_.template(apiData.api.api, apiData.params)).put(data).then(function(response){
+              console.debug('Put data to link:' + JSON.stringify(response));
+              defer(undefined, response);
+            }, function(error){
+              console.debug('Put data to link error:' + JSON.stringify(error));
+              defer("Put data to link error:" + JSON.stringify(error));
+            });
+          });
+        }//End of putData
       };
     }; //End of this.$get 
   });

@@ -1,7 +1,7 @@
-define(['app', 'services.RestRoute','services.Modal'], function(app)
+define(['app', 'services.Api','services.Modal'], function(app)
 {
-  app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'RestRoute', 'Auth','$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q','Modal',
-    function($scope, $state, $stateParams, UI, RestRoute, Auth,$ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q,Modal) {
+  app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth','$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q','Modal',
+    function($scope, $state, $stateParams, UI, Api, Auth,$ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q,Modal) {
  
     	// UI.testModal('modal-new-clip');
 
@@ -11,13 +11,13 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
 
         var getFollowedGame = function(){
             var tmp = {};
-            RestRoute.getLinkData('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels').then(function(){
+            Api.getData('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels').then(function(){
                 console.debug($scope.channels);
                 _.forEach($scope.channels, function(interest){
                     if (interest['@clips'] && interest['@clips']['slice']){
                         interest.lastClip = interest['@clips']['slice'][interest['@clips']['slice'].length - 1]
                     }
-                    RestRoute.getLinkData(interest.game, interest, 'gameData').then(function(){
+                    Api.getData(interest.game, interest, 'gameData').then(function(){
                         console.debug(interest);
                     });
                 })
@@ -25,7 +25,7 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
         };
 
         function getGame(scope){
-            RestRoute.getLinkData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
+            Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
                 console.log(scope.channels);
                 _.forEach(scope.channels, function(add){
                     add.installed = "checking";
@@ -34,7 +34,7 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
                         add.followed = "Yes";
                     };
 
-                    RestRoute.getLinkData(add.game, add, 'gameData').then(function(){
+                    Api.getData(add.game, add, 'gameData').then(function(){
                         console.log(add.gameData);
                     });
                 })
@@ -79,7 +79,7 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
                 init: function(scope){  
                     scope.ifAbled = "disabled";
                     //检查是否已有关注
-                    RestRoute.getLinkData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
+                    Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
                         if((scope.interests.length)>0) scope.ifAbled = "able";
                     });
 
@@ -103,18 +103,14 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
                             }
                             else{                                
                                 var parsedUrl = /(\w+)$/.exec(channle.follow);
-                            // console.debug(parsedUrl[1]);
-                                RestRoute.putDataToLink(channle.follow, {game:parsedUrl[1], user:Auth.currentUser().userData._id});
+                                // console.debug(parsedUrl[1]);
+                                Api.putData(channle.follow, {game:parsedUrl[1], user:Auth.currentUser().userData._id});
                                 scope.ifAbled = "able";
                                 channle.followed = "Yes";
                             }
                         }//end else1
                     } 
 
-                    // RestRoute.getLinkData('/user-interests/14b10ab5cb29dafe?_count=&r=' + Math.random(),scope, 'count').then(function(){
-                    //     console.log("qqq"+JSON.stringify(scope.count));
-                    //     if((scope.count.value)>0) scope.ifAbled = "able";
-                    // });                   
                     scope.complete = function(){ 
                         getFollowedGame();
                         scope.hideModal();
@@ -134,8 +130,6 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
             getFollowedGame();
         });
         
-    	// RestRoute.getData();
-		// 
     }
   ]);
     app.filter('timeBefore', function(){
