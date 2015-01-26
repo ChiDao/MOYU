@@ -45,6 +45,7 @@ define(['app'], function(app)
     apis.push(createApi('stream', 'clients-by-platform', ['platform']));
     apis.push(createApi('stream', 'recent-user-subscriptions', ['user']));
     apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
+    apis.push(createApi('stream', 'user-clips', ['user']));
 
     setApiRouteMap('recent-played-games', {'default': 'tab.channels'});
     setApiRouteMap('recent-user-subscriptions', {'default': 'tab.chats'});
@@ -59,7 +60,7 @@ define(['app'], function(app)
 
     console.debug(apis);
 
-    this.$get = function($http, Modal, $state, $stateParams){
+    this.$get = function(Restangular, Modal, $state, $stateParams){
       return {
         baseUrl: this.baseUrl,
         apis: apis,
@@ -86,6 +87,7 @@ define(['app'], function(app)
             console.debug("Can't find api:", apiLink);
             return false;
           }
+          apiData.params.apiLink = apiLink;
           var state;
           console.debug(apiData);
           if (apiData.api.routeMap){
@@ -107,7 +109,8 @@ define(['app'], function(app)
           }
 
           //link
-          var newLink = this.baseUrl + '/' + _.template(apiData.api.api, apiData.params).replace('/?', '?');
+          // var newLink = this.baseUrl + '/' + _.template(apiData.api.api, apiData.params).replace('/?', '?');
+          var newLink = _.template(apiData.api.api, apiData.params).replace('/?', '?');
           if (options && options.random){
             newLink += (/\?/.test(newLink)? '&':'?') + 'r=' + Math.random();
           }
@@ -128,29 +131,18 @@ define(['app'], function(app)
           //get data
           var retData;
           return Thenjs(function(defer){
-            $http({method:'GET',
-              url: newLink,
-              withCredentials: true,
-              headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-              }
-            }).success(function(data, status, headers, config){
-              switch (apiData.api.apiType){
-                case 'object':
-                  retData = data;
-                case 'stream':
-                  retData = data.slice?data.slice:[];
-                  retData.meta = _.pick(data, function(value, key){
-                    return key !== 'slice';
-                  });
-              }
-              console.debug(retData);
-              scope[scopeDataField] = retData;
-              defer(undefined, retData);
-            }).error(function(data, status, headers, config){
-              defer("http error: " + status);
-            });
+            if (apiData.api.apiType === 'stream'){
+              Restangular.allUrl(newLink).getList().then(function(response){
+                scope[scopeDataField] = response.data;
+                defer(undefined, scope[scopeDataField]);
+              });
+            }
+            else if (apiData.api.apiType === 'object'){
+              return Restangular.oneUrl(newLink).get().then(function(response){
+                scope[scopeDataField] = response.data.rawData;
+                defer(undefined, scope[scopeDataField]);
+              })
+            }
           });
         },
 
@@ -158,3 +150,31 @@ define(['app'], function(app)
     }; //End of this.$get 
   });
 });
+
+
+
+
+
+            // $http({method:'GET',
+            //   url: newLink,
+            //   withCredentials: true,
+            //   headers: {
+            //     'Content-Type': 'application/json',
+            //     'X-Requested-With': 'XMLHttpRequest'
+            //   }
+            // }).success(function(data, status, headers, config){
+            //   switch (apiData.api.apiType){
+            //     case 'object':
+            //       retData = data;
+            //     case 'stream':
+            //       retData = data.slice?data.slice:[];
+            //       retData.meta = _.pick(data, function(value, key){
+            //         return key !== 'slice';
+            //       });
+            //   }
+            //   console.debug(retData);
+            //   scope[scopeDataField] = retData;
+            //   defer(undefined, retData);
+            // }).error(function(data, status, headers, config){
+            //   defer("http error: " + status);
+            // });

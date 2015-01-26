@@ -26,7 +26,7 @@ define(['app', 'restangular'], function(app){
         // console.debug('data:' + JSON.stringify(data));
         if (operation === "getList") {
           // .. and handle the data and meta data
-          extractedData = data.slice;
+          extractedData = data.slice?data.slice:[];
           extractedData.meta = _.pick(data, function(value, key){
             return key !== 'slice';
           });

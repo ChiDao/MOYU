@@ -1,13 +1,15 @@
 define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'services.Push'], function(app)
 {
-	app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', '$ionicHistory', 'RestRoute', '$stateParams', 'Auth', 'ApiEvent','PushProcessingService',
-		function($scope, $state, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, $ionicHistory, RestRoute, $stateParams, Auth, ApiEvent,PushProcessingService) {
+	app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', 
+		'$ionicHistory', 'RestRoute', '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService',
+		function($scope, $state, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, 
+			$ionicHistory, RestRoute, $stateParams, Auth, Api, ApiEvent,PushProcessingService) {
 			$scope.backButton = function() {
 				// console.log('back');
 				$ionicHistory.goBack();
 			};
 
-			RestRoute.getLinkData(/clip/ + $stateParams.clipId, $scope, 'clip').then(function(){
+			Api.getData($stateParams.apiLink, $scope, 'clip').then(function(){
 				console.debug($scope.clip);
 				//检测是否关注该话题
 				$scope.checkHasFollowedPost = function(){
