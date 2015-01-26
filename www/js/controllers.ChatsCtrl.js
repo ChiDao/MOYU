@@ -11,51 +11,6 @@ define(['app', 'services.RestRoute'], function(app)
       $scope.hasNewComments = {};
       var fromDetailSubcribe = '';
 
-      // //检查新增comment函数
-      // var checkNewComments = function(subscribe){
-      //   // console.debug("subscribeLastCommentId 1", subscribe._id, subscribeLastCommentId[subscribe._id]);
-      //   //读取缓存
-      //   var localLastCommentsId = localStorage.getItem('subscribeLastCommentId'+subscribe._id);
-      //   if (!subscribeLastCommentId[subscribe._id] && localLastCommentsId !== null){
-      //     subscribeLastCommentId[subscribe._id] = localLastCommentsId;
-      //   }
-      //   // console.debug("subscribeLastCommentId 2", subscribe._id, subscribeLastCommentId[subscribe._id]);
-
-      //   if (subscribe['@clip'] && subscribe['@clip']['@comments'] && subscribe['@clip']['@comments'].slice){
-      //     // console.debug(subscribe['@clip']['@comments'].slice);
-      //     var comments = subscribe['@clip']['@comments'].slice;
-      //     var tmpLastCommentsId = comments[comments.length - 1]._id;
-      //     //新关注的subscriptions
-      //     if (!subscribeLastCommentId[subscribe._id]){
-      //       $scope.hasNewComments[subscribe['@clip']._id] = false;
-      //       subscribeLastCommentId[subscribe._id] = tmpLastCommentsId;
-      //       localStorage.setItem('subscribeLastCommentId'+subscribe._id, tmpLastCommentsId);
-      //     }
-      //     //新增了comments
-      //     else if (subscribeLastCommentId[subscribe._id] != tmpLastCommentsId){
-      //       //从讨论详情页回来，清除检查新comment
-      //       console.debug(fromDetailSubcribe , fromDetailSubcribe == subscribe._id);
-      //       $scope.hasNewComments[subscribe['@clip']._id] = 
-      //         (fromDetailSubcribe && fromDetailSubcribe == subscribe._id?false:true);
-      //       subscribeLastCommentId[subscribe._id] = tmpLastCommentsId;
-      //       localStorage.setItem('subscribeLastCommentId'+subscribe._id, tmpLastCommentsId);
-      //       console.log("subscribe has new comments", subscribe._id);
-      //     }else{
-      //       $scope.hasNewComments[subscribe['@clip']._id] = false;
-      //     }
-      //   }else{
-      //     //新增的没有comment的subscriptions
-      //     $scope.hasNewComments[subscribe['@clip']._id] = false;
-      //     subscribeLastCommentId[subscribe._id] = '';
-      //     localStorage.setItem('subscribeLastCommentId'+subscribe._id, '');
-      //   }
-      //   fromDetailSubcribe = '';
-
-      //   // console.debug(subscribe._id, subscribe["@clip"]._id, $scope.hasNewComments[subscribe["@clip"]._id])
-      //   // console.debug("subscribeLastCommentId 3", subscribe._id, subscribeLastCommentId[subscribe._id]);
-      // };
-
-
       //更新列表
       var getSubscribes = function(){
         return Thenjs(function(defer){
@@ -108,14 +63,6 @@ define(['app', 'services.RestRoute'], function(app)
         getSubscribes();
       });
 
-      // //从讨论详情页回来，清除检查新comment
-      // $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
-      //   console.debug(event, toState, toParams, fromState, fromParams);
-      //   if (toState === 'tab.chats' && fromState === 'tab.chat'){
-      //     fromDetailSubcribe = fromParams.chatId;
-      //   }
-      // });
-
       // pull refresh
       $scope.doRefresh = function() {
         getSubscribes().then(function(defer){
@@ -127,3 +74,60 @@ define(['app', 'services.RestRoute'], function(app)
     }
   ]);
 });
+
+
+
+
+
+      // //检查新增comment函数
+      // var checkNewComments = function(subscribe){
+      //   // console.debug("subscribeLastCommentId 1", subscribe._id, subscribeLastCommentId[subscribe._id]);
+      //   //读取缓存
+      //   var localLastCommentsId = localStorage.getItem('subscribeLastCommentId'+subscribe._id);
+      //   if (!subscribeLastCommentId[subscribe._id] && localLastCommentsId !== null){
+      //     subscribeLastCommentId[subscribe._id] = localLastCommentsId;
+      //   }
+      //   // console.debug("subscribeLastCommentId 2", subscribe._id, subscribeLastCommentId[subscribe._id]);
+
+      //   if (subscribe['@clip'] && subscribe['@clip']['@comments'] && subscribe['@clip']['@comments'].slice){
+      //     // console.debug(subscribe['@clip']['@comments'].slice);
+      //     var comments = subscribe['@clip']['@comments'].slice;
+      //     var tmpLastCommentsId = comments[comments.length - 1]._id;
+      //     //新关注的subscriptions
+      //     if (!subscribeLastCommentId[subscribe._id]){
+      //       $scope.hasNewComments[subscribe['@clip']._id] = false;
+      //       subscribeLastCommentId[subscribe._id] = tmpLastCommentsId;
+      //       localStorage.setItem('subscribeLastCommentId'+subscribe._id, tmpLastCommentsId);
+      //     }
+      //     //新增了comments
+      //     else if (subscribeLastCommentId[subscribe._id] != tmpLastCommentsId){
+      //       //从讨论详情页回来，清除检查新comment
+      //       console.debug(fromDetailSubcribe , fromDetailSubcribe == subscribe._id);
+      //       $scope.hasNewComments[subscribe['@clip']._id] = 
+      //         (fromDetailSubcribe && fromDetailSubcribe == subscribe._id?false:true);
+      //       subscribeLastCommentId[subscribe._id] = tmpLastCommentsId;
+      //       localStorage.setItem('subscribeLastCommentId'+subscribe._id, tmpLastCommentsId);
+      //       console.log("subscribe has new comments", subscribe._id);
+      //     }else{
+      //       $scope.hasNewComments[subscribe['@clip']._id] = false;
+      //     }
+      //   }else{
+      //     //新增的没有comment的subscriptions
+      //     $scope.hasNewComments[subscribe['@clip']._id] = false;
+      //     subscribeLastCommentId[subscribe._id] = '';
+      //     localStorage.setItem('subscribeLastCommentId'+subscribe._id, '');
+      //   }
+      //   fromDetailSubcribe = '';
+
+      //   // console.debug(subscribe._id, subscribe["@clip"]._id, $scope.hasNewComments[subscribe["@clip"]._id])
+      //   // console.debug("subscribeLastCommentId 3", subscribe._id, subscribeLastCommentId[subscribe._id]);
+      // };
+
+      // //从讨论详情页回来，清除检查新comment
+      // $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
+      //   console.debug(event, toState, toParams, fromState, fromParams);
+      //   if (toState === 'tab.chats' && fromState === 'tab.chat'){
+      //     fromDetailSubcribe = fromParams.chatId;
+      //   }
+      // });
+

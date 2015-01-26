@@ -1,4 +1,4 @@
-define(['app', 'services.RestRoute', 'services.Auth'], function(app)
+define(['app', 'services.Api', 'services.Auth'], function(app)
 {
   app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api',
     function($scope, $stateParams, UI, Auth, Api) {
