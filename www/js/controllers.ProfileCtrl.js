@@ -8,8 +8,13 @@ define(['app', 'services.RestRoute', 'services.Auth'], function(app)
       var tmp = {};
       RestRoute.getLinkData($scope.userData.clips, tmp, 'clips').then(function(){
         RestRoute.getLinkData(tmp.clips.last, $scope, 'clips').then(function(){
-	    	console.log($scope.clips);
-	    })
+          _.forEach($scope.clips,function(clip){
+            console.debug(clip);
+            RestRoute.getLinkData(clip.game, clip, 'gameData').then(function(){
+              // console.debug(clip.gameData);
+            });
+          });
+  	    });
       });
     }
   ]);
