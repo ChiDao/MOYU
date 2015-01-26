@@ -102,6 +102,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
                       // });
                       // $state.go('app.wait-open');
                     }
+                    success();
                   })
                 },
                 onError: function (error, form, scope){
