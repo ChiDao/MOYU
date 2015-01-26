@@ -54,6 +54,7 @@ define(['app'], function(app)
       'default': 'tab.chat',
       'channels': 'tab.channel-chat',
       'chats': 'tab.chat',
+      'profile': 'tab.profile-chat',
     });
 
     console.debug(apis);

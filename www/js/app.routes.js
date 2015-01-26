@@ -158,7 +158,7 @@ define(['app'], function(app){
       }
     })
       .state('tab.profile-chat', {
-        url: '/profile-chat/:chatId',
+        url: '/profile-chat/:clipId',
         views: {
           'tab-profile': {
             templateUrl: 'templates/chat.html',
