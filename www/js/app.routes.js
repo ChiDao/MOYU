@@ -58,7 +58,7 @@ define(['app'], function(app){
         }
       })
       .state('tab.channel-chat', {
-        url: '/channel-chat/:chatId',
+        url: '/channel-chat/:clipId',
         views: {
           'tab-channels': {
             templateUrl: 'templates/chat.html',

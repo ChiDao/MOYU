@@ -44,7 +44,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
             }
           });
         },
-        login: function(success, error, close){ 
+        login: function(success){ 
           //填写邮箱signup对话框
           (function(preRegistModal){
             RestRoute.postModal('/signup', {}, {

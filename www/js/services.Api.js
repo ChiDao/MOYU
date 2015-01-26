@@ -52,7 +52,8 @@ define(['app'], function(app)
     setApiRouteMap('game', {'default': 'tab.channel'});
     setApiRouteMap('clip', {
       'default': 'tab.chat',
-      'chats': 'tab.chat'
+      'channels': 'tab.channel-chat',
+      'chats': 'tab.chat',
     });
 
     console.debug(apis);
@@ -87,13 +88,13 @@ define(['app'], function(app)
           var state;
           console.debug(apiData);
           if (apiData.api.routeMap){
-            if (context && context.name && apiData.api.routeMap[context.name]){
-              state = apiData.api.routeMap[context.name];
+            if (context && apiData.api.routeMap[context]){
+              state = apiData.api.routeMap[context];
             }else if (apiData.api.routeMap){
               state = apiData.api.routeMap['default'];
             }
           }
-          console.debug(state);
+          console.debug(apiLink, context, state);
           $state.go(state, apiData.params);
         },
         getData: function(apiLink, scope, scopeDataField, options){
