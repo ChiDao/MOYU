@@ -3,7 +3,7 @@ ion-view#Channels(view-title='游戏')
     button.button.icon.ion-ios-plus-empty.button-clear(ng-click="addChannel()")
   ion-content
     ion-list
-      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', href='#/tab/channels/{{channel.gameData._id}}')
+      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', ng-click="Api.jumpTo(channel.game)")
         img(src='{{channel.gameData.logo}}')
         | {{channel.gameData.name}}
         span.item-note(ng-class='{first:$first}')

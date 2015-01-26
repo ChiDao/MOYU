@@ -34,7 +34,7 @@ define(['app'], function(app){
       }
     })
       .state('tab.channel', {
-        url: '/channels/:channelId',
+        url: '/channels/:gameId',
         views: {
           'tab-channels': {
             templateUrl: 'templates/channel.html',
@@ -58,7 +58,7 @@ define(['app'], function(app){
         }
       })
       .state('tab.channel-chat', {
-        url: '/channel-chat/:chatId',
+        url: '/channel-chat/:clipId',
         views: {
           'tab-channels': {
             templateUrl: 'templates/chat.html',
@@ -83,7 +83,7 @@ define(['app'], function(app){
         }
       })
       .state('tab.chat', {
-        url: '/chats/:chatId',
+        url: '/chats/:clipId',
         views: {
           'tab-chats': {
             templateUrl: 'templates/chat.html',
@@ -158,7 +158,7 @@ define(['app'], function(app){
       }
     })
       .state('tab.profile-chat', {
-        url: '/profile-chat/:chatId',
+        url: '/profile-chat/:clipId',
         views: {
           'tab-profile': {
             templateUrl: 'templates/chat.html',

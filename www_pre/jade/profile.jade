@@ -12,7 +12,7 @@ ion-view.full-card(view-title='个人')
         img(src='{{clip.gameData.logo}}', style="width:20px")
         | {{clip.gameData.name}} - {{clip.content}} {{subscribe.unread}}
       .item.item-body
-        a(href='#/tab/profile-chat/{{clip._id}}')
+        a(ng-click="Api.jumpTo(clip._self, 'profile')")
           img.full-image(src="{{clip.img}}")
 
 //- ion-view(view-title='我')

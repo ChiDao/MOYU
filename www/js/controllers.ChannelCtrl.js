@@ -13,7 +13,7 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       //
       $scope.$on("$ionicView.afterEnter", function() {
         var tmp = {};
-        RestRoute.getLinkData('/game/' + $stateParams.channelId, $scope, 'channel').then(function(){
+        RestRoute.getLinkData('/game/' + $stateParams.gameId, $scope, 'channel').then(function(){
           RestRoute.getLinkData($scope.channel.clients, tmp, 'client').then(function(){
             RestRoute.getLinkData(tmp.client.last, tmp, 'clientsData').then(function(){
               $scope.channel.clientsData = tmp.clientsData[0];
@@ -25,7 +25,7 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
 
       // get clips
       $scope.getClips = function(){
-        return RestRoute.getLinkData('/game-clips/' + $stateParams.channelId + '?_last', $scope, 'clips').then(function(){
+        return RestRoute.getLinkData('/game-clips/' + $stateParams.gameId + '?_last', $scope, 'clips').then(function(){
           _.forEach($scope.clips, function(clip){
             console.debug($scope.clips);
             RestRoute.getLinkData(clip.user, clip, 'userData').then(function(){
@@ -36,7 +36,7 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       };
       $scope.getClips();
       $scope.newClip = function(){
-        RestRoute.postModal('/new-clip/' + $stateParams.channelId, {}, {
+        RestRoute.postModal('/new-clip/' + $stateParams.gameId, {}, {
           init: function(scope){
             // var
             scope.imageURI = 'img/upload-photo.png';

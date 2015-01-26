@@ -19,12 +19,8 @@ define(['app', 'services.RestRoute'], function(app)
 	    	}
     	});
 
-        $scope.channelRoute = function(){
-            $state.go('tab.channels');
-            // $state.go(Auth.isLoggedIn()? 'tab.channels': 'tab.add-channel');
-        }
-
         $scope.Api = Api;
+        $scope.homeData= Auth.currentUser().userData.homeData;
     	
     	$scope.hideTabs = function(){
     		//根据路由判断是否清理badge

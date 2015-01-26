@@ -2,7 +2,7 @@ ion-view#Chats(view-title='讨论')
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
-      a.item.item-avatar(ng-repeat='subscribe in subscribes',type='item-text-wrap', href='#/tab/chats/{{subscribe["@clip"]._id}}')
+      a.item.item-avatar(ng-repeat='subscribe in subscribes',type='item-text-wrap',  ng-click="Api.jumpTo(subscribe.clip, chats)")
         img(src='http://zuju.cc/images/uploads/gaea/jiezoudashi.jpeg')
         i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
         b {{subscribe['@clip'].lastCommentUserData.email}} <br>

@@ -7,7 +7,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 				$ionicHistory.goBack();
 			};
 
-			RestRoute.getLinkData(/clip/ + $stateParams.chatId, $scope, 'clip').then(function(){
+			RestRoute.getLinkData(/clip/ + $stateParams.clipId, $scope, 'clip').then(function(){
 				console.debug($scope.clip);
 				//检测是否关注该话题
 				$scope.checkHasFollowedPost = function(){
@@ -49,7 +49,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 			//初始化获取讨论内容
 			var commentNextUrl = '';
 			$scope.getComment = function(){
-				RestRoute.getLinkData('/clip-comments/' + $stateParams.chatId + '?_last', $scope, 'comments').then(function(){
+				RestRoute.getLinkData('/clip-comments/' + $stateParams.clipId + '?_last', $scope, 'comments').then(function(){
 					$ionicScrollDelegate.scrollBottom();
 					commentNextUrl = $scope.comments.meta.next;
 				});
@@ -71,9 +71,9 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 
 			//在讨论页面内，根据comet更新数据
 			if (!$scope.comments) $scope.comments = [];
-			ApiEvent.registerByResource('clip', $stateParams.chatId, function(event){
+			ApiEvent.registerByResource('clip', $stateParams.clipId, function(event){
 				// console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
-				if ($state.current.name === 'tab.chat' && $state.current.params.chatId == $stateParams.chatId){
+				if ($state.current.name === 'tab.chat' && $state.current.params.clipId == $stateParams.clipId){
 					$scope.refreshComment();
 				}
 			});
@@ -82,7 +82,7 @@ define(['app', 'services.RestRoute','services.Data', 'services.ApiEvent', 'servi
 			$scope.formData = {content:''};
 			$scope.send = function(newCommentForm){
 				//提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
-				RestRoute.postDataToLink('/new-comment/' + $stateParams.chatId, $scope.formData).then(function(defer, response){
+				RestRoute.postDataToLink('/new-comment/' + $stateParams.clipId, $scope.formData).then(function(defer, response){
 					// console.debug(response.data.rawData);
 					// $scope.comments.push(response.data.rawData);
 					$ionicScrollDelegate.scrollBottom();

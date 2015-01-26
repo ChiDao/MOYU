@@ -5,7 +5,7 @@ ion-view#channel(view-title='{{channel.name}}')
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     .list.card(ng-repeat="clip in clips")
       .item.item-image
-        a(href='#/tab/channel-chat/{{clip._id}}')
+        a(ng-click="Api.jumpTo(clip._self, 'channels')")
           img(src="{{clip.img}}")
       .item.item-text-wrap
         p {{clip.content}}
