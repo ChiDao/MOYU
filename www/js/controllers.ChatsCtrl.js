@@ -73,8 +73,13 @@ define(['app', 'services.RestRoute'], function(app)
 
             _.forEach($scope.subscribes, function(subcribe){
               // checkNewComments(subcribe);
-              RestRoute.getLinkData(subcribe['@clip'].user, subcribe['@clip'], 'userData').then(function(){
-              });
+              if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
+                var comments = subcribe['@clip']['@comments']['slice'];
+                var tmpLastComment = comments[comments.length - 1];
+                RestRoute.getLinkData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
+                  // console.debug(subcribe['@clip'].lastCommentUserData)
+                });
+              }
               RestRoute.getLinkData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
               });
 

@@ -5,8 +5,8 @@ ion-view#Chats(view-title='讨论')
       a.item.item-avatar(ng-repeat='subscribe in subscribes',type='item-text-wrap', href='#/tab/chats/{{subscribe["@clip"]._id}}')
         img(src='http://zuju.cc/images/uploads/gaea/jiezoudashi.jpeg')
         i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
-        b Zakk: <br>
-        | 上次的麻辣燙怎麼樣？{{subscribe["@clip"]._modified | timeBefore}}
+        b {{subscribe['@clip'].lastCommentUserData.email}} <br>
+        | {{subscribe["@clip"].content}} {{subscribe["@clip"]._modified | timeBefore}}
         span.item-note(ng-class='{first:$first}')
           img(src="{{subscribe['@clip'].img}}")
 
