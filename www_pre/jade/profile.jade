@@ -6,7 +6,9 @@ ion-view.full-card(view-title='个人')
       a.item.item-avatar.item-icon-right
         img(src='img/mcfly.jpg')
         h2 {{userData.email}}
-        p Game: {{channel.gameData.name}}
+        p
+          span 发表：{{userData['@clips']['@count']}} 
+          span 关注：{{userData['@interests']['@count']}}
     .list.card(ng-repeat='clip in clips')
       .item.item-divider
         img(src='{{clip.gameData.logo}}', style="width:20px")
