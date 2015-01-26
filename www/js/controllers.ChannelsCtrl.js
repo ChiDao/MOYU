@@ -25,6 +25,11 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
         };
 
         function getGame(scope){
+            //检查是否已有关注
+            RestRoute.getLinkData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
+                if((scope.interests.length)>0) scope.ifAbled = "able";
+            });
+
             RestRoute.getLinkData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
                 console.log(scope.channels);
                 _.forEach(scope.channels, function(add){
@@ -78,10 +83,6 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
             Modal.okCancelModal('templates/modal-add-channel.html', {}, {
                 init: function(scope){  
                     scope.ifAbled = "disabled";
-                    //检查是否已有关注
-                    RestRoute.getLinkData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
-                        if((scope.interests.length)>0) scope.ifAbled = "able";
-                    });
 
                     getGame(scope);
 
@@ -89,7 +90,6 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
                     document.addEventListener("resume", onResume, false);
 
                     function onResume() {
-                        console.log("qqqqq");
                         getGame(scope);
                     }
 
@@ -99,7 +99,10 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
                             window.open(channle.store, '_system');
                         }else{
                             if (!Auth.isLoggedIn()){
-                            Auth.login();
+                                Auth.login(function(){
+                                    console.log("ok!" + Auth.currentUser().userData._id);
+                                    getGame(scope);
+                                });
                             }
                             else{                                
                                 var parsedUrl = /(\w+)$/.exec(channle.follow);
