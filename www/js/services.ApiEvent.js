@@ -1,7 +1,7 @@
 define(['app'], function(app)
 {
-  app.factory('ApiEvent', ['RestRoute', 'Auth', '$timeout',
-  	function(RestRoute, Auth, $timeout) {
+  app.factory('ApiEvent', ['RestRoute', 'Auth', '$timeout', 'Api',
+  	function(RestRoute, Auth, $timeout, Api) {
 
 	  	console.log('Load ApiEvent Service');
 	  	var tmp = {};
@@ -38,8 +38,9 @@ define(['app'], function(app)
     	//递归请求数据
 	  	var request = function(apiLink, isInit){
     		console.debug('ApiEvent running');
-    		RestRoute.getLinkData(apiLink, tmp, 'events').then(function(){
-                console.debug('ApiEvent return');
+            // Api.getData(apiLink, tmp, 'events');
+    		Api.getData(apiLink, tmp, 'events', {random:true}).then(function(){
+                // console.debug('ApiEvent return', tmp.events);
     			if (tmp.events && tmp.events.length && tmp.events.meta.next){
     				$timeout(function(){
                         if (!isInit){
@@ -47,14 +48,16 @@ define(['app'], function(app)
         						runCallbacks(event);
         					})
                         }
-    					request(tmp.events.meta.next);
+                        var next = tmp.events.meta.next;
+                        tmp.events = undefined;
+    					request(next);
 					},1);
     			}else{
     				$timeout(function(){
     					request(apiLink);
 					},1);
     			}
-    		}, function(error){
+    		}, function(defer, error){
 				console.debug(JSON.stringify(error));
 				$timeout(function(){
                     request(apiLink);

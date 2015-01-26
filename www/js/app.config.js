@@ -1,7 +1,7 @@
 
 define(['app', 'restangular'], function(app){
 
-  app.config(function(RestangularProvider) {
+  app.config(function(RestangularProvider, ApiProvider) {
 
       RestangularProvider.setDefaultHeaders({
           'Content-Type': 'application/json',
@@ -12,9 +12,13 @@ define(['app', 'restangular'], function(app){
       });
 
       RestangularProvider.setFullResponse(true);
-      RestangularProvider.setBaseUrl('http://192.168.10.230:8485');
+      // RestangularProvider.setBaseUrl('http://192.168.10.230:8485');
       // RestangularProvider.setBaseUrl('http://42.120.45.236:8485');
       // RestangularProvider.setBaseUrl('http://localhost:8485');
+      // ApiProvider.setBaseUrl('http://localhost:8485');
+      RestangularProvider.setBaseUrl('http://api.gamo.mobi/start');
+      ApiProvider.setBaseUrl('http://api.gamo.mobi/start');
+
 
       // add a response intereceptor
       RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {

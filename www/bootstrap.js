@@ -15,7 +15,6 @@ require.config({
         'config': 'js/app.config',
 
         'services.Api': 'js/services.Api',
-        'services.ApiData': 'js/services.ApiData',
         'services.ApiEvent': 'js/services.ApiEvent',
         'services.Auth': 'js/services.Auth',
         'services.Modal': 'js/services.Modal',
@@ -67,7 +66,6 @@ require
         'app',
 
         'services.Api',
-        'services.ApiData',
         'services.ApiEvent',
         'services.Auth',
         'services.Modal',
