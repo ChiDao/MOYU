@@ -566,7 +566,7 @@ define(['app', 'services.Modal'], function(app)
                 console.log('Commit success, get data:', data.data.rawData);
                 //提交成功
                 if (_.isFunction(eventHandles.onSuccess)){
-                  eventHandles.onSuccess(form, $scope);
+                  eventHandles.onSuccess(form, $scope, data.data.rawData);
                   defer(null);
                 }
                 //提交失败

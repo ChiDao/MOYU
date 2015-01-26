@@ -71,12 +71,13 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
                     defer(undefined);
                   });
                 },
-                onSuccess: function(form, scope){
+                onSuccess: function(form, scope, data){
                   var Me = Restangular.one("me");
                   Me.get().then(function(me){
                     console.log(me);
                     currentUser.userName = me.data.rawData.email;
                     currentUser.role = userRoles.user;
+                    me.data.rawData.homeData = data;
                     currentUser.userData = me.data.rawData;
                     //存储用户信息到localStorage
                     localStorage.setItem('user', JSON.stringify(me.data.rawData));

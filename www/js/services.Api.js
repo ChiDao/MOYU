@@ -40,13 +40,14 @@ define(['app'], function(app)
     apis.push(createApi('object', 'home', []));
     apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
     apis.push(createApi('object', 'game', ['game']));
+    apis.push(createApi('object', 'recent-played-games', ['user']));
     apis.push(createApi('stream', 'clients-by-platform', ['platform']));
     apis.push(createApi('stream', 'recent-user-subscriptions', ['user']));
     apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
 
-    setApiRouteMap('me', {
-      'default': 'tab.profile'
-    });
+    setApiRouteMap('recent-played-games', {'default': 'tab.channels'});
+    setApiRouteMap('recent-user-subscriptions', {'default': 'tab.chats'});
+    setApiRouteMap('me', {'default': 'tab.profile'});
 
     console.debug(apis);
 
@@ -78,13 +79,15 @@ define(['app'], function(app)
             return false;
           }
           var state;
-          if (api.routeMap){
-            if (context && context.name && api.routeMap[context.name]){
-              state = api.routeMap[context.name];
-            }else if (api.routeMap){
-              state = api.routeMap['default'];
+          console.debug(apiData);
+          if (apiData.api.routeMap){
+            if (context && context.name && apiData.api.routeMap[context.name]){
+              state = apiData.api.routeMap[context.name];
+            }else if (apiData.api.routeMap){
+              state = apiData.api.routeMap['default'];
             }
           }
+          console.debug(state);
           $state.go(state, apiData.params);
         },
         getData: function(apiLink, scope, scopeDataField, options){
