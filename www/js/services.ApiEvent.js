@@ -56,7 +56,9 @@ define(['app'], function(app)
     			}
     		}, function(error){
 				console.debug(JSON.stringify(error));
-				request(apiLink);
+				$timeout(function(){
+                    request(apiLink);
+                },10000);
     		})
     	};
         // console.debug("Auth.isLoggedIn()", Auth.isLoggedIn());
