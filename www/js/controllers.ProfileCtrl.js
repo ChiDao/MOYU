@@ -4,7 +4,7 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
     function($scope, $stateParams, UI, Auth, Api) {
       $scope.Auth = Auth;
       $scope.userData = Auth.currentUser().userData;
-      // console.debug($scope.userData);
+      console.debug($scope.userData);
       var tmp = {};
       Api.getData($scope.userData.clips, tmp, 'clips').then(function(){
         Api.getData(tmp.clips.meta.last, $scope, 'clips').then(function(){
