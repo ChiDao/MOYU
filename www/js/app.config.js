@@ -14,10 +14,10 @@ define(['app', 'restangular'], function(app){
       RestangularProvider.setFullResponse(true);
       // RestangularProvider.setBaseUrl('http://192.168.10.230:8485');
       // RestangularProvider.setBaseUrl('http://42.120.45.236:8485');
-      // RestangularProvider.setBaseUrl('http://localhost:8485');
-      // ApiProvider.setBaseUrl('http://localhost:8485');
-      RestangularProvider.setBaseUrl('http://api.gamo.mobi/start');
-      ApiProvider.setBaseUrl('http://api.gamo.mobi/start');
+      RestangularProvider.setBaseUrl('http://localhost:8485');
+      ApiProvider.setBaseUrl('http://localhost:8485');
+      RestangularProvider.setBaseUrl('http://api.gamo.mobi');
+      ApiProvider.setBaseUrl('http://api.gamo.mobi');
 
 
       // add a response intereceptor

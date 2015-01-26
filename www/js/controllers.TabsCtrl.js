@@ -20,7 +20,9 @@ define(['app', 'services.Api'], function(app)
     	});
 
         $scope.Api = Api;
-        $scope.homeData= Auth.currentUser().userData.homeData;
+        $scope.homeData = function(){
+            return Auth.currentUser().userData.homeData;
+        };
     	
     	$scope.hideTabs = function(){
     		//根据路由判断是否清理badge
