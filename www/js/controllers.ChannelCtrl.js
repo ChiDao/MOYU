@@ -103,6 +103,16 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
         var id = Math.random();
 
         if (window.plugin && window.plugin.notification && window.plugin.notification.local){
+
+          //返回应用时取消对应的推送
+          document.addEventListener("resume", onResume, false);
+                            
+          function onResume() {
+            window.plugin.notification.local.cancel(id,function () {
+              console.log("已取消");
+            }, $scope);
+          }
+
           window.plugin.notification.local.onclick = function(id, state, json){
             $scope.newClip();
           }
