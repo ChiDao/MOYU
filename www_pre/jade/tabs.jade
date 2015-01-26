@@ -13,5 +13,5 @@ ion-tabs.tabs-icon-top.tabs-color-active-positive(ng-class="{'tabs-item-hide':hi
   //- ion-tab(title='发现', icon-off='ion-ios7-eye-outline', icon-on='ion-ios7-eye', href='#/tab/discover')
   //-   ion-nav-view(name='tab-discover')
   // Account Tab
-  ion-tab(title='个人', icon-off='ion-ios7-person-outline', icon-on='ion-ios7-person', href='#/tab/profile')
+  ion-tab(title='个人', icon-off='ion-ios7-person-outline', icon-on='ion-ios7-person', ng-click="Api.jumpTo('/me')")
     ion-nav-view(name='tab-profile') 
