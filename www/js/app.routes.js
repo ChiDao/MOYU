@@ -34,7 +34,7 @@ define(['app'], function(app){
       }
     })
       .state('tab.channel', {
-        url: '/channels/:channelId',
+        url: '/channels/:gameId',
         views: {
           'tab-channels': {
             templateUrl: 'templates/channel.html',
