@@ -77,6 +77,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
                     console.log(me);
                     currentUser.userName = me.data.rawData.email;
                     currentUser.role = userRoles.user;
+                    currentUser.userData = me.data.rawData;
                     //存储用户信息到localStorage
                     localStorage.setItem('user', JSON.stringify(me.data.rawData));
                     console.log(me.data.rawData);
@@ -138,6 +139,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
           return currentUser.role == userRoles.user;
         },
         currentUser: function(){
+          console.debug(currentUser);
           return currentUser;
         },
         refreshToken: function(){

@@ -9,6 +9,21 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
     		addChannelModal()
     	}
 
+        var getFollowedGame = function(){
+            var tmp = {};
+            RestRoute.getLinkData('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels').then(function(){
+                console.debug($scope.channels);
+                _.forEach($scope.channels, function(interest){
+                    if (interest['@clips'] && interest['@clips']['slice']){
+                        interest.lastClip = interest['@clips']['slice'][interest['@clips']['slice'].length - 1]
+                    }
+                    RestRoute.getLinkData(interest.game, interest, 'gameData').then(function(){
+                        console.debug(interest);
+                    });
+                })
+            });
+        };
+
         function getGame(scope){
             RestRoute.getLinkData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
                 console.log(scope.channels);
@@ -101,6 +116,7 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
                     //     if((scope.count.value)>0) scope.ifAbled = "able";
                     // });                   
                     scope.complete = function(){ 
+                        getFollowedGame();
                         scope.hideModal();
                     }
 
@@ -113,18 +129,11 @@ define(['app', 'services.RestRoute','services.Modal'], function(app)
             addChannelModal()
         }
 
-        var tmp = {};
-        RestRoute.getLinkData('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels').then(function(){
-            console.debug($scope.channels);
-            _.forEach($scope.channels, function(interest){
-                if (interest['@clips'] && interest['@clips']['slice']){
-                    interest.lastClip = interest['@clips']['slice'][interest['@clips']['slice'].length - 1]
-                }
-                RestRoute.getLinkData(interest.game, interest, 'gameData').then(function(){
-                    console.debug(interest);
-                });
-            })
+
+        $scope.$on("$ionicView.afterEnter", function() {
+            getFollowedGame();
         });
+        
     	// RestRoute.getData();
 		// 
     }
