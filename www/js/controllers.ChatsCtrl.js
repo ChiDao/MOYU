@@ -1,11 +1,11 @@
 define(['app', 'services.RestRoute'], function(app)
 {
   app.controller('ChatsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'UI', 'RestRoute', 'Restangular',
-    'Auth', 'ApiEvent', '$http', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, UI, RestRoute, Restangular, Auth, ApiEvent, $http, $timeout) {
+    'Auth', 'Api', 'ApiEvent', '$http', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, UI, RestRoute, Restangular, Auth, Api, ApiEvent, $http, $timeout) {
 
       //Todo: 用户id从auth模块获取
-
+      $scope.Api = Api;
       var subscribeLastCommentId = {};
       var hasRegisterSubscribe = {};
       $scope.hasNewComments = {};

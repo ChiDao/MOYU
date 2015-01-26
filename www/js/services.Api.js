@@ -40,6 +40,7 @@ define(['app'], function(app)
     apis.push(createApi('object', 'home', []));
     apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
     apis.push(createApi('object', 'game', ['game']));
+    apis.push(createApi('object', 'clip', ['clipId']));
     apis.push(createApi('object', 'recent-played-games', ['user']));
     apis.push(createApi('stream', 'clients-by-platform', ['platform']));
     apis.push(createApi('stream', 'recent-user-subscriptions', ['user']));
@@ -48,6 +49,10 @@ define(['app'], function(app)
     setApiRouteMap('recent-played-games', {'default': 'tab.channels'});
     setApiRouteMap('recent-user-subscriptions', {'default': 'tab.chats'});
     setApiRouteMap('me', {'default': 'tab.profile'});
+    setApiRouteMap('clip', {
+      'default': 'tab.chat',
+      'chats': 'tab.chat'
+    });
 
     console.debug(apis);
 

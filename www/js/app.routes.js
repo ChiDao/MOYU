@@ -83,7 +83,7 @@ define(['app'], function(app){
         }
       })
       .state('tab.chat', {
-        url: '/chats/:chatId',
+        url: '/chats/:clipId',
         views: {
           'tab-chats': {
             templateUrl: 'templates/chat.html',
