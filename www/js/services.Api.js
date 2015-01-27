@@ -43,11 +43,13 @@ define(['app'], function(app)
       }
     }
 
-    //'user':'$currentUser'
-    apis.push(createApi('object', 'home', []));
-    apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
+    //Entity
+    apis.push(createApi('object', 'user', ['userId']));
     apis.push(createApi('object', 'game', ['gameId']));
     apis.push(createApi('object', 'clip', ['clipId']));
+    //
+    apis.push(createApi('object', 'home', []));
+    apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
     apis.push(createApi('stream', 'user-interests', ['user']));
     apis.push(createApi('stream', 'recent-played-games', ['user']));
     apis.push(createApi('stream', 'clients-by-platform', ['platform']));

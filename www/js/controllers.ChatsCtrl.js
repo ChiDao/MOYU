@@ -1,8 +1,8 @@
-define(['app', 'services.RestRoute'], function(app)
+define(['app', 'services.Api'], function(app)
 {
-  app.controller('ChatsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'UI', 'RestRoute', 'Restangular',
+  app.controller('ChatsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'UI', 'Api', 'Restangular',
     'Auth', 'Api', 'ApiEvent', '$http', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, UI, RestRoute, Restangular, Auth, Api, ApiEvent, $http, $timeout) {
+    function($scope, $rootScope, $state, $stateParams, UI, Api, Restangular, Auth, Api, ApiEvent, $http, $timeout) {
 
       //Todo: 用户id从auth模块获取
       $scope.Api = Api;
@@ -31,11 +31,11 @@ define(['app', 'services.RestRoute'], function(app)
               if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
                 var comments = subcribe['@clip']['@comments']['slice'];
                 var tmpLastComment = comments[comments.length - 1];
-                RestRoute.getLinkData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
+                Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
                   // console.debug(subcribe['@clip'].lastCommentUserData)
                 });
               }
-              RestRoute.getLinkData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
+              Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
               });
 
               //注册comet事件，只在本页时进行刷新
