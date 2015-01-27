@@ -9,6 +9,6 @@ ion-modal-view#AddChannel.Pages
         img(src='{{channel.gameData.logo}}')
         h2 {{channel.gameData.name}}
         .col.text-right.no-padding
-            button.mini-button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'Yes' && channel.followed == 'No'") 关注
+            button.color-w.button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'Yes' && channel.followed == 'No'") 关注
             button.mini-button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'No'") 下载
 

@@ -16,7 +16,7 @@ define(['app', 'restangular'], function(app){
       // RestangularProvider.setBaseUrl('http://42.120.45.236:8485');
       // RestangularProvider.setBaseUrl('http://localhost:8485');
       // ApiProvider.setBaseUrl('http://localhost:8485');
-      
+
       RestangularProvider.setBaseUrl('http://api.gamo.mobi');
       ApiProvider.setBaseUrl('http://api.gamo.mobi');
       // RestangularProvider.setBaseUrl('http://192.168.10.94:8485');
