@@ -24,6 +24,12 @@ define([
 
   starter.run(function($state, $ionicPlatform,PushProcessingService) {
     PushProcessingService.checkinitialize();
+
+    //启动应用则取消全部本地推送
+    window.plugin.notification.local.cancelAll(function () {
+      console.log("全部取消");
+    });
+
     if(localStorage.getItem('apnToken') != null){
           PushProcessingService.initialize();
     }
