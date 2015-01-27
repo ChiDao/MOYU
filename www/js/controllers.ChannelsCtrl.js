@@ -25,10 +25,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
         };
 
         function getGame(scope){
-            //检查是否已有关注
-            Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
-                if((scope.interests.length)>0) scope.ifAbled = "able";
-
+            var getChannels = function(){
                 Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
                     console.log(scope.channels);
                     _.forEach(scope.channels, function(add){
@@ -75,7 +72,16 @@ define(['app', 'services.Api','services.Modal'], function(app)
                         }
                     });
                 });
-            });
+            }
+            if (!Auth.isLoggedIn()){
+                getChannels();
+            }else{
+                //检查是否已有关注
+                Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
+                    if((scope.interests.length)>0) scope.ifAbled = "able";
+                    getChannels();                   
+                });
+            }          
         }
 
         function addChannelModal(){
