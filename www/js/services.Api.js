@@ -1,4 +1,4 @@
-define(['app'], function(app)
+define(['app', 'services.Modal'], function(app)
 {
   app.provider('Api', function() {
 
@@ -36,6 +36,13 @@ define(['app'], function(app)
       }
     }
 
+    var setApiModal = function(apiName, modalTemplate, modalFormData){
+      if (api = _.find(apis, {name:apiName})){
+        api.modalTemplate = modalTemplate;
+        if (api.modalFormData) api.modalFormData = modalFormData;
+      }
+    }
+
     var setApiResource = function(apiName, resource, resourceId){
       if (api = _.find(apis, {name:apiName})){
         api.resource = resource;
@@ -47,16 +54,21 @@ define(['app'], function(app)
     apis.push(createApi('object', 'user', ['userId']));
     apis.push(createApi('object', 'game', ['gameId']));
     apis.push(createApi('object', 'clip', ['clipId']));
-    //
+    //User
     apis.push(createApi('object', 'home', []));
     apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
-    apis.push(createApi('stream', 'user-interests', ['user']));
+    apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
+    //game client
+    apis.push(createApi('stream', 'game-clients', ['game']));
+    apis.push(createApi('object', 'follow-game', ['game', 'user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'recent-played-games', ['user']));
     apis.push(createApi('stream', 'clients-by-platform', ['platform']));
-    apis.push(createApi('stream', 'recent-user-subscriptions', ['user']));
-    apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
+    //clip comments
+    apis.push(createApi('stream', 'new-clip', ['game'], {'user':'$currentUser'}));
+    apis.push(createApi('stream', 'game-clips', ['game']));
     apis.push(createApi('stream', 'user-clips', ['user']));
-    apis.push(createApi('object', 'follow-game', ['game', 'user'], {'user':'$currentUser'}));
+    apis.push(createApi('stream', 'user-interests', ['user']));
+    apis.push(createApi('stream', 'recent-user-subscriptions', ['user']));
     apis.push(createApi('object', 'new-comment', ['clip'], {'user':'$currentUser'}));
 
     setApiRouteMap('recent-played-games', {'default': 'tab.channels'});
@@ -69,6 +81,9 @@ define(['app'], function(app)
       'chats': 'tab.chat',
       'profile': 'tab.profile-chat',
     });
+    setApiModal('signup', 'templates/modal-signup.html', {email: ''});
+    setApiModal('pre-register', 'templates/modal-login.html', {password: ''});
+    setApiModal('new-clip', 'templates/modal-new-clip.html');
 
     setApiResource('new-comment', 'clip', 'clipId');
 
@@ -175,7 +190,58 @@ define(['app'], function(app)
               defer("Put data to link error:" + JSON.stringify(error));
             });
           });
-        }//End of putData
+        },//End of putData
+        postModal: function(apiLink, options, eventHandles){
+          var options = options || {};
+          var eventHandles = eventHandles || {};
+          //get api
+          var apiData = this.parse(apiLink);
+          if (!apiData.api){
+            console.debug("Can't find api:", apiLink);
+            return Thenjs(function(defer){
+              defer("Can't find api");
+            });
+          }
+          //初始化表单数据
+          var tmpInitFunc = _.isFunction(eventHandles.init)? _.clone(eventHandles.init):function(){};
+          eventHandles.init = function($scope){
+            $scope.formData = apiData.api.modalFormData;
+            tmpInitFunc($scope);
+          }
+          var tmpOkFunc = _.isFunction(eventHandles.onOk)?eventHandles.onOk:function(){
+            return Thenjs(function(defer){
+              defer(undefined);
+            })
+          };
+          eventHandles.onOk = function(form, $scope){
+            //校验表单是否正确
+            if (form.$invalid) return;
+            //回调传入的onOk函数
+            tmpOkFunc(form, $scope).then(function(defer){
+              console.log('Commit form data:' + JSON.stringify($scope.formData));
+              Restangular.all(_.template(apiData.api.api, apiData.params)).post($scope.formData).then(function(data){
+                console.log('Commit success, get data:', data.data.rawData);
+                //提交成功
+                if (_.isFunction(eventHandles.onSuccess)){
+                  eventHandles.onSuccess(form, $scope, data.data.rawData);
+                  defer(null);
+                }
+                //提交失败
+                else{
+                  $scope.hideModal();
+                  defer("Commit form error");
+                }
+              }, function(error){
+                console.log('Commit form error:' + JSON.stringify(error));
+                if (_.isFunction(eventHandles.onError)){
+                  eventHandles.onError(error, form, $scope);
+                  defer("Commit form error");
+                }
+              })
+            })
+          }
+          Modal.okCancelModal(apiData.api.modalTemplate, options, eventHandles);
+        },//End of postModal
       };
     }; //End of this.$get 
   });
