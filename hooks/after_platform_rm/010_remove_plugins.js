@@ -19,6 +19,7 @@ var pluginlist = [
     "nl.x-services.plugins.cameraroll",
     "de.appplant.cordova.plugin.local-notification",
     "nl.x-services.plugins.launchmyapp",
+    "com.phonegap.plugins.PushPlugin",
 ];
 
 // no need to configure below
