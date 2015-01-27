@@ -1,7 +1,7 @@
-define(['app', 'services.RestRoute', 'services.Modal'], function(app)
+define(['app', 'services.Api'], function(app)
 {
-  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'RestRoute', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', 'Restangular', 
-    function($scope, $stateParams, UI, RestRoute, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, Restangular) {
+  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', 
+    function($scope, $stateParams, UI, Api, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout) {
 
       // pull refresh
       $scope.doRefresh = function() {
@@ -13,9 +13,9 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       //
       $scope.$on("$ionicView.afterEnter", function() {
         var tmp = {};
-        RestRoute.getLinkData('/game/' + $stateParams.gameId, $scope, 'channel').then(function(){
-          RestRoute.getLinkData($scope.channel.clients, tmp, 'client').then(function(){
-            RestRoute.getLinkData(tmp.client.last, tmp, 'clientsData').then(function(){
+        Api.getData('/game/' + $stateParams.gameId, $scope, 'channel').then(function(){
+          Api.getData($scope.channel.clients, tmp, 'client').then(function(){
+            Api.getData(tmp.client.meta.last, tmp, 'clientsData').then(function(){
               $scope.channel.clientsData = tmp.clientsData[0];
               console.debug('$scope.channel:', $scope.channel.clientsData);
             });
@@ -25,10 +25,10 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
 
       // get clips
       $scope.getClips = function(){
-        return RestRoute.getLinkData('/game-clips/' + $stateParams.gameId + '?_last', $scope, 'clips').then(function(){
+        return Api.getData('/game-clips/' + $stateParams.gameId + '?_last', $scope, 'clips').then(function(){
           _.forEach($scope.clips, function(clip){
             console.debug($scope.clips);
-            RestRoute.getLinkData(clip.user, clip, 'userData').then(function(){
+            Api.getData(clip.user, clip, 'userData').then(function(){
               console.log(clip.userData);
             });
           })
@@ -36,11 +36,11 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
       };
       $scope.getClips();
       $scope.newClip = function(){
-        RestRoute.postModal('/new-clip/' + $stateParams.gameId, {}, {
+        Api.postModal('/new-clip/' + $stateParams.gameId, {}, {
           init: function(scope){
             // var
             scope.imageURI = 'img/upload-photo.png';
-            console.log($scope.imageURI);
+            console.log(scope.imageURI);
             scope.formData = {};
             scope.getPicture = function(){
               navigator.camera.getPicture(onSuccess, onFail, { 
@@ -86,7 +86,6 @@ define(['app', 'services.RestRoute', 'services.Modal'], function(app)
               //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
 
               var ft = new FileTransfer();
-              //Restangular.configuration.baseUrl
               ft.upload(scope.imageURI, encodeURI("http://42.120.45.236:8485/upload"), win, fail, options);
             });
           },
