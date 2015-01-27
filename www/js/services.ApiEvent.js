@@ -1,7 +1,7 @@
 define(['app'], function(app)
 {
-  app.factory('ApiEvent', ['RestRoute', 'Auth', '$timeout', 'Api',
-  	function(RestRoute, Auth, $timeout, Api) {
+  app.factory('ApiEvent', ['Auth', '$timeout', 'Api',
+  	function(Auth, $timeout, Api) {
 
 	  	console.log('Load ApiEvent Service');
 	  	var tmp = {};
@@ -14,17 +14,17 @@ define(['app'], function(app)
 
     	//执行回调函数
     	var runCallbacks = function(event){
-    		var apiData = RestRoute.parseApiLink(event.path);
-    		if (apiData.apiConfig){
+    		var apiData = Api.parse(event.path);
+    		if (apiData.api){
                 //根据api进行注册的回调函数
-                if (apiCallbacks[apiData.apiConfig.name]){
-        			_.forEach(apiCallbacks[apiData.apiConfig.name], function(callback){
+                if (apiCallbacks[apiData.api.name]){
+        			_.forEach(apiCallbacks[apiData.api.name], function(callback){
         				callback(event);
         			})
                 }
                 //根据资源进行注册的回调函数
-                var tmpResourceCallbacks = resourceCallbacks[apiData.apiConfig.resource];
-                var resourceId = apiData.params[apiData.apiConfig.resourceId];
+                var tmpResourceCallbacks = resourceCallbacks[apiData.api.resource];
+                var resourceId = apiData.params[apiData.api.resourceId];
                 // console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
                 if (tmpResourceCallbacks && resourceId && tmpResourceCallbacks[resourceId]){
                     // console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
@@ -74,7 +74,7 @@ define(['app'], function(app)
                 return Thenjs(function(defer){
                     if (!lastEventId){
                         // console.debug('checkedNewEvent 1');
-                        RestRoute.getLinkData('/event-user?_last', tmp, 'events').then(function(){
+                        Api.getData('/event-user?_last', tmp, 'events').then(function(){
                             if (tmp.events.length > 0){ 
                                 var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
                                 lastEventId = tmpLastEventId;
@@ -84,7 +84,7 @@ define(['app'], function(app)
                         });
                     }else{
                         // console.debug('checkedNewEvent 2');
-                        RestRoute.getLinkData('/event-user?_last', tmp, 'events').then(function(){
+                        Api.getData('/event-user?_last', tmp, 'events').then(function(){
                             if (tmp.events.length > 0){ 
                                 var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
                                 if (lastEventId === tmpLastEventId){
@@ -105,7 +105,7 @@ define(['app'], function(app)
                 });
             },
             updateEventId: function(){
-                RestRoute.getLinkData('/event-user?_last', tmp, 'events').then(function(){
+                Api.getData('/event-user?_last', tmp, 'events').then(function(){
                     if (tmp.events.length > 0){ 
                         var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
                         lastEventId = tmpLastEventId;

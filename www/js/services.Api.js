@@ -36,6 +36,13 @@ define(['app'], function(app)
       }
     }
 
+    var setApiResource = function(apiName, resource, resourceId){
+      if (api = _.find(apis, {name:apiName})){
+        api.resource = resource;
+        api.resourceId = resourceId;
+      }
+    }
+
     //'user':'$currentUser'
     apis.push(createApi('object', 'home', []));
     apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
@@ -48,6 +55,7 @@ define(['app'], function(app)
     apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'user-clips', ['user']));
     apis.push(createApi('object', 'follow-game', ['game', 'user'], {'user':'$currentUser'}));
+    apis.push(createApi('object', 'new-comment', ['clip'], {'user':'$currentUser'}));
 
     setApiRouteMap('recent-played-games', {'default': 'tab.channels'});
     setApiRouteMap('recent-user-subscriptions', {'default': 'tab.chats'});
@@ -59,6 +67,8 @@ define(['app'], function(app)
       'chats': 'tab.chat',
       'profile': 'tab.profile-chat',
     });
+
+    setApiResource('new-comment', 'clip', 'clipId');
 
     console.debug(apis);
 
