@@ -13,13 +13,18 @@ define(['app', 'services.Api'], function(app)
       //
       $scope.$on("$ionicView.afterEnter", function() {
         var tmp = {};
-        Api.getData('/game/' + $stateParams.gameId, $scope, 'channel').then(function(){
-          Api.getData($scope.channel.clients, tmp, 'client').then(function(){
-            Api.getData(tmp.client.meta.last, tmp, 'clientsData').then(function(){
-              $scope.channel.clientsData = tmp.clientsData[0];
+        Api.getData(Api.getStateUrl(), $scope, 'channel', {
+          itearator: {
+            clientsData: {
+              type: 'getData',
+              attr: 'clients',
+              options: {
+                last: true
+              }
+            }
+          }
+        }).then(function(){
               console.debug('$scope.channel:', $scope.channel.clientsData);
-            });
-          });
         });
       });
 

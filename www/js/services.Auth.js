@@ -49,6 +49,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
           (function(preRegistModal){
             Api.postModal('/signup', {}, {
               onSuccess: function(form, signupScope){
+                console.debug(signupScope.formData.email);
                 signupScope.hideModal();
                 preRegistModal(signupScope.formData.email);
               }
