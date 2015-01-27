@@ -39,10 +39,11 @@ define(['app', 'services.Modal'], function(app)
     var setApiModal = function(apiName, modalTemplate, modalFormData){
       if (api = _.find(apis, {name:apiName})){
         api.modalTemplate = modalTemplate;
-        if (api.modalFormData) api.modalFormData = modalFormData;
+        if (modalFormData) api.modalFormData = modalFormData;
       }
     }
 
+    //第三个参数要与api的参数配置一致
     var setApiResource = function(apiName, resource, resourceId){
       if (api = _.find(apis, {name:apiName})){
         api.resource = resource;
@@ -55,6 +56,8 @@ define(['app', 'services.Modal'], function(app)
     apis.push(createApi('object', 'game', ['gameId']));
     apis.push(createApi('object', 'clip', ['clipId']));
     //User
+    apis.push(createApi('stream', 'signup', []));
+    apis.push(createApi('stream', 'pre-register', []));
     apis.push(createApi('object', 'home', []));
     apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
     apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
@@ -68,7 +71,9 @@ define(['app', 'services.Modal'], function(app)
     apis.push(createApi('stream', 'game-clips', ['game']));
     apis.push(createApi('stream', 'user-clips', ['user']));
     apis.push(createApi('stream', 'user-interests', ['user']));
+    apis.push(createApi('object', 'follow-clip', ['clip', 'user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'recent-user-subscriptions', ['user']));
+    apis.push(createApi('stream', 'clip-comments', ['clip']));
     apis.push(createApi('object', 'new-comment', ['clip'], {'user':'$currentUser'}));
 
     setApiRouteMap('recent-played-games', {'default': 'tab.channels'});
@@ -85,7 +90,8 @@ define(['app', 'services.Modal'], function(app)
     setApiModal('pre-register', 'templates/modal-login.html', {password: ''});
     setApiModal('new-clip', 'templates/modal-new-clip.html');
 
-    setApiResource('new-comment', 'clip', 'clipId');
+    //第三个参数要与api的参数配置一致
+    setApiResource('new-comment', 'clip', 'clip');
 
     console.debug(apis);
 
@@ -108,6 +114,17 @@ define(['app', 'services.Modal'], function(app)
             return matches;
           });
           return apiData;
+        },
+        getStateUrl: function(){
+          var api = _.find(apis, function(api) {
+            return api.routeMap && _.indexOf(_.values(api.routeMap), $state.current.name) >= 0;
+          });
+          if (!api){
+            console.debug("No api map to the state");
+            return undefined;
+          }else{
+            return '/' + _.template(api.api, $stateParams);
+          }
         },
         jumpTo: function(apiLink, context){
           //get api
@@ -139,23 +156,14 @@ define(['app', 'services.Modal'], function(app)
 
           //link
           // var newLink = this.baseUrl + '/' + _.template(apiData.api.api, apiData.params).replace('/?', '?');
-          var newLink = _.template(apiData.api.api, apiData.params).replace('/?', '?');
+          var newLink = _.template(apiData.api.api, apiData.params)
+            .replace('/?', '?')
+            .replace(/\&r=0\.\d+|r=0\.\d+\&/, '')
+            .replace(/single=true\&|\&single=true/, '');
           if (options && options.random){
             newLink += (/\?/.test(newLink)? '&':'?') + 'r=' + Math.random();
           }
           console.debug(newLink);
-
-          //http config
-          var httpConfig = {
-            method:'GET',
-            url: newLink,
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest',
-              'Authorization': 'Bearer '+ localStorage.getItem('my-xsrf-header'),
-            }
-          };
 
           //get data
           var retData;
@@ -163,17 +171,38 @@ define(['app', 'services.Modal'], function(app)
             if (apiData.api.apiType === 'stream'){
               Restangular.allUrl(newLink).getList().then(function(response){
                 scope[scopeDataField] = response.data;
-                defer(undefined, scope[scopeDataField]);
+                defer(undefined, response.data);
+              }, function(error){
+                defer('Get list error', error);
               });
             }
             else if (apiData.api.apiType === 'object'){
               return Restangular.oneUrl(newLink).get().then(function(response){
                 scope[scopeDataField] = response.data.rawData;
-                defer(undefined, scope[scopeDataField]);
+                defer(undefined, response.data.rawData);
+              }, function(error){
+                defer('Get list error', error);
               })
             }
           });
         },
+        postData: function(apiLink, data){
+          //get api
+          var apiData = this.parse(apiLink);
+          if (!apiData.api){
+            console.debug("Can't find api:", apiLink);
+            return false;
+          }
+          return Thenjs(function(defer){
+            Restangular.all(_.template(apiData.api.api, apiData.params)).post(data).then(function(response){
+              console.debug('Post data to link:' + JSON.stringify(response));
+              defer(undefined, response);
+            }, function(error){
+              console.debug('Post data to link error:' + JSON.stringify(error));
+              defer("Post data to link error:" + JSON.stringify(error));
+            });
+          });
+        },//End of putData
         putData: function(apiLink, data){
           //get api
           var apiData = this.parse(apiLink);
@@ -191,6 +220,19 @@ define(['app', 'services.Modal'], function(app)
             });
           });
         },//End of putData
+        deleteData: function(apiLink){
+          //get api
+          var apiData = this.parse(apiLink);
+          if (!apiData.api){
+            console.debug("Can't find api:", apiLink);
+            return false;
+          }
+          return Restangular.oneUrl(_.template(apiData.api.api, apiData.params)).remove().then(function(response){
+            console.debug('Delete data from link:' + JSON.stringify(response));
+          }, function(error){
+            console.debug('Delete data from link error:' + JSON.stringify(error));
+          })
+        },
         postModal: function(apiLink, options, eventHandles){
           var options = options || {};
           var eventHandles = eventHandles || {};
@@ -204,37 +246,37 @@ define(['app', 'services.Modal'], function(app)
           }
           //初始化表单数据
           var tmpInitFunc = _.isFunction(eventHandles.init)? _.clone(eventHandles.init):function(){};
-          eventHandles.init = function($scope){
-            $scope.formData = apiData.api.modalFormData;
-            tmpInitFunc($scope);
+          eventHandles.init = function(scope){
+            scope.formData = apiData.api.modalFormData;
+            tmpInitFunc(scope);
           }
           var tmpOkFunc = _.isFunction(eventHandles.onOk)?eventHandles.onOk:function(){
             return Thenjs(function(defer){
               defer(undefined);
             })
           };
-          eventHandles.onOk = function(form, $scope){
+          eventHandles.onOk = function(form, scope){
             //校验表单是否正确
             if (form.$invalid) return;
             //回调传入的onOk函数
-            tmpOkFunc(form, $scope).then(function(defer){
-              console.log('Commit form data:' + JSON.stringify($scope.formData));
-              Restangular.all(_.template(apiData.api.api, apiData.params)).post($scope.formData).then(function(data){
+            tmpOkFunc(form, scope).then(function(defer){
+              console.log('Commit form data:' + JSON.stringify(scope.formData));
+              Restangular.all(_.template(apiData.api.api, apiData.params)).post(scope.formData).then(function(data){
                 console.log('Commit success, get data:', data.data.rawData);
                 //提交成功
                 if (_.isFunction(eventHandles.onSuccess)){
-                  eventHandles.onSuccess(form, $scope, data.data.rawData);
+                  eventHandles.onSuccess(form, scope, data.data.rawData);
                   defer(null);
                 }
                 //提交失败
                 else{
-                  $scope.hideModal();
+                  scope.hideModal();
                   defer("Commit form error");
                 }
               }, function(error){
                 console.log('Commit form error:' + JSON.stringify(error));
                 if (_.isFunction(eventHandles.onError)){
-                  eventHandles.onError(error, form, $scope);
+                  eventHandles.onError(error, form, scope);
                   defer("Commit form error");
                 }
               })
@@ -249,6 +291,18 @@ define(['app', 'services.Modal'], function(app)
 
 
 
+
+          // //http config
+          // var httpConfig = {
+          //   method:'GET',
+          //   url: newLink,
+          //   withCredentials: true,
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //     'X-Requested-With': 'XMLHttpRequest',
+          //     'Authorization': 'Bearer '+ localStorage.getItem('my-xsrf-header'),
+          //   }
+          // };
 
 
             // $http({method:'GET',
