@@ -28,55 +28,54 @@ define(['app', 'services.Api','services.Modal'], function(app)
             //检查是否已有关注
             Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
                 if((scope.interests.length)>0) scope.ifAbled = "able";
-            });
 
-            Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
-                console.log(scope.channels);
-                _.forEach(scope.channels, function(add){
-                    add.installed = "checking";
-                    add.followed = "No";
-                    if(_.contains(_.pluck(scope.interests,'game'), add.game)){
-                        add.followed = "Yes";
-                    };
+                Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
+                    console.log(scope.channels);
+                    _.forEach(scope.channels, function(add){
+                        add.installed = "checking";
+                        add.followed = "No";
+                        if(_.contains(_.pluck(scope.interests,'game'), add.game)){
+                            add.followed = "Yes";
+                        };
 
-                    Api.getData(add.game, add, 'gameData').then(function(){
-                        console.log(add.gameData);
+                        Api.getData(add.game, add, 'gameData').then(function(){
+                            console.log(add.gameData);
+                        });
+                    })
+                    //异步检测应用是否存在函数
+                    function asyncCheck(channel){
+                        var deferred = $q.defer();
+                        if (typeof(appAvailability) !== 'undefined'){
+                            appAvailability.check(
+                                channel.url + "://", // URI Scheme
+                                function() {  // Success callback
+                                    deferred.resolve("Yes");
+                                },
+                                function() {  // Error callback
+                                    deferred.resolve("No");
+                                }
+                            );
+                        }else{
+                            deferred.resolve("Yes");
+                        }
+                        return deferred.promise;
+                    }
+
+                    //加入到promises数组
+                    var promises=[];
+                    for(var key=0;key<scope.channels.length;key++){
+
+                        promises.push(asyncCheck(scope.channels[key]));
+                    }
+                    
+                    //同步检测应用是否存在
+                    $q.all(promises).then(function(infos){
+                        for(var key=0;key<infos.length;key++){
+                            scope.channels[key].installed = (infos[key]);
+                        }
                     });
-                })
-                //异步检测应用是否存在函数
-                function asyncCheck(channel){
-                    var deferred = $q.defer();
-                    if (typeof(appAvailability) !== 'undefined'){
-                        appAvailability.check(
-                            channel.url + "://", // URI Scheme
-                            function() {  // Success callback
-                                deferred.resolve("Yes");
-                            },
-                            function() {  // Error callback
-                                deferred.resolve("No");
-                            }
-                        );
-                    }else{
-                        deferred.resolve("Yes");
-                    }
-                    return deferred.promise;
-                }
-
-                //加入到promises数组
-                var promises=[];
-                for(var key=0;key<scope.channels.length;key++){
-
-                    promises.push(asyncCheck(scope.channels[key]));
-                }
-                
-                //同步检测应用是否存在
-                $q.all(promises).then(function(infos){
-                    for(var key=0;key<infos.length;key++){
-                        scope.channels[key].installed = (infos[key]);
-                    }
                 });
             });
-
         }
 
         function addChannelModal(){
@@ -87,10 +86,11 @@ define(['app', 'services.Api','services.Modal'], function(app)
                     getGame(scope);
 
                     //监听返回应用的事件
-                    document.addEventListener("resume", onResume, false);
+                    document.addEventListener("resume", refresh, false);
 
-                    function onResume() {
+                    function refresh() {
                         getGame(scope);
+                        document.removeEventListener("resume",refresh,false); 
                     }
 
                     scope.followGame = function(channle){
