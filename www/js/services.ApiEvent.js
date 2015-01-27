@@ -25,9 +25,9 @@ define(['app'], function(app)
                 //根据资源进行注册的回调函数
                 var tmpResourceCallbacks = resourceCallbacks[apiData.api.resource];
                 var resourceId = apiData.params[apiData.api.resourceId];
-                // console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
+                console.debug(tmpResourceCallbacks , apiData.params, resourceId , tmpResourceCallbacks[resourceId])
                 if (tmpResourceCallbacks && resourceId && tmpResourceCallbacks[resourceId]){
-                    // console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
+                    console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
                     _.forEach(tmpResourceCallbacks[resourceId], function(callback){
                         callback(event);
                     })
