@@ -29,8 +29,10 @@ define(['app', 'services.Api'], function(app)
     		switch ($state.current.name) {
     			case 'tab.chat':
     				$scope.badgeContent = '';
+                    break;
     			case 'tab.chats':
     				$scope.badgeContent = '';
+                    break;
     			default:
     		}
     		//根据路由判断是否显示Tabs

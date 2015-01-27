@@ -5,17 +5,18 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
       $scope.Auth = Auth;
       $scope.userData = Auth.currentUser().userData;
       console.debug($scope.userData);
-      var tmp = {};
-      Api.getData($scope.userData.clips, tmp, 'clips').then(function(){
-        Api.getData(tmp.clips.meta.last, $scope, 'clips').then(function(){
-          _.forEach($scope.clips,function(clip){
-            console.debug(clip);
-            Api.getData(clip.game, clip, 'gameData').then(function(){
-              // console.debug(clip.gameData);
-            });
-          });
-  	    });
-      });
+
+      Api.getData($scope.userData.clips, $scope, 'clips', {
+        last:true,
+        itearator: {
+          gameData: {
+            type: 'getData',
+            attr: 'game'
+          }
+        }
+      }).then(function(){
+        // console.debug($scope.clips);
+	    });
     }
   ]);
 });

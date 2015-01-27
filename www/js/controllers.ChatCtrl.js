@@ -1,4 +1,4 @@
-define(['app', 'services.Api','services.Data', 'services.ApiEvent', 'services.Push'], function(app)
+define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(app)
 {
 	app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', 
 		'$ionicHistory', '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService',

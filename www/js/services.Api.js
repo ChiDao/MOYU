@@ -147,44 +147,83 @@ define(['app', 'services.Modal'], function(app)
           $state.go(state, apiData.params);
         },
         getData: function(apiLink, scope, scopeDataField, options){
-          //get api
-          var apiData = this.parse(apiLink);
-          if (!apiData.api){
-            console.debug("Can't find api:", apiLink);
-            return Thenjs(function(defer){defer("Can't find api.");});
-          }
-
-          //link
-          // var newLink = this.baseUrl + '/' + _.template(apiData.api.api, apiData.params).replace('/?', '?');
-          var newLink = _.template(apiData.api.api, apiData.params)
-            .replace('/?', '?')
-            .replace(/\&r=0\.\d+|r=0\.\d+\&/, '')
-            .replace(/single=true\&|\&single=true/, '');
-          if (options && options.random){
-            newLink += (/\?/.test(newLink)? '&':'?') + 'r=' + Math.random();
-          }
-          console.debug(newLink);
-
-          //get data
-          var retData;
-          return Thenjs(function(defer){
-            if (apiData.api.apiType === 'stream'){
-              Restangular.allUrl(newLink).getList().then(function(response){
-                scope[scopeDataField] = response.data;
-                defer(undefined, response.data);
-              }, function(error){
-                defer('Get list error', error);
-              });
+          var parse = this.parse;
+          var getData = function(apiLink, scope, scopeDataField, options){
+            //get api
+            var apiData = parse(apiLink);
+            if (!apiData.api){
+              console.debug("Can't find api:", apiLink);
+              return Thenjs(function(defer){defer("Can't find api.");});
             }
-            else if (apiData.api.apiType === 'object'){
-              return Restangular.oneUrl(newLink).get().then(function(response){
-                scope[scopeDataField] = response.data.rawData;
-                defer(undefined, response.data.rawData);
-              }, function(error){
-                defer('Get list error', error);
-              })
+
+            //link
+            // var newLink = this.baseUrl + '/' + _.template(apiData.api.api, apiData.params).replace('/?', '?');
+            var newLink = _.template(apiData.api.api, apiData.params)
+              .replace('/?', '?')
+              .replace(/\&r=0\.\d+|r=0\.\d+\&/, '')
+              .replace(/single=true\&|\&single=true/, '');
+            if (options){
+              if (options.random){
+                newLink += (/\?/.test(newLink)? '&':'?') + 'r=' + Math.random();
+              }
+              if (options.last){
+                newLink += (/\?/.test(newLink)? '&':'?') + '_last';
+              }
             }
-          });
+            console.debug(newLink);
+
+            //get data
+            var retData;
+            return Thenjs(function(defer){
+              if (apiData.api.apiType === 'stream'){
+                Restangular.allUrl(newLink).getList().then(function(response){
+                  scope[scopeDataField] = response.data;
+                  if (options && options.itearator){
+                    //循环处理数据
+                    async.each(scope[scopeDataField], function(data, cb){
+                      // console.debug("getData data", data)
+                      //虚幻处理iterator
+                      async.each(_.pairs(options.itearator), function(oper,callback){
+                        // console.debug("getData itea", oper);
+                        switch (oper[1].type){
+                          //获取数据
+                          case 'getData':
+                            console.debug("oper", oper);
+                            getData(data[oper[1].attr], data, oper[0]).then(function(defer){
+                              callback(undefined);
+                            }, function(defer, error){
+                              callback('itearator get data error', error);
+                            });
+                            break;
+                          default:
+                            callback("can't find itearator operator");
+                        }
+                      }, function(error){
+                        if (error) cb(error);
+                        else cb(undefined);
+                      });
+                    }, function(error){
+                      if (error) defer(error);
+                      else defer(undefined)
+                    })
+                  }else{
+                    defer(undefined, response.data);
+                  }
+                }, function(error){
+                  defer('Get list error', error);
+                });
+              }
+              else if (apiData.api.apiType === 'object'){
+                return Restangular.oneUrl(newLink).get().then(function(response){
+                  scope[scopeDataField] = response.data.rawData;
+                  defer(undefined, response.data.rawData);
+                }, function(error){
+                  defer('Get list error', error);
+                })
+              }
+            });
+          };
+          return getData(apiLink, scope, scopeDataField, options);
         },
         postData: function(apiLink, data){
           //get api
