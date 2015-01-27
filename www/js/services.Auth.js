@@ -1,7 +1,7 @@
-define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], function(app)
+define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
 {
     app.factory('Auth', function($rootScope, $ionicHistory, $timeout, $state, 
-      $http, $ionicModal, Restangular, Modal, RestRoute, PushProcessingService) {
+      $http, $ionicModal, Api, Modal, PushProcessingService) {
       //Todo: 把定义从app.config移到这里
       var accessLevels = app.routingConfig.accessLevels,
           userRoles = app.routingConfig.userRoles,
@@ -47,7 +47,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
         login: function(success){ 
           //填写邮箱signup对话框
           (function(preRegistModal){
-            RestRoute.postModal('/signup', {}, {
+            Api.postModal('/signup', {}, {
               onSuccess: function(form, signupScope){
                 signupScope.hideModal();
                 preRegistModal(signupScope.formData.email);
@@ -57,7 +57,7 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
           //填写验证码pre-register对话框
           ((function(allowNotification){
             return function(email){
-              RestRoute.postModal('/pre-register', {}, {
+              Api.postModal('/pre-register', {}, {
                 init: function(scope){
                   scope.formData.email = email
                   scope.mustChoise = false;
@@ -72,22 +72,23 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
                   });
                 },
                 onSuccess: function(form, scope, data){
-                  var Me = Restangular.one("me");
-                  Me.get().then(function(me){
+                  Api.getData(data.me, {}, 'me').then(function(defer, me){
                     console.log(me);
-                    currentUser.userName = me.data.rawData.email;
+                    currentUser.userName = me.email;
                     currentUser.role = userRoles.user;
-                    me.data.rawData.homeData = data;
-                    currentUser.userData = me.data.rawData;
+                    me.homeData = data;
+                    currentUser.userData = me;
                     //存储用户信息到localStorage
-                    localStorage.setItem('user', JSON.stringify(me.data.rawData));
-                    console.log(me.data.rawData);
+                    localStorage.setItem('user', JSON.stringify(me));
+                    console.log(me);
                     
                     scope.closeModal();
-                  },function(error){
+                    defer(undefined);
+                  }, function(defer, error){
                     scope.commitFormError = true;
                     scope.commitFormErrorMsg = error.data.alertMsg;
                     console.log('login fail, get data: ' + JSON.stringify(error));
+                    defer('login fail', JSON.stringify(error));
                   })
                   //如果没有开启推送，显示提醒开启推送
                   .then(function(){
@@ -153,127 +154,6 @@ define(['app', 'services.Modal', 'services.RestRoute', 'services.Push'], functio
           localStorage.removeItem('user', null);
           success();
         },
-
-        ssoAuth: function(ssoData){
-          //Todo: 返回授权结果给第三方应用
-          var ssoCallBack = function(status, info, authCode){
-            if (ionic.Platform.platform() === 'macintel'){
-              console.log(ssoData.url + '://?status=' + status + '&info=' + encodeURIComponent(info) + (status==='0'?'&code=' + authCode:''));
-            }
-            if(ionic.Platform.isIOS()){
-              console.log("ios loginByClient");
-              window.open(ssoData.url + '://?status=' + status + '&info=' + encodeURIComponent(info) + (status==='0'?'&code=' + authCode:''), '_system');
-            }
-            if (ionic.Platform.isAndroid()){
-              console.log("android loginByClient");
-              window.open(ssoData.url + '://?status=' + status + '&info=' + encodeURIComponent(info) + (status==='0'?'&code=' + authCode:''), '_system');
-            }
-          };
-
-          var confirmSso = function(){
-            $ionicHistory.nextViewOptions({
-              disableAnimate: true,
-              disableBack: true
-            });
-            $state.go('app.wait-open');
-            Restangular.oneUrl('user-client-authorize/' + ssoData.appId + '/' + ssoData.url).get().then(function(data){
-              console.log('Get client authorize Success, Get data:' + JSON.stringify(data));;
-              Modal.okCancelModal('templates/modal-sso-auth.html', {}, {
-                init: function(scope){
-                  scope.gameClientTitle = data.data.rawData.description;
-                  scope.authCode = data.data.rawData.code;
-                  scope.publisher = data.data.rawData.publisher;
-                  scope.gameClientLogo = data.data.rawData.logo;
-                  console.log(JSON.stringify(scope.gameClientLogo));
-                },
-                onOk: function(form, scope){
-                  ssoCallBack('0', 'sso ok', data.data.rawData.code);
-                  scope.hideModal();
-                },
-                onCancel: function(scope){
-                  ssoCallBack('-2', 'sso cancel');
-                  scope.hideModal();
-                }
-              });
-            }, function(error){
-              ssoCallBack('-3', 'sso fail');
-              console.log('Get client authorize Error:' + JSON.stringify(error));
-            })
-            //Todo: 如果曾经授权，不需再授权
-          };
-
-          //没有登录
-          if (!this.isLoggedIn()){
-            //填写邮箱signup对话框
-            (function(preRegistModal){
-              RestRoute.postModal('http://42.120.45.236:8485/signup', {}, {
-                init: function(scope){
-                  scope.mustChoise = true;
-                },
-                onSuccess: function(form, signupScope){
-                  signupScope.hideModal();
-                  preRegistModal(signupScope.formData.email);
-                },
-                onCancel: function(){
-                  ssoCallBack('-1', 'logined cancel');
-                },
-              });
-            })
-            //填写验证码pre-register对话框
-            ((function(ssoAuth){
-              return function(email){
-                RestRoute.postModal('http://42.120.45.236:8485/pre-register', {}, {
-                  init: function(scope){
-                    scope.formData.email = email
-                    scope.mustChoise = true;
-                    scope.resetcommitFormError = function(ev){
-                      scope.commitFormError = false;
-                    }
-                  },
-                  onOk: function(form, scope){
-                    scope.commitFormError = false;
-                  },
-                  onSuccess: function(form, scope){
-                    var Me = Restangular.one("me");
-                    Me.get().then(function(me){
-                      console.log(me);
-                      currentUser.userName = me.data.rawData.email;
-                      currentUser.role = userRoles.user;
-                      //存储用户信息到localStorage
-                      localStorage.setItem('user', JSON.stringify(me.data.rawData));
-                      console.log(me.data.rawData);
-                      
-                      scope.closeModal();
-                    },function(error){
-                      scope.commitFormError = true;
-                      scope.commitFormErrorMsg = error.data.alertMsg;
-                      console.log('login fail, get data: ' + JSON.stringify(error));
-                    })
-                    .then(function(){
-                      ssoAuth();
-                    })
-                  },
-                  onCancel: function(form, scope){
-                    ssoCallBack('-1', 'logined cancel');
-                  },
-                  onError: function (error, form, scope){
-                    scope.commitFormError = true;
-                    scope.commitFormErrorMsg = error.data.alertMsg;
-                    console.log('login fail, get data: ' + JSON.stringify(error));
-                  }
-                });//End of postModal
-              };//End of function to be passed
-            })
-            //开通推送对话框
-            (function(scope){
-              confirmSso();
-            }));
-          }else{
-            confirmSso();
-          }
-
-        },
-
         accessLevels: accessLevels,
         userRoles: userRoles
       };

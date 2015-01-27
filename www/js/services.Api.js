@@ -39,7 +39,7 @@ define(['app', 'services.Modal'], function(app)
     var setApiModal = function(apiName, modalTemplate, modalFormData){
       if (api = _.find(apis, {name:apiName})){
         api.modalTemplate = modalTemplate;
-        if (api.modalFormData) api.modalFormData = modalFormData;
+        if (modalFormData) api.modalFormData = modalFormData;
       }
     }
 
@@ -55,6 +55,8 @@ define(['app', 'services.Modal'], function(app)
     apis.push(createApi('object', 'game', ['gameId']));
     apis.push(createApi('object', 'clip', ['clipId']));
     //User
+    apis.push(createApi('stream', 'signup', []));
+    apis.push(createApi('stream', 'pre-register', []));
     apis.push(createApi('object', 'home', []));
     apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
     apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
@@ -163,13 +165,17 @@ define(['app', 'services.Modal'], function(app)
             if (apiData.api.apiType === 'stream'){
               Restangular.allUrl(newLink).getList().then(function(response){
                 scope[scopeDataField] = response.data;
-                defer(undefined, scope[scopeDataField]);
+                defer(undefined, response.data);
+              }, function(error){
+                defer('Get list error', error);
               });
             }
             else if (apiData.api.apiType === 'object'){
               return Restangular.oneUrl(newLink).get().then(function(response){
                 scope[scopeDataField] = response.data.rawData;
-                defer(undefined, scope[scopeDataField]);
+                defer(undefined, response.data.rawData);
+              }, function(error){
+                defer('Get list error', error);
               })
             }
           });
@@ -204,37 +210,37 @@ define(['app', 'services.Modal'], function(app)
           }
           //初始化表单数据
           var tmpInitFunc = _.isFunction(eventHandles.init)? _.clone(eventHandles.init):function(){};
-          eventHandles.init = function($scope){
-            $scope.formData = apiData.api.modalFormData;
-            tmpInitFunc($scope);
+          eventHandles.init = function(scope){
+            scope.formData = apiData.api.modalFormData;
+            tmpInitFunc(scope);
           }
           var tmpOkFunc = _.isFunction(eventHandles.onOk)?eventHandles.onOk:function(){
             return Thenjs(function(defer){
               defer(undefined);
             })
           };
-          eventHandles.onOk = function(form, $scope){
+          eventHandles.onOk = function(form, scope){
             //校验表单是否正确
             if (form.$invalid) return;
             //回调传入的onOk函数
-            tmpOkFunc(form, $scope).then(function(defer){
-              console.log('Commit form data:' + JSON.stringify($scope.formData));
-              Restangular.all(_.template(apiData.api.api, apiData.params)).post($scope.formData).then(function(data){
+            tmpOkFunc(form, scope).then(function(defer){
+              console.log('Commit form data:' + JSON.stringify(scope.formData));
+              Restangular.all(_.template(apiData.api.api, apiData.params)).post(scope.formData).then(function(data){
                 console.log('Commit success, get data:', data.data.rawData);
                 //提交成功
                 if (_.isFunction(eventHandles.onSuccess)){
-                  eventHandles.onSuccess(form, $scope, data.data.rawData);
+                  eventHandles.onSuccess(form, scope, data.data.rawData);
                   defer(null);
                 }
                 //提交失败
                 else{
-                  $scope.hideModal();
+                  scope.hideModal();
                   defer("Commit form error");
                 }
               }, function(error){
                 console.log('Commit form error:' + JSON.stringify(error));
                 if (_.isFunction(eventHandles.onError)){
-                  eventHandles.onError(error, form, $scope);
+                  eventHandles.onError(error, form, scope);
                   defer("Commit form error");
                 }
               })
