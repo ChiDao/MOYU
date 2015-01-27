@@ -2,9 +2,12 @@ define(['app'], function(app){
 
   app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.backButton.previousTitleText(false);
-    $ionicConfigProvider.backButton.text('')
+
+    $ionicConfigProvider.backButton.text('').icon('g-icon-budicon-6');
 
     var access = app.routingConfig.accessLevels;
+
+    // budicon-6
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
     // Set up the various states which the app can be in.

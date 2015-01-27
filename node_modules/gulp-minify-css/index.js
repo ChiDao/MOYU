@@ -3,7 +3,8 @@ var path = require('path'),
   CleanCSS  = require('clean-css'),
   through2 = require('through2'),
   BufferStreams = require('bufferstreams'),
-  cache = require('memory-cache');
+  cache = require('memory-cache'),
+  applySourceMap = require('vinyl-sourcemaps-apply');
 
 function objectIsEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -76,6 +77,11 @@ function minifyCSSGulp(opt){
     // caller)
     var relativeToTmp = opt.relativeTo;
     opt.relativeTo = relativeToTmp || path.resolve(path.dirname(file.path));
+    
+    // Enable sourcemap support if initialized file comes in.
+    if (file.sourceMap) {
+      opt.sourceMap = true;
+    }
 
     try {
       minify(opt, file, file.contents, function (errors, newContents) {
@@ -83,6 +89,26 @@ function minifyCSSGulp(opt){
         // Restore original "relativeTo" value
         opt.relativeTo = relativeToTmp;
         file.contents = new Buffer(newContents.styles);
+        
+        if (newContents.sourceMap && file.sourceMap) {
+          // clean-css gives bad 'sources' and 'file' properties because we 
+          // pass in raw css instead of a file.  So we fix those here.
+          var map = JSON.parse(newContents.sourceMap);
+          map.file = path.relative(file.base, file.path);
+          map.sources = map.sources.map(function(src){
+            if(src === '__stdin__.css'){
+              return path.relative(file.base, file.path);
+            }else if(path.resolve( src ) === path.normalize( src )){
+              // Path is absolute so imported file had no existing source map.
+              // Trun absolute path in to path relative to file.base.
+              return path.relative(file.base, src);
+            }else{
+              return src;
+            }
+          });
+          
+          applySourceMap(file, JSON.stringify(map));
+        }
 
         done(errors ? errors[0] : null, file);
       });

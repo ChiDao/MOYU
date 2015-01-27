@@ -10316,6 +10316,16 @@ html, body {
 ion-content {
   background-color: #efefef !important; }
 
+.tab-item .icon {
+  font-size: 24px;
+  line-height: 38px; }
+.tab-item .tab-title {
+  font-size: 10px; }
+
+.back-button .icon::before {
+  font-size: 24px !important;
+  margin-left: 8px; }
+
 .title {
   font-weight: 800 !important;
   font-size: 17px !important; }
