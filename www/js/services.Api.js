@@ -180,7 +180,7 @@ define(['app', 'services.Modal'], function(app)
                     //获取数据
                     case 'getData':
                       console.debug("oper", oper);
-                      getData(data[oper[1].attr], data, oper[0]).then(function(defer){
+                      getData(data[oper[1].attr], data, oper[0], oper[1].options).then(function(defer){
                         callback(undefined);
                       }, function(defer, error){
                         callback('itearator get data error', error);
@@ -249,12 +249,12 @@ define(['app', 'services.Modal'], function(app)
                   scope[scopeDataField] = response.data.rawData;
                   if (options && options.itearator){
                     iteratorData(scope[scopeDataField]).then(function(){
-                      defer(undefined);
+                      defer(undefined, scope[scopeDataField]);
                     },function(defer, error){
                       defer(error);
                     });
                   }else{
-                    defer(undefined);
+                    defer(undefined, scope[scopeDataField]);
                   }
                 }, function(error){
                   defer('Get list error', error);
