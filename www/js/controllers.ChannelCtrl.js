@@ -35,24 +35,24 @@ define(['app', 'services.Api'], function(app)
         });
       };
       $scope.getClips();
-      $scope.newClip = function(){
+      $scope.newClip = function(openGameTime){
         Api.postModal('/new-clip/' + $stateParams.gameId, {}, {
           init: function(scope){
             // var
+            console.log("时间："+openGameTime);
             scope.imageURI = 'img/upload-photo.png';
             console.log(scope.imageURI);
             scope.formData = {};
             scope.getPicture = function(){
-              navigator.camera.getPicture(onSuccess, onFail, { 
-                quality: 50, 
-                destinationType: Camera.DestinationType.FILE_URI,
-                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM  
+              navigator.camera.getScreenShot(onSuccess, onFail, { 
+                date: openGameTime  
               }); 
 
               function onSuccess(imageURI) {
                 var image = document.getElementById('newPostImage');
                 image.src = imageURI;
                 scope.imageURI = imageURI;
+                console.log("成功截图"+image.src);
               }
 
               function onFail(message) {
@@ -103,13 +103,16 @@ define(['app', 'services.Api'], function(app)
 
         if (window.plugin && window.plugin.notification && window.plugin.notification.local){
 
-          //返回应用时取消对应的推送
+          //返回应用时取消对应的推送并开启截图上传页
           document.addEventListener("resume", onResume, false);
                             
           function onResume() {
+            
             window.plugin.notification.local.cancel(id,function () {
               console.log("已取消");
             }, $scope);
+
+            $scope.newClip(now);
           }
 
           window.plugin.notification.local.onclick = function(id, state, json){
