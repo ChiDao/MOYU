@@ -172,6 +172,51 @@ define(['app', 'services.Modal'], function(app)
             }
             console.debug(newLink);
 
+            var iteratorData = function(data){
+              return Thenjs(function(defer){
+                async.each(_.pairs(options.itearator), function(oper,callback){
+                  // console.debug("getData itea", oper);
+                  switch (oper[1].type){
+                    //获取数据
+                    case 'getData':
+                      console.debug("oper", oper);
+                      getData(data[oper[1].attr], data, oper[0]).then(function(defer){
+                        callback(undefined);
+                      }, function(defer, error){
+                        callback('itearator get data error', error);
+                      });
+                      break;
+                    //默认函数
+                    case 'function':
+                      // console.debug(data[oper[0]]);
+                      data[oper[0]] = function(scope, scopeDataField){
+                        return getData(data[oper[1].attr], scope, scopeDataField);
+                      }
+                      callback(undefined);
+                      break;
+                    case 'existsFunction':
+                      // console.debug(data[oper[1].attr]);
+                      data[oper[0]] = function(callback){
+                        return getData(data[oper[1].attr], {}, 'exist').then(function(defer){
+                          callback(true);
+                          defer(undefined, true);
+                        }, function(defer){
+                          callback(false);
+                          defer(undefined, false);
+                        });
+                      }
+                      callback(undefined);
+                      break;
+                    default:
+                      callback("can't find itearator operator: " + oper[1].type);
+                  }
+                }, function(error){
+                  if (error) defer(error, error);
+                  else defer(undefined);
+                });
+              })
+            };
+
             //get data
             var retData;
             return Thenjs(function(defer){
@@ -180,27 +225,13 @@ define(['app', 'services.Modal'], function(app)
                   scope[scopeDataField] = response.data;
                   if (options && options.itearator){
                     //循环处理数据
-                    async.each(scope[scopeDataField], function(data, cb){
+                    async.each(scope[scopeDataField], function(data, callback){
                       // console.debug("getData data", data)
                       //虚幻处理iterator
-                      async.each(_.pairs(options.itearator), function(oper,callback){
-                        // console.debug("getData itea", oper);
-                        switch (oper[1].type){
-                          //获取数据
-                          case 'getData':
-                            console.debug("oper", oper);
-                            getData(data[oper[1].attr], data, oper[0]).then(function(defer){
-                              callback(undefined);
-                            }, function(defer, error){
-                              callback('itearator get data error', error);
-                            });
-                            break;
-                          default:
-                            callback("can't find itearator operator");
-                        }
-                      }, function(error){
-                        if (error) cb(error);
-                        else cb(undefined);
+                      iteratorData(data).then(function(defer){
+                        callback(undefined);
+                      },function(defer, error){
+                        callback(error);
                       });
                     }, function(error){
                       if (error) defer(error);
@@ -214,9 +245,17 @@ define(['app', 'services.Modal'], function(app)
                 });
               }
               else if (apiData.api.apiType === 'object'){
-                return Restangular.oneUrl(newLink).get().then(function(response){
+                Restangular.oneUrl(newLink).get().then(function(response){
                   scope[scopeDataField] = response.data.rawData;
-                  defer(undefined, response.data.rawData);
+                  if (options && options.itearator){
+                    iteratorData(scope[scopeDataField]).then(function(){
+                      defer(undefined);
+                    },function(defer, error){
+                      defer(error);
+                    });
+                  }else{
+                    defer(undefined);
+                  }
                 }, function(error){
                   defer('Get list error', error);
                 })

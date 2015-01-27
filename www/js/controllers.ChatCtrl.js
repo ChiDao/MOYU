@@ -8,20 +8,20 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 				// console.log('back');
 				$ionicHistory.goBack();
 			};
-
-			Api.getData(Api.getStateUrl(), $scope, 'clip').then(function(){
-				console.debug($scope.clip);
-				//检测是否关注该话题
-				$scope.checkHasFollowedPost = function(){
-					Api.getData($scope.clip.subscribe, $scope, 'followedPost').then(function(){
-						$scope.hasFollowedPost = true;
-					}, function(){
-						$scope.hasFollowedPost = false;
+			Api.getData(Api.getStateUrl(), $scope, 'clip', {
+				itearator: {
+					checkHasFollowedPost: {
+						type:"existsFunction",
+						attr:"subscribe",
+					}
+				}
+			}).then(function(){
+				($scope.checkHasFollowedPost = function(){
+					$scope.clip.checkHasFollowedPost(function(hasFollowedPost){
+						$scope.hasFollowedPost = hasFollowedPost;
 					});
-				};
-				$scope.checkHasFollowedPost();
-
-
+				})();
+				
 	      		$scope.toggleSubscribe = function(){
 
 		      		var checkPush =  PushProcessingService.checkResult();
@@ -41,6 +41,8 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 		    			});
 		    		}
 				}
+			}, function(defer, error){
+				console.debug(error);
 			})
 			
 			
