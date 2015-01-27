@@ -14,10 +14,10 @@ define([
     ], function(){
 
   var starter = angular.module('starter', [
-    'ionic', 
+    'ionic',
     'restangular',
-    'ngMessages', 
-    'ngCookies', 
+    'ngMessages',
+    'ngCookies',
     'pascalprecht.translate',
     ]);
 
@@ -38,6 +38,7 @@ define([
     $ionicPlatform.ready(function() {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
+
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       }
@@ -52,7 +53,7 @@ define([
       // }
     });
   });
-  
+
 
   //角色配置
   (function(exports){

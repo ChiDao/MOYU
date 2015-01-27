@@ -1,20 +1,20 @@
 ion-modal-view#AllowNoti.Pages
   ion-header-bar
-    .title {{'open_notification'|translate}}
+    .title 电子邮件
     .buttons
-      button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') {{'cancel'|translate}}
+      button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') 取消
   form(name='signUpForm', novalidate="", ng-submit='ok(signUpForm)')
     ion-content(ng-class="{'has-error': signUpForm.email.$invalid}")
       ion-list
         label.item.item-input.item-stacked-label
-          span.input-label E-Mail
-          input(name='email', type='email', placeholder="{{'email_placeholder'|translate}}", ng-model='formData.email', required)
-      
+          span.input-label 电子邮件
+          input(name='email', type='email', placeholder="请输入你的电子邮件地址", ng-model='formData.email', required)
+
         label.item(ng-messages='signUpForm.email.$error', ng-messages-include='templates/form-errors.html')
           p.message.form-error(ng-message='email') {{'email_form'|translate}}
 
       .padding
-        button.button.button-block.button-positive.activated(type='submit') {{'next'|translate}}
+        button.button.button-block.button-positive.activated(type='submit') 下一步
 
 
 //- ion-modal-view#AllowNoti.Pages

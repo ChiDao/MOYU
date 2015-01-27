@@ -1,15 +1,15 @@
 ion-modal-view#Passcode.Pages
   ion-header-bar
-    .title {{'email'|translate}}
+    .title 验证码
     .buttons
-      button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') {{'cancel'|translate}}
+      button.color-bule.button.button-clear(ng-click='mustChoise?cancelModal():closeModal()') 取消
   form(name='signUpForm', novalidate="", ng-submit='ok(signUpForm)')
     ion-content(ng-class="{'has-error': signUpForm.email.$invalid}")
       ion-list
         label.item.item-input.item-stacked-label
-          span.input-label 驗證碼
-          input(name='password',placeholder="驗證碼",type='number',pattern="[0-9]*", ng-keyup="resetcommitFormError($event)",ng-model='formData.password',ng-minlength='4', ng-maxlength='4', required)
-      
+          span.input-label 验证码
+          input(name='password',placeholder="请输入你收到的验证码",type='number',pattern="[0-9]*", ng-keyup="resetcommitFormError($event)",ng-model='formData.password',ng-minlength='4', ng-maxlength='4', required)
+
         label.item(ng-messages='signUpForm.email.$error', ng-messages-include='templates/form-errors.html')
             p.message.form-error(ng-message='required') 請輸入郵箱收到的驗證碼
             p.message.form-error(ng-message='number') 需要 4 位驗證碼
@@ -18,8 +18,8 @@ ion-modal-view#Passcode.Pages
             p.message.form-error(ng-if="commitFormError") {{commitFormErrorMsg}}
 
       .padding
-        button.button.button-block.button-positive.activated(type='submit') {{'next'|translate}}
-      
+        button.button.button-block.button-positive.activated(type='submit') 下一步
+
 
 //- ion-modal-view.Pages
 //-   ion-header-bar.bar
@@ -39,9 +39,9 @@ ion-modal-view#Passcode.Pages
 //-             p.message.form-error(ng-message='minlength') 最少 4 位驗證碼
 //-             p.message.form-error(ng-message='maxlength') 最大 4 位驗證碼
 //-             p.message.form-error(ng-if="commitFormError") {{commitFormErrorMsg}}
-        
+
 //-     footer.page-footer.page-padding
 //-         .row
 //-           .col
 //-             button#buttonOk.a-button.button.main-button.right-arrows(type='submit') {{'next'|translate}}
-//-       
+//-
