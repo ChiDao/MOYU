@@ -3,12 +3,6 @@ define(['app', 'services.Api'], function(app)
   app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', 
     function($scope, $stateParams, UI, Api, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout) {
 
-      // pull refresh
-      $scope.doRefresh = function() {
-        $scope.getClips().then(function(){
-          $scope.$broadcast('scroll.refreshComplete');
-        });
-      };
       
       //
       $scope.$on("$ionicView.afterEnter", function() {
@@ -21,87 +15,104 @@ define(['app', 'services.Api'], function(app)
               options: {
                 last: true
               }
+            },
+            getClips: {
+              type: 'function',
+              attr: 'clips'
             }
           }
         }).then(function(){
-              console.debug('$scope.channel:', $scope.channel.clientsData);
-        });
+          console.debug('$scope.channel:', $scope.channel);
+          // get clips
+          $scope.getClips = function(){
+            return $scope.channel.getClips($scope, 'clips', {'last':true}).then(function(defer){
+              _.forEach($scope.clips, function(clip){
+                console.debug($scope.clips);
+                Api.getData(clip.user, clip, 'userData').then(function(){
+                  console.log(clip.userData);
+                });
+              })
+              defer(undefined);
+            });
+          };
+          $scope.getClips();
+
+          // pull refresh
+          $scope.doRefresh = function() {
+            $scope.getClips().then(function(){
+              console.debug("refreshComplete ")
+              $scope.$broadcast('scroll.refreshComplete');
+            });
+          };//End of doRefresh
+
+          $scope.newClip = function(openGameTime,orientation){
+            Api.postModal($scope.channel.addClip, {}, {
+              init: function(scope){
+                // var
+                console.log("时间："+openGameTime);
+                console.log("方向："+orientation);
+                scope.imageURI = 'img/upload-photo.png';
+                console.log(scope.imageURI);
+                scope.formData = {};
+                scope.getPicture = function(){
+                  navigator.camera.getScreenShot(onSuccess, onFail, { 
+                    date: openGameTime,
+                    orientation:orientation
+                  }); 
+
+                  function onSuccess(imageURI) {
+                    var image = document.getElementById('newPostImage');
+                    image.src = imageURI;
+                    scope.imageURI = imageURI;
+                    console.log("成功截图");
+                  }
+
+                  function onFail(message) {
+                    alert('Failed because: ' + message);
+                  }
+                }
+              },
+              onOk: function(form, scope){
+                return Thenjs(function(defer){
+                  var win = function (r) {
+                      console.log("Code = " + r.responseCode);
+                      console.log("Response = " + r.response);
+                      console.log("Sent = " + r.bytesSent);
+                      var returnJson = JSON.parse(r.response);
+                      scope.formData.img = returnJson['294@2x'];
+                      defer(undefined);
+                  };
+
+                  var fail = function (error) {
+                      alert("An error has occurred: Code = " + JSON.stringify(error));
+                      console.log("upload error source " + error.source);
+                      console.log("upload error target " + error.target);
+                      defer("Upload image error");
+                  };
+
+                  var options = new FileUploadOptions();
+                  options.fileKey = "file";
+                  options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
+                  console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
+                  options.mimeType = "image/jpeg";
+                  //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
+
+                  var ft = new FileTransfer();
+                  ft.upload(scope.imageURI, encodeURI("http://42.120.45.236:8485/upload"), win, fail, options);
+                });
+              },
+              onSuccess: function(form, scope){
+                $scope.getClips();
+                scope.hideModal();
+              }
+            })
+          };//End of new clip
+
+        });//End of then function
       });
 
-      // get clips
-      $scope.getClips = function(){
-        return Api.getData('/game-clips/' + $stateParams.gameId + '?_last', $scope, 'clips').then(function(){
-          _.forEach($scope.clips, function(clip){
-            console.debug($scope.clips);
-            Api.getData(clip.user, clip, 'userData').then(function(){
-              console.log(clip.userData);
-            });
-          })
-        });
-      };
-      $scope.getClips();
-      $scope.newClip = function(openGameTime,orientation){
-        Api.postModal('/new-clip/' + $stateParams.gameId, {}, {
-          init: function(scope){
-            // var
-            console.log("时间："+openGameTime);
-            console.log("方向："+orientation);
-            scope.imageURI = 'img/upload-photo.png';
-            console.log(scope.imageURI);
-            scope.formData = {};
-            scope.getPicture = function(){
-              navigator.camera.getScreenShot(onSuccess, onFail, { 
-                date: openGameTime,
-                orientation:orientation
-              }); 
-
-              function onSuccess(imageURI) {
-                var image = document.getElementById('newPostImage');
-                image.src = imageURI;
-                scope.imageURI = imageURI;
-                console.log("成功截图");
-              }
-
-              function onFail(message) {
-                alert('Failed because: ' + message);
-              }
-            }
-          },
-          onOk: function(form, scope){
-            return Thenjs(function(defer){
-              var win = function (r) {
-                  console.log("Code = " + r.responseCode);
-                  console.log("Response = " + r.response);
-                  console.log("Sent = " + r.bytesSent);
-                  var returnJson = JSON.parse(r.response);
-                  scope.formData.img = returnJson['294@2x'];
-                  defer(undefined);
-              };
-
-              var fail = function (error) {
-                  alert("An error has occurred: Code = " + JSON.stringify(error));
-                  console.log("upload error source " + error.source);
-                  console.log("upload error target " + error.target);
-                  defer("Upload image error");
-              };
-
-              var options = new FileUploadOptions();
-              options.fileKey = "file";
-              options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
-              console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
-              options.mimeType = "image/jpeg";
-              //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
-
-              var ft = new FileTransfer();
-              ft.upload(scope.imageURI, encodeURI("http://42.120.45.236:8485/upload"), win, fail, options);
-            });
-          },
-          onSuccess: function(form, scope){
-            $scope.getClips();
-            scope.hideModal();
-          }
-        })
-      };
+      
+      
 
       $scope.playGame = function(){
         if($scope.channel.orientation == true){

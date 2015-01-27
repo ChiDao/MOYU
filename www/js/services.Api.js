@@ -189,8 +189,8 @@ define(['app', 'services.Modal'], function(app)
                     //默认函数
                     case 'function':
                       // console.debug(data[oper[0]]);
-                      data[oper[0]] = function(scope, scopeDataField){
-                        return getData(data[oper[1].attr], scope, scopeDataField);
+                      data[oper[0]] = function(scope, scopeDataField, options){
+                        return getData(data[oper[1].attr], scope, scopeDataField, options);
                       }
                       callback(undefined);
                       break;
