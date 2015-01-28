@@ -11,46 +11,49 @@ define(['app', 'services.Api'], function(app)
       $scope.hasNewComments = {};
       var fromDetailSubcribe = '';
 
+      var bindSubscribes = Api.bindList(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
+      itearator: {
+        callback: {
+          type: 'callback',
+          callback: function(subcribe){
+            // console.debug(subcribe);
+            return Thenjs(function(defer){
+
+              //注册comet事件，只在本页时进行刷新
+              // console.debug("clipId", subcribe['@clip']._id);
+              if (!hasRegisterSubscribe[subcribe['@clip']._id]){
+                ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
+                  // console.debug("checkNewComments", $state.current.name, $state.current);
+
+                  if ($state.current.name === 'tab.chats'){
+                    $timeout(function(){
+                      getSubscribes();
+                    },1); 
+                  }
+                });
+                hasRegisterSubscribe[subcribe['@clip']._id] = true;
+              }
+
+              if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
+                var comments = subcribe['@clip']['@comments']['slice'];
+                var tmpLastComment = comments[comments.length - 1];
+                console.debug(tmpLastComment);
+                Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
+                  Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
+                    defer(undefined);
+                  });
+                });
+              }
+            });//End of Thenjs
+          }
+        }
+      }
+    });
+    bindSubscribes.init();
+
       //更新列表
       var getSubscribes = function(){
-          Api.getData(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
-            itearator: {
-              callback: {
-                type: 'callback',
-                callback: function(subcribe){
-                  // console.debug(subcribe);
-                  return Thenjs(function(defer){
-
-                    //注册comet事件，只在本页时进行刷新
-                    // console.debug("clipId", subcribe['@clip']._id);
-                    if (!hasRegisterSubscribe[subcribe['@clip']._id]){
-                      ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
-                        // console.debug("checkNewComments", $state.current.name, $state.current);
-
-                        if ($state.current.name === 'tab.chats'){
-                          $timeout(function(){
-                            getSubscribes();
-                          },1); 
-                        }
-                      });
-                      hasRegisterSubscribe[subcribe['@clip']._id] = true;
-                    }
-
-                    if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
-                      var comments = subcribe['@clip']['@comments']['slice'];
-                      var tmpLastComment = comments[comments.length - 1];
-                      console.debug(tmpLastComment);
-                      Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
-                        Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
-                          defer(undefined);
-                        });
-                      });
-                    }
-                  });//End of Thenjs
-                }
-              }
-            }
-          });
+          bindSubscribes.refresh();
        };
 
       $scope.$on("$ionicView.afterEnter", function() {
