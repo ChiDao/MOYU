@@ -134,7 +134,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
                     } 
 
                     scope.complete = function(){ 
-                        getFollowedGame();
+                        bindChannels.refresh();
                         scope.hideModal();
                     }
 
