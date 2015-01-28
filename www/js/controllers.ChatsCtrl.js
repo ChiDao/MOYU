@@ -40,6 +40,7 @@ define(['app', 'services.Api'], function(app)
                 console.debug(tmpLastComment);
                 Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
                   Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
+                    console.debug(subcribe['@clip'].lastCommentUserData)
                     defer(undefined);
                   });
                 });

@@ -65,7 +65,7 @@ define(['app', 'services.Modal'], function(app)
     //game client
     apis.push(createApi('stream', 'game-clients', ['game']));
     apis.push(createApi('object', 'follow-game', ['game', 'user'], {'user':'$currentUser'}));
-    apis.push(createApi('stream', 'recent-played-games', ['user']));
+    apis.push(createApi('stream', 'recent-played-games', ['user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'clients-by-platform', ['platform']));
     //clip comments
     apis.push(createApi('stream', 'new-clip', ['game'], {'user':'$currentUser'}));
