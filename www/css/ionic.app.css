@@ -10297,6 +10297,9 @@ h5 {
   .page-footer .button {
     margin-bottom: 30px !important; }
 
+.bar-footer .button.button-block, .bar-footer .button.button-full {
+  margin-top: 3px; }
+
 /*
 	color
 	顏色設置
@@ -10379,7 +10382,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   font-size: 0.875rem; }
 
 .messages li:nth-child(even) p {
-  background: #158ffe;
+  background: #344b62;
   color: #fff; }
 
 .messages img {
@@ -10390,7 +10393,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 #Channels ion-list .item:first-child {
   background-color: #ebf5ff !important; }
 
-#Channels ion-list .item {
+#Channels ion-list .item, #AddChannel ion-list .item {
   border-color: #d8d8d8;
   padding-left: 58px;
   font-size: 14px;
@@ -10398,19 +10401,19 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   min-height: 32px;
   color: #000;
   font-weight: 300; }
-  #Channels ion-list .item .item-note {
+  #Channels ion-list .item .item-note, #AddChannel ion-list .item .item-note {
     font-size: 12px;
     font-weight: 800;
     text-align: right;
     color: #646464; }
-    #Channels ion-list .item .item-note b {
+    #Channels ion-list .item .item-note b, #AddChannel ion-list .item .item-note b {
       margin-left: 0.4em;
       color: #0975d9; }
-    #Channels ion-list .item .item-note hide {
+    #Channels ion-list .item .item-note hide, #AddChannel ion-list .item .item-note hide {
       opacity: 0; }
-  #Channels ion-list .item .first hide {
+  #Channels ion-list .item .first hide, #AddChannel ion-list .item .first hide {
     opacity: 1 !important; }
-#Channels ion-list img {
+#Channels ion-list img, #AddChannel ion-list img {
   border-radius: 7px;
   height: 30px;
   width: 30px;

@@ -1,9 +1,12 @@
 define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(app)
 {
-	app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate', 
+	app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicFrostedDelegate', '$ionicScrollDelegate',
 		'$ionicHistory', '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService',
-		function($scope, $state, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate, 
+		function($scope, $state, $timeout, $ionicFrostedDelegate, $ionicScrollDelegate,
 			$ionicHistory, $stateParams, Auth, Api, ApiEvent,PushProcessingService) {
+
+			$scope.hasFollowedPost = true;
+
 			$scope.backButton = function() {
 				// console.log('back');
 				$ionicHistory.goBack();
@@ -24,9 +27,10 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 				($scope.checkHasFollowedPost = function(){
 					$scope.clip.checkHasFollowedPost(function(hasFollowedPost){
 						$scope.hasFollowedPost = hasFollowedPost;
+						console.log(hasFollowedPost);
 					});
 				})();
-				
+
 	      		$scope.toggleSubscribe = function(){
 
 		      		var checkPush =  PushProcessingService.checkResult();
@@ -62,8 +66,8 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 			}, function(defer, error){
 				console.debug(error);
 			})
-			
-			
+
+
 
 			//初始化获取讨论内容
 			var commentNextUrl = '';

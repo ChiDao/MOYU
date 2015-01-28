@@ -7,8 +7,23 @@ ion-modal-view#AddChannel.Pages
     ion-list
       a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap')
         img(src='{{channel.gameData.logo}}')
-        h2 {{channel.gameData.name}}
-        .col.text-right.no-padding
-            button.color-w.button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'Yes' && channel.followed == 'No'") 关注
-            button.mini-button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'No'") 下载
+        | {{channel.gameData.name}}
+        span.item-note(ng-click="followGame(channel)",ng-show="channel.installed == 'Yes' && channel.followed == 'No'")
+          | 关注
+        span.item-note(ng-click="followGame(channel)",ng-show="channel.installed == 'No'")
+          | 下载
+
+
+
+
+
+
+
+    //- ion-list
+    //-   a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap')
+    //-     img(src='{{channel.gameData.logo}}')
+    //-     h2 {{channel.gameData.name}}
+    //-     .col.text-right.no-padding
+    //-         button.color-w.button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'Yes' && channel.followed == 'No'") 关注
+    //-         button.color-w.button.watting(ng-click="followGame(channel)",ng-show="channel.installed == 'No'") 下载
 
