@@ -153,7 +153,7 @@ define(['app', 'services.Api'], function(app)
           });
         }
 
-        window.open($scope.channel.clientsData.url + '://');
+        window.open($scope.channel.clientsData[0].url + '://');
       }
     }
   ]);
