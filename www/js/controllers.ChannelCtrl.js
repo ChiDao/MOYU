@@ -34,7 +34,9 @@ define(['app', 'services.Api'], function(app)
           console.debug('$scope.channel:', $scope.channel);
           // get clips
           $scope.getClips = function(){
-            return $scope.channel.getClips($scope, 'clips');
+            return $scope.channel.getClips($scope, 'clips').then(function(){
+              console.debug($scope.clips);
+            });
           };
           $scope.getClips();
 

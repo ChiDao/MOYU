@@ -4,25 +4,29 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth,$ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q,Modal) {
  
     	// UI.testModal('modal-new-clip');
-
-    	$scope.addChannel = function(){
-    		addChannelModal()
-    	}
-
         var getFollowedGame = function(){
             var tmp = {};
-            Api.getData('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels').then(function(){
-                console.debug($scope.channels);
-                _.forEach($scope.channels, function(interest){
-                    if (interest['@clips'] && interest['@clips']['slice']){
-                        interest.lastClip = interest['@clips']['slice'][interest['@clips']['slice'].length - 1]
+            Api.getData('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels', {
+                itearator: {
+                    lastClip:{
+                        type: 'transfer',
+                        attr: '@clips',
+                        transfer: function(clips){
+                            if (clips && clips['slice']){
+                                return clips['slice'][clips['slice'].length - 1]
+                            }else{
+                                return undefined;
+                            }
+                        }
                     }
-                    Api.getData(interest.game, interest, 'gameData').then(function(){
-                        console.debug(interest);
-                    });
-                })
+                }
+            }).then(function(){
+                console.debug($scope.channels);
             });
         };
+        $scope.$on("$ionicView.afterEnter", function() {
+            getFollowedGame();
+        });
 
         function getGame(scope){
             var getChannels = function(){
@@ -128,16 +132,14 @@ define(['app', 'services.Api','services.Modal'], function(app)
                 }
             })
         }
-
-
+        $scope.addChannel = function(){
+            addChannelModal()
+        }
     	if (!Auth.isLoggedIn()){
             addChannelModal()
         }
 
 
-        $scope.$on("$ionicView.afterEnter", function() {
-            getFollowedGame();
-        });
         
     }
   ]);
