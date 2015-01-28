@@ -75,6 +75,7 @@ typedef NSUInteger CDVMediaType;
 @property (strong) NSData* data;
 
 - (void)takeScreenShot:(CDVInvokedUrlCommand*)command;
+- (void)takeScreenShots:(CDVInvokedUrlCommand*)command;
 /*
  * getPicture
  *
