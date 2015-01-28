@@ -21,6 +21,25 @@ define([
     'pascalprecht.translate',
     ]);
 
+  /*
+  * img2x
+  * 高清圖片
+  * img2x(src2x='File url without extension',ext='extension')
+  */
+  starter.directive('img2x', function() {
+    return {
+      scope: {
+        src: '@src2x',
+        ext: '@ext'
+      },
+      replace: true,
+      restrict: "E",
+      transclude: false,
+      template: "<img src='{{src}}.{{ext}}' srcset='{{src}}@2x.{{ext}} 2x' >"
+    };
+  });
+
+// img(src="img/data/soul-clash/sotre.png" srcset="img/data/soul-clash/sotre@2x.png 2x")
 
   starter.run(function($state, $ionicPlatform,PushProcessingService) {
     PushProcessingService.checkinitialize();
