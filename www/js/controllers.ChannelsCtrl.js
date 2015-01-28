@@ -129,7 +129,8 @@ define(['app', 'services.Api','services.Modal'], function(app)
                             else{                                
                                 var parsedUrl = /(\w+)$/.exec(channle.follow);
                                 // console.debug(parsedUrl[1]);
-                                channle.doFollow({game:parsedUrl[1], user:Auth.currentUser().userData._id});
+                                // channle.doFollow({});
+                                Api.putData(channle.follow, {game:parsedUrl[1], user:Auth.currentUser().userData._id});
                                 scope.ifAbled = "able";
                                 channle.followed = "Yes";
                             }
