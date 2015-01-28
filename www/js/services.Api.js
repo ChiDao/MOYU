@@ -194,6 +194,12 @@ define(['app', 'services.Modal'], function(app)
                       }
                       callback(undefined);
                       break;
+                    case 'putFunction':
+                      data[oper[0]] = function(data){
+                        return this.putData(data[oper[1].attr], data);
+                      }
+                      callback(undefined);
+                      break;
                     case 'existsFunction':
                       // console.debug(data[oper[1].attr]);
                       data[oper[0]] = function(callback){

@@ -47,6 +47,10 @@ define(['app', 'services.Api','services.Modal'], function(app)
                             transfer: function(game){
                                 return (_.contains(_.pluck(scope.interests,'game'), game)?'Yes':'No');
                             }
+                        },
+                        doFollow: {
+                            type: 'putFunction',
+                            attr: 'follow'
                         }
                     }
                 }).then(function(){
@@ -125,7 +129,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
                             else{                                
                                 var parsedUrl = /(\w+)$/.exec(channle.follow);
                                 // console.debug(parsedUrl[1]);
-                                Api.putData(channle.follow, {game:parsedUrl[1], user:Auth.currentUser().userData._id});
+                                channle.doFollow({game:parsedUrl[1], user:Auth.currentUser().userData._id});
                                 scope.ifAbled = "able";
                                 channle.followed = "Yes";
                             }
