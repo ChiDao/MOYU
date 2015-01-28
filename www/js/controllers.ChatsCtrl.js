@@ -13,50 +13,44 @@ define(['app', 'services.Api'], function(app)
 
       //更新列表
       var getSubscribes = function(){
-        return Thenjs(function(defer){
-          console.debug(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random());
-          $http({method:'GET',
-              url:Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),
-              withCredentials: true,
-              headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
+          Api.getData(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
+            itearator: {
+              callback: {
+                type: 'callback',
+                callback: function(subcribe){
+                  // console.debug(subcribe);
+                  return Thenjs(function(defer){
+
+                    //注册comet事件，只在本页时进行刷新
+                    // console.debug("clipId", subcribe['@clip']._id);
+                    if (!hasRegisterSubscribe[subcribe['@clip']._id]){
+                      ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
+                        // console.debug("checkNewComments", $state.current.name, $state.current);
+
+                        if ($state.current.name === 'tab.chats'){
+                          $timeout(function(){
+                            getSubscribes();
+                          },1); 
+                        }
+                      });
+                      hasRegisterSubscribe[subcribe['@clip']._id] = true;
+                    }
+
+                    if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
+                      var comments = subcribe['@clip']['@comments']['slice'];
+                      var tmpLastComment = comments[comments.length - 1];
+                      console.debug(tmpLastComment);
+                      Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
+                        Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
+                          defer(undefined);
+                        });
+                      });
+                    }
+                  });//End of Thenjs
+                }
               }
-           }).success(function(data){
-            $scope.subscribes = data.slice.reverse();
-            console.debug($scope.subscribes);
-
-            _.forEach($scope.subscribes, function(subcribe){
-              // checkNewComments(subcribe);
-              if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
-                var comments = subcribe['@clip']['@comments']['slice'];
-                var tmpLastComment = comments[comments.length - 1];
-                Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
-                  // console.debug(subcribe['@clip'].lastCommentUserData)
-                });
-              }
-              Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
-              });
-
-              //注册comet事件，只在本页时进行刷新
-              // console.debug("clipId", subcribe['@clip']._id);
-              if (!hasRegisterSubscribe[subcribe['@clip']._id]){
-                ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
-                  // console.debug("checkNewComments", $state.current.name, $state.current);
-
-                  if ($state.current.name === 'tab.chats'){
-                    $timeout(function(){
-                      getSubscribes();
-                    },1); 
-                  }
-                });
-                hasRegisterSubscribe[subcribe['@clip']._id] = true;
-              }
-
-              defer(undefined);
-            });
+            }
           });
-          })
        };
 
       $scope.$on("$ionicView.afterEnter", function() {

@@ -73,7 +73,7 @@ define(['app', 'services.Modal'], function(app)
     apis.push(createApi('stream', 'user-clips', ['user']));
     apis.push(createApi('stream', 'user-interests', ['user']));
     apis.push(createApi('object', 'follow-clip', ['clip', 'user'], {'user':'$currentUser'}));
-    apis.push(createApi('stream', 'recent-user-subscriptions', ['user']));
+    apis.push(createApi('stream', 'recent-user-subscriptions', ['user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'clip-comments', ['clip']));
     apis.push(createApi('object', 'new-comment', ['clip'], {'user':'$currentUser'}));
 
@@ -229,6 +229,11 @@ define(['app', 'services.Modal'], function(app)
                       data[oper[0]] = oper[1].transfer(data[oper[1].attr]);
                       callback(undefined);
                       break;
+                    case 'callback':
+                      oper[1].callback(data).then(function(){
+                        callback(undefined);
+                      });
+                      break;
                     default:
                       callback("can't find itearator operator: " + oper[1].type);
                   }
@@ -297,7 +302,7 @@ define(['app', 'services.Modal'], function(app)
 
           bindStruct.refresh = _.bind(function(apiLink, scope, scopeDataField, options){
             return this.getData(apiLink, {}, 'scopeDataField', options).then(function(defer, data){
-              console.debug(data);
+              scope[scopeDataField] = data;
             });
           }, 
           Api, apiLink, scope, scopeDataField, options);
