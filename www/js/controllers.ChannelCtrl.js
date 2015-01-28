@@ -82,7 +82,7 @@ define(['app', 'services.Api'], function(app)
                       console.log("Response = " + r.response);
                       console.log("Sent = " + r.bytesSent);
                       var returnJson = JSON.parse(r.response);
-                      scope.formData.img = returnJson['294@2x'];
+                      scope.formData.img = returnJson;
                       defer(undefined);
                   };
 

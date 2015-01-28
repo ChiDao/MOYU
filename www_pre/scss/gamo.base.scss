@@ -16,7 +16,7 @@ $margin-left:				16px;
 $background-padding:		16px;
 
 
-// 
+//
 
 /*
 	重寫
@@ -205,7 +205,7 @@ h5 {
 }
 
 .screen-bottom {
-	
+
 }
 
 .page-padding {
@@ -309,5 +309,11 @@ h5 {
 	background: transparent;
 	.button {
 		margin-bottom: 30px !important;
+	}
+}
+
+.bar-footer {
+	.button.button-block, .button.button-full {
+		margin-top: 3px;
 	}
 }

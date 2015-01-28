@@ -1,14 +1,14 @@
 ion-view#Chat(view-title='讨论')
 	ion-content(has-header='true', padding='true', start-y='120')
-		.chat-images
-			img(src="http://zuju.cc/images/uploads/gaea/1390549498_1436653066_16929_imageAddr.jpg")
+		.chat-top
+
 		ol.messages
 			li(ng-repeat='comment in comments')
 				p {{comment.content}}
 	ion-footer-bar
-		button.button.button-icon.ion-ios7-star-outline(ng-class="{'ion-ios7-star': hasFollowedPost, 'ion-ios7-star-outline':!hasFollowedPost}" ng-click="toggleSubscribe()")
-		input(type="text" ng-model="formData.content" required)
-		button.button.button-icon.ion-paper-airplane(ng-click="send()")
+		button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
+		input(ng-if="hasFollowedPost",type="text",ng-model="formData.content" required)
+		//- button.button.button-icon.ion-paper-airplane(ng-click="send()")
 
 //- ion-view#Chat(hide-nav-bar="true")
 	//- ion-header-bar
