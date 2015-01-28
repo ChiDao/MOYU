@@ -207,6 +207,10 @@ define(['app', 'services.Modal'], function(app)
                       }
                       callback(undefined);
                       break;
+                    case 'const':
+                      data[oper[0]] = oper[1].value;
+                      callback(undefined);
+                      break;
                     case 'transfer':
                       data[oper[0]] = oper[1].transfer(data[oper[1].attr]);
                       callback(undefined);

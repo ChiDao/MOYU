@@ -30,19 +30,27 @@ define(['app', 'services.Api','services.Modal'], function(app)
 
         function getGame(scope){
             var getChannels = function(){
-                Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels').then(function(){
+                Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels',{
+                    itearator: {
+                        gameData: {
+                            type: 'getData',
+                            attr: 'game',
+                        },
+                        installed: {
+                            type: 'const',
+                            attr: 'installed',
+                            value: 'checking',
+                        },
+                        followed: {
+                            type: 'transfer',
+                            attr: 'game',
+                            transfer: function(game){
+                                return (_.contains(_.pluck(scope.interests,'game'), game)?'Yes':'No');
+                            }
+                        }
+                    }
+                }).then(function(){
                     console.log(scope.channels);
-                    _.forEach(scope.channels, function(add){
-                        add.installed = "checking";
-                        add.followed = "No";
-                        if(_.contains(_.pluck(scope.interests,'game'), add.game)){
-                            add.followed = "Yes";
-                        };
-
-                        Api.getData(add.game, add, 'gameData').then(function(){
-                            console.log(add.gameData);
-                        });
-                    })
                     //异步检测应用是否存在函数
                     function asyncCheck(channel){
                         var deferred = $q.defer();
