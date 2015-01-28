@@ -147,6 +147,7 @@ define(['app', 'services.Modal'], function(app)
           $state.go(state, apiData.params);
         },
         getData: function(apiLink, scope, scopeDataField, options){
+          var Api = this;
           var parse = this.parse;
           var getData = function(apiLink, scope, scopeDataField, options){
             //get api
@@ -195,9 +196,15 @@ define(['app', 'services.Modal'], function(app)
                       callback(undefined);
                       break;
                     case 'putFunction':
-                      data[oper[0]] = function(data){
-                        return this.putData(data[oper[1].attr], data);
-                      }
+                      data[oper[0]] = _.bind(function(apiLink, data){
+                        return this.putData(apiLink, data);
+                      }, Api, data[oper[1].attr]);
+                      callback(undefined);
+                      break;
+                    case 'postFunction':
+                      data[oper[0]] = _.bind(function(apiLink, data){
+                        return this.postData(apiLink, data);
+                      }, Api, data[oper[1].attr]);
                       callback(undefined);
                       break;
                     case 'existsFunction':

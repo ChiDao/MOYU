@@ -13,9 +13,14 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 					checkHasFollowedPost: {
 						type:"existsFunction",
 						attr:"subscribe",
+					},
+					doPostComment: {
+						type: 'postFunction',
+						attr: 'comment'
 					}
 				}
 			}).then(function(){
+				console.debug($scope.clip);
 				($scope.checkHasFollowedPost = function(){
 					$scope.clip.checkHasFollowedPost(function(hasFollowedPost){
 						$scope.hasFollowedPost = hasFollowedPost;
@@ -40,6 +45,19 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 		    				$scope.checkHasFollowedPost();
 		    			});
 		    		}
+				}
+
+				//发送新消息
+				$scope.formData = {content:''};
+				$scope.send = function(newCommentForm){
+					//提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
+					$scope.clip.doPostComment($scope.formData)
+					.then(function(defer, response){
+						// console.debug(response.data.rawData);
+						// $scope.comments.push(response.data.rawData);
+						$ionicScrollDelegate.scrollBottom();
+						$scope.formData.content = '';
+					});
 				}
 			}, function(defer, error){
 				console.debug(error);
@@ -79,16 +97,5 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 				}
 			});
 
-			//发送新消息
-			$scope.formData = {content:''};
-			$scope.send = function(newCommentForm){
-				//提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
-				Api.postData('/new-comment/' + $stateParams.clipId, $scope.formData).then(function(defer, response){
-					// console.debug(response.data.rawData);
-					// $scope.comments.push(response.data.rawData);
-					$ionicScrollDelegate.scrollBottom();
-					$scope.formData.content = '';
-				});
-			}
   }]);
 });
