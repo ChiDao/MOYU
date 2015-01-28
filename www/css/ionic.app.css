@@ -10438,15 +10438,13 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
     width: 30px;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24); }
   #Chats ion-list .item .item-note {
-    font-size: 12px;
-    line-height: 30px;
-    height: 30px; }
+    position: absolute;
+    top: 0;
+    right: 0; }
     #Chats ion-list .item .item-note img {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 70px;
+      height: auto;
       width: 70px;
+      clip: rect(0px, 70px, 70px, 0px);
       box-shadow: none;
       border-radius: 0; }
 
