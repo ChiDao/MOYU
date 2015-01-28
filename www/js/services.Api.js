@@ -179,7 +179,7 @@ define(['app', 'services.Modal'], function(app)
                   switch (oper[1].type){
                     //获取数据
                     case 'getData':
-                      console.debug("oper", oper);
+                      // console.debug("oper", oper);
                       getData(data[oper[1].attr], data, oper[0], oper[1].options).then(function(defer){
                         callback(undefined);
                       }, function(defer, error){
@@ -189,8 +189,8 @@ define(['app', 'services.Modal'], function(app)
                     //默认函数
                     case 'function':
                       // console.debug(data[oper[0]]);
-                      data[oper[0]] = function(scope, scopeDataField, options){
-                        return getData(data[oper[1].attr], scope, scopeDataField, options);
+                      data[oper[0]] = function(scope, scopeDataField){
+                        return getData(data[oper[1].attr], scope, scopeDataField, oper[1].options);
                       }
                       callback(undefined);
                       break;

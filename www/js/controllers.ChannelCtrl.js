@@ -18,22 +18,23 @@ define(['app', 'services.Api'], function(app)
             },
             getClips: {
               type: 'function',
-              attr: 'clips'
+              attr: 'clips',
+              options: {
+                last: true,
+                itearator: {
+                  userData: {
+                    type: 'getData',
+                    attr: 'user'
+                  }
+                }
+              }
             }
           }
         }).then(function(){
           console.debug('$scope.channel:', $scope.channel);
           // get clips
           $scope.getClips = function(){
-            return $scope.channel.getClips($scope, 'clips', {'last':true}).then(function(defer){
-              _.forEach($scope.clips, function(clip){
-                console.debug($scope.clips);
-                Api.getData(clip.user, clip, 'userData').then(function(){
-                  console.log(clip.userData);
-                });
-              })
-              defer(undefined);
-            });
+            return $scope.channel.getClips($scope, 'clips');
           };
           $scope.getClips();
 
