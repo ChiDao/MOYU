@@ -56,6 +56,7 @@ define(['app', 'services.Modal'], function(app)
     apis.push(createApi('object', 'game', ['gameId']));
     apis.push(createApi('object', 'clip', ['clipId']));
     //User
+    apis.push(createApi('object', 'user-profile', ['user']));
     apis.push(createApi('stream', 'signup', []));
     apis.push(createApi('stream', 'pre-register', []));
     apis.push(createApi('object', 'home', []));
@@ -256,7 +257,7 @@ define(['app', 'services.Modal'], function(app)
                       });
                     }, function(error){
                       if (error) defer(error);
-                      else defer(undefined)
+                      else defer(undefined, response.data)
                     })
                   }else{
                     defer(undefined, response.data);
@@ -284,6 +285,27 @@ define(['app', 'services.Modal'], function(app)
             });
           };
           return getData(apiLink, scope, scopeDataField, options);
+        },
+        bindList: function(apiLink, scope, scopeDataField, options){
+          var Api = this;
+          var bindStruct = {};
+
+          bindStruct.init = _.bind(function(apiLink, scope, scopeDataField, options){
+            return this.getData(apiLink, scope, scopeDataField, options);
+          }, 
+          Api, apiLink, scope, scopeDataField, options);
+
+          bindStruct.refresh = _.bind(function(apiLink, scope, scopeDataField, options){
+            return this.getData(apiLink, {}, 'scopeDataField', options).then(function(defer, data){
+              console.debug(data);
+            });
+          }, 
+          Api, apiLink, scope, scopeDataField, options);
+          return bindStruct;
+
+          // if (!scope[scopeDataField]){
+          //   return this.getData(apiLink, scope, scopeDataField, options);
+          // }
         },
         postData: function(apiLink, data){
           //get api
