@@ -1,6 +1,7 @@
 ion-view#channel(view-title='{{channel.name}}')
   ion-nav-buttons(side="right")
-    button.button.icon.ion-ios-plus-empty.button-clear(ng-click="newClip()")
+    button.button.button-image(ng-click="newClip()")
+      img2x(src2x="img/icon-NewScreen",ext="png")
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     .list.card(ng-repeat="clip in clips")
@@ -13,21 +14,5 @@ ion-view#channel(view-title='{{channel.name}}')
         img(src='img/mcfly.jpg')
         h2 {{clip.userData.email}}
         p {{clip._created | date: 'yyyy-MM-dd HH:mm'}}
-  ion-footer-bar
-    button.button-calm(ng-click="playGame()") 玩游戏
-
-
-
-//- ion-view#channel(view-title='{{channel.name}}')
-//-   ion-content.padding
-//-     .list.card(ng-repeat="clip in clips")
-//-       .item.item-divider
-//-         {{clip.userData.email}}
-//-       .item.item-image
-//-         a(href='#/tab/channel-chat/{{clip._id}}')
-//-           img(src="{{clip.img}}")
-//-       .item.item-text-wrap
-//-         p {{clip.content}}
-//-   ion-footer-bar
-//-     button.button(ng-click="newClip()") 发表截图
-
+  //- ion-footer-bar
+  //-   button.button-calm(ng-click="playGame()") 玩游戏

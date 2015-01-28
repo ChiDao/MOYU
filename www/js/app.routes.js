@@ -2,7 +2,6 @@ define(['app'], function(app){
 
   app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.backButton.previousTitleText(false);
-
     $ionicConfigProvider.backButton.text('').icon('g-icon-budicon-6');
 
     var access = app.routingConfig.accessLevels;
