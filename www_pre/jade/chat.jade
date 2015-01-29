@@ -4,7 +4,7 @@ ion-view#Chat(view-title='讨论')
 
 		ol.messages
 			li(ng-repeat='comment in comments', class="{{comment.isOwned?'m-right':''}}")
-				p {{comment.content}} {{}}
+				p {{comment.content}}
 	ion-footer-bar
 		button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
 		form
