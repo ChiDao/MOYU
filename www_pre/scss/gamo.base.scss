@@ -149,6 +149,10 @@ h5 {
 	width: auto;
 }
 
+.text-overflow {
+	text-overflow: ellipsis;
+}
+
 .force-line {
 	@include force-line;
 }
