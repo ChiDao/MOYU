@@ -2,6 +2,7 @@ ion-view#Channels(view-title='刀塔传奇')
   ion-nav-buttons(side="right")
     button.button.icon.ion-ios-plus-empty.button-clear(ng-click="addChannel()")
   ion-content
+    ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
       a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', ng-click="Api.jumpTo(channel.game)")
         img(src="{{channel['@game'].logo}}")

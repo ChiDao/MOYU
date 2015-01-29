@@ -21,7 +21,7 @@ define(['app', 'services.Modal'], function(app)
         apiRegExpStr += (apiContext && apiContext[param]?'(?:\\/(\\w+))?':'\\/(\\w+)');
         api.api += '/<%= ' + param + ' %>';
       })
-      if (apiType === 'stream'){
+      if (_.indexOf(['stream', 'query'], apiType) >= 0){
         api.apiRegExpMap.push('urlParams');
         apiRegExpStr += '(\\?.*)?';
         api.api += '<%= urlParams %>';
@@ -65,7 +65,7 @@ define(['app', 'services.Modal'], function(app)
     //game client
     apis.push(createApi('stream', 'game-clients', ['game']));
     apis.push(createApi('object', 'follow-game', ['game', 'user'], {'user':'$currentUser'}));
-    apis.push(createApi('stream', 'recent-played-games', ['user']));
+    apis.push(createApi('stream', 'recent-played-games', ['user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'clients-by-platform', ['platform']));
     //clip comments
     apis.push(createApi('stream', 'new-clip', ['game'], {'user':'$currentUser'}));
@@ -73,7 +73,7 @@ define(['app', 'services.Modal'], function(app)
     apis.push(createApi('stream', 'user-clips', ['user']));
     apis.push(createApi('stream', 'user-interests', ['user']));
     apis.push(createApi('object', 'follow-clip', ['clip', 'user'], {'user':'$currentUser'}));
-    apis.push(createApi('stream', 'recent-user-subscriptions', ['user'], {'user':'$currentUser'}));
+    apis.push(createApi('query', 'recent-user-subscriptions', ['user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'clip-comments', ['clip']));
     apis.push(createApi('object', 'new-comment', ['clip'], {'user':'$currentUser'}));
 
@@ -247,28 +247,32 @@ define(['app', 'services.Modal'], function(app)
             //get data
             var retData;
             return Thenjs(function(defer){
-              if (apiData.api.apiType === 'stream'){
+              if (_.indexOf(['stream', 'query'], apiData.api.apiType) >= 0){
                 Restangular.allUrl(newLink).getList().then(function(response){
                   scope[scopeDataField] = response.data;
                   if (options && options.itearator){
                     //循环处理数据
                     async.each(scope[scopeDataField], function(data, callback){
-                      // console.debug("getData data", data)
+                      // callback(undefined);
                       //虚幻处理iterator
-                      iteratorData(data).then(function(defer){
-                        callback(undefined);
+                      iteratorData(data).then(function(iteaDefer){
+                        callback();
                       },function(defer, error){
                         callback(error);
                       });
                     }, function(error){
-                      if (error) defer(error);
-                      else defer(undefined, response.data)
+                      if (error){
+                        defer(error);
+                      }
+                      else {
+                        defer(undefined, response.data)
+                      }
                     })
                   }else{
                     defer(undefined, response.data);
                   }
                 }, function(error){
-                  defer('Get list error', error);
+                  defer(error);
                 });
               }
               else if (apiData.api.apiType === 'object'){
@@ -292,20 +296,64 @@ define(['app', 'services.Modal'], function(app)
           return getData(apiLink, scope, scopeDataField, options);
         },
         bindList: function(apiLink, scope, scopeDataField, options){
+          var apiData = this.parse(apiLink);
+          if (!apiData.api || _.indexOf(['stream', 'query'], apiData.api.apiType) < 0){
+            console.debug("Can't find stream or query api:", apiLink);
+            return undefined;
+          }
+
           var Api = this;
-          var bindStruct = {};
+          var bindStruct = {
+            scope: scope,
+            scopeDataField: scopeDataField,
+            options: options,
+            hasMoreValue: true,
+            hasMore: function(){return bindStruct.hasMoreValue;}
+          };
+          bindStruct.moreAttr = apiData.api.type === 'stream'?'prev':'next';
 
           bindStruct.init = _.bind(function(apiLink, scope, scopeDataField, options){
             return this.getData(apiLink, scope, scopeDataField, options);
           }, 
-          Api, apiLink, scope, scopeDataField, options);
+          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
 
           bindStruct.refresh = _.bind(function(apiLink, scope, scopeDataField, options){
-            return this.getData(apiLink, {}, 'scopeDataField', options).then(function(defer, data){
+            var tmp = {};
+            console.debug('fresh data', scope[scopeDataField]);
+            return this.getData(apiLink, tmp, 'scopeDataField', options).then(function(defer, data){
               scope[scopeDataField] = data;
+              defer(undefined);
+            }, function(defer){
+              console.debug('fresh data error', scope[scopeDataField]);
+              defer('fresh data error');
             });
           }, 
-          Api, apiLink, scope, scopeDataField, options);
+          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
+
+          bindStruct.more = _.bind(function(apiLink, scope, scopeDataField, options){
+            var tmp = {};
+            if (!scope[scopeDataField]) return Thenjs(function(defer){defer(undefined);});
+            // console.debug('get more data', scope[scopeDataField].meta[bindStruct.moreAttr]);
+            bindStruct.hasMoreValue = true;
+            return this.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, data){
+              console.debug(data);
+              // scope[scopeDataField] = data;
+              bindStruct.hasMoreValue = false;
+              defer(undefined);
+            }, function(defer, error){
+              if (error.status === 404){
+                bindStruct.hasMoreValue = false;
+                defer(undefined);
+              }
+              else{
+                bindStruct.hasMoreValue = false;
+                console.debug('get more data error: ', error);
+                defer('get more data error');
+              }
+            });
+          }, 
+          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
+
           return bindStruct;
 
           // if (!scope[scopeDataField]){
@@ -337,7 +385,7 @@ define(['app', 'services.Modal'], function(app)
             return false;
           }
           return Thenjs(function(defer){
-            Restangular.one(_.template(apiData.api.api, apiData.params)).put(data).then(function(response){
+            Restangular.one(_.template(apiData.api.api, apiData.params)).doPut(data).then(function(response){
               console.debug('Put data to link:' + JSON.stringify(response));
               defer(undefined, response);
             }, function(error){

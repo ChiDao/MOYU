@@ -69,7 +69,7 @@ cameraExport.getPicture = function(successCallback, errorCallback, options) {
 };
 
 cameraExport.getScreenShot = function(successCallback, errorCallback, options) {
-    argscheck.checkArgs('fFO', 'Camera.getPicture', arguments);
+    argscheck.checkArgs('fFO', 'Camera.getScreenShot', arguments);
     options = options || {};
     var getValue = argscheck.getValue;
 
@@ -79,6 +79,19 @@ cameraExport.getScreenShot = function(successCallback, errorCallback, options) {
     var args = [date, orientation];
 
     exec(successCallback, errorCallback, "Camera", "takeScreenShot", args);
+};
+
+cameraExport.getScreenShots = function(successCallback, errorCallback, options) {
+    argscheck.checkArgs('fFO', 'Camera.getScreenShots', arguments);
+    options = options || {};
+    var getValue = argscheck.getValue;
+
+    var date = getValue(options.date, new Date());
+    var orientation = getValue(options.orientation, true); // true: 竖屏
+
+    var args = [date, orientation];
+
+    exec(successCallback, errorCallback, "Camera", "takeScreenShots", args);
 };
 
 cameraExport.cleanup = function(successCallback, errorCallback) {
