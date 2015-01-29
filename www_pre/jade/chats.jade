@@ -8,4 +8,4 @@ ion-view#Chats(view-title='讨论')
         b {{subscribe['@clip'].lastCommentUserData.email}} <br>
         | {{subscribe["@clip"].content}} {{subscribe["@clip"]._modified | timeBefore}}
         span.item-note(ng-class='{first:$first}')
-          img(src="{{subscribe['@clip'].img}}")
+          img(src="{{subscribe['@clip'].img['100']}}")

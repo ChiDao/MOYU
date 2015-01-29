@@ -7,7 +7,7 @@ ion-view#channel(view-title='{{channel.name}}')
     .list.card(ng-repeat="clip in clips")
       .item.item-image
         a(ng-click="Api.jumpTo(clip._self, 'channels')")
-          img(src="{{clip.img}}")
+          img(src="{{clip.img['294@2x']}}")
       .item.item-text-wrap
         p {{clip.content}}
       .item.item-avatar

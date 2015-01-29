@@ -253,16 +253,20 @@ define(['app', 'services.Modal'], function(app)
                   if (options && options.itearator){
                     //循环处理数据
                     async.each(scope[scopeDataField], function(data, callback){
-                      // console.debug("getData data", data)
+                      // callback(undefined);
                       //虚幻处理iterator
-                      iteratorData(data).then(function(defer){
-                        callback(undefined);
+                      iteratorData(data).then(function(iteaDefer){
+                        callback();
                       },function(defer, error){
                         callback(error);
                       });
                     }, function(error){
-                      if (error) defer(error);
-                      else defer(undefined, response.data)
+                      if (error){
+                        defer(error);
+                      }
+                      else {
+                        defer(undefined, response.data)
+                      }
                     })
                   }else{
                     defer(undefined, response.data);
@@ -293,19 +297,27 @@ define(['app', 'services.Modal'], function(app)
         },
         bindList: function(apiLink, scope, scopeDataField, options){
           var Api = this;
-          var bindStruct = {};
+          var bindStruct = {
+            scope:scope,
+            scopeDataField:scopeDataField,
+            options:options,
+          };
 
           bindStruct.init = _.bind(function(apiLink, scope, scopeDataField, options){
             return this.getData(apiLink, scope, scopeDataField, options);
           }, 
-          Api, apiLink, scope, scopeDataField, options);
+          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
 
           bindStruct.refresh = _.bind(function(apiLink, scope, scopeDataField, options){
-            return this.getData(apiLink, {}, 'scopeDataField', options).then(function(defer, data){
+            var tmp = {};
+            console.debug('fresh data', scope[scopeDataField]);
+            return this.getData(apiLink, tmp, 'scopeDataField', options).then(function(defer, data){
               scope[scopeDataField] = data;
+            }, function(defer){
+              console.debug('fresh data error', scope[scopeDataField]);
             });
           }, 
-          Api, apiLink, scope, scopeDataField, options);
+          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
           return bindStruct;
 
           // if (!scope[scopeDataField]){

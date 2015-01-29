@@ -34,40 +34,51 @@ define(['app', 'services.Api'], function(app)
                 hasRegisterSubscribe[subcribe['@clip']._id] = true;
               }
 
+              // console.debug("getData 20",subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']);
               if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
                 var comments = subcribe['@clip']['@comments']['slice'];
                 var tmpLastComment = comments[comments.length - 1];
                 console.debug(tmpLastComment);
                 Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
                   Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
+                    // console.debug("getData 21");
                     console.debug(subcribe['@clip'].lastCommentUserData)
                     defer(undefined);
+                  }, function(){
+                    // console.debug("getData 22");
+                    defer("Get game data error");
                   });
+                }, function(innerDefer){
+                  // console.debug("getData 23");
+                  defer("Get user data error");
                 });
+              }else{
+                // console.debug("getData 24");
+                defer(undefined);
               }
             });//End of Thenjs
           }
         }
       }
     });
-    bindSubscribes.init();
 
-      //更新列表
-      var getSubscribes = function(){
-          bindSubscribes.refresh();
-       };
+    //更新列表
+    var getSubscribes = function(){
+      console.debug('getSubscribes')
+      bindSubscribes.refresh();
+    };
 
-      $scope.$on("$ionicView.afterEnter", function() {
-        getSubscribes();
-      });
+    $scope.$on("$ionicView.afterEnter", function() {
+      getSubscribes();
+    });
 
-      // pull refresh
-      $scope.doRefresh = function() {
-        getSubscribes().then(function(defer){
-          $scope.$broadcast('scroll.refreshComplete');
-        })
-        
-      };
+    // pull refresh
+    $scope.doRefresh = function() {
+      getSubscribes().then(function(defer){
+        $scope.$broadcast('scroll.refreshComplete');
+      })
+
+    };
 
     }
   ]);
