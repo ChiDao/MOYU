@@ -84,45 +84,65 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 	margin:0;
 	padding:0;
 	list-style-type:none;
-	position: relative;
-	.avatar {
-		border-radius: 50%;
-		width: 25px;
-	}
 }
 
 .messages li {
-	display:block;
+	display: inline-block;
 	float:left;
 	clear:both;
 	max-width:65%;
-	margin:0 0 1rem 0;
+	margin:0 0 1.4rem 0;
 	padding:0;
+	.avatar {
+		width: 25px;
+		height: 25px;
+		border-radius: 50%;
+	}
+	.avatar-frame {
+		float: left;
+		padding:.6875rem 0;
+	}
+	.content {
+		float: left;
+		margin-top: -16px;
+		h5 {
+			color: #919191;
+			font-size: 9px;
+			line-height: 25px;
+			height: 25px;
+			margin: 0;
+			padding: 0;
+			padding: 0 1em;
+			margin-bottom: -4px;
+		}
+		p {
+			border-radius: 0.6rem;
+			background:#e6e5eb;
+			color:#383641;
+			padding:.6875rem;
+			font-size:.875rem;
+			line-height: 1.375rem;
+			margin: 0 0.4rem;
+		}
+	}
 }
 
 .messages .m-right {
-	float:right !important;
+	float:right;
+	text-align: right;
+
+	.content p {
+		background: $height-color;
+		color:#fff;
+		float: left;
+	}
+	.avatar-frame {
+		float: right;
+		padding:.6875rem 0;
+	}
 }
 
-.messages .m-right img {
-	float:right !important;
-}
-
-.messages p {
-	border-radius:.75rem;
-	background:#e6e5eb;
-	color:#383641;
-	padding:.6875rem;
-	margin:0;
-	font-size:.875rem;
-}
-
-.messages .m-right p {
-	background: $height-color;
-	color:#fff;
-}
-
-.messages img {
+.messages p img {
 	display:block;
 	max-width:65%;
 	border-radius:.75rem;

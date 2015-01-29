@@ -1,10 +1,20 @@
 ion-view#Chat(view-title='讨论')
-	ion-content(has-header='true', padding='true', start-y='120')
+	ion-content(padding='true', start-y='120')
 		.chat-top
 
 		ol.messages
-			li(class="m-right",ng-repeat='comment in comments')
-				p {{comment.content}}
+			li(ng-repeat='comment in comments')
+				.avatar-frame
+					img.avatar(src='img/mcfly.jpg')
+				.content
+					h5 A-FU
+					p {{comment.content}}
+			li(class="m-right")
+				.avatar-frame
+					img.avatar(src='img/mcfly.jpg')
+				.content
+					h5 ZAKK
+					p 嘿傻瓜234
 	ion-footer-bar
 		button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
 		form
