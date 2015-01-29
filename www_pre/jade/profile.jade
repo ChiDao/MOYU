@@ -7,7 +7,7 @@ ion-view.full-card(view-title='个人')
         img(src='img/mcfly.jpg')
         h2 {{userData.email}}
         p
-          span 发表：{{userData['@clips']['@count']}} 
+          span 发表：{{userData['@clips']['@count']}}
           span 关注：{{userData['@interests']['@count']}}
     .list.card(ng-repeat='clip in clips')
       .item.item-divider
@@ -16,19 +16,3 @@ ion-view.full-card(view-title='个人')
       .item.item-body
         a(ng-click="Api.jumpTo(clip._self, 'profile')")
           img.full-image(src="{{clip.img}}")
-
-//- ion-view(view-title='我')
-//- 	ion-content
-//- 		ion-list
-//- 			.item.item-avatar( type='item-text-wrap', href='#/tab/channels/{{channel.gameData._id}}')
-//- 				img(src='img/mcfly.jpg')
-//- 				| {{channel.gameData.name}}
-//- 				span.item-note(ng-class='{first:$first}')
-//- 				{{userData.email}}
-//- 				b <hide>上個瞬間：</hide>三個月前
-//- 			.list.card(ng-repeat='clip in clips')
-//- 				.item.item-divider
-//- 					| [圖標] 刀塔傳奇 - {{clip.content}}
-//- 				.item.item-body
-//- 					a(href='#/tab/profile-chat/{{clip._id}}')
-//- 						img.full-image(src="{{clip.img}}")

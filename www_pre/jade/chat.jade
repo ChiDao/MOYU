@@ -1,5 +1,5 @@
 ion-view#Chat(view-title='讨论')
-	ion-content(padding='true', start-y='120')
+	ion-content(han-header='true',padding='true', start-y='120')
 		.chat-top
 
 		ol.messages
@@ -13,10 +13,3 @@ ion-view#Chat(view-title='讨论')
 		button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
 		form
 			input.button-block(ng-if="hasFollowedPost",type="text",ng-model="formData.content",required,ng-keydown="$event.keyCode === 13 && send();")
-		//- button.button.button-icon.ion-paper-airplane(ng-click="send()")
-
-//- ion-view#Chat(hide-nav-bar="true")
-	//- ion-header-bar
-	//- 	button.button.icon.ion-ios7-arrow-back.button-clear(ng-click="backButton()")
-	//- 	div.title.title-center
-	//- 		| 讨论
