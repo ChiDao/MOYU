@@ -12,7 +12,7 @@ ion-view#Chat(view-title='讨论')
 	ion-footer-bar
 		button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
 		form
-			input(ng-if="hasFollowedPost",type="text",ng-model="formData.content",required,ng-keydown="$event.keyCode === 13 && send();")
+			input.button-block(ng-if="hasFollowedPost",type="text",ng-model="formData.content",required,ng-keydown="$event.keyCode === 13 && send();")
 		//- button.button.button-icon.ion-paper-airplane(ng-click="send()")
 
 //- ion-view#Chat(hide-nav-bar="true")

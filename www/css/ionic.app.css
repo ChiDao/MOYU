@@ -10430,7 +10430,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   max-width: 65%;
   border-radius: 0.75rem; }
 
-#Chat input {
+#Chat form {
   width: 100%; }
 
 #Channels ion-list .item:first-child {
