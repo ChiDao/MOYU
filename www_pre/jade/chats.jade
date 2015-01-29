@@ -9,3 +9,4 @@ ion-view#Chats(view-title='讨论')
         | {{subscribe["@clip"].content}} {{subscribe["@clip"]._modified | timeBefore}}
         span.item-note(ng-class='{first:$first}')
           img(src="{{subscribe['@clip'].img['100']}}")
+    //- ion-infinite-scroll(on-infinite="loadMore()", distance="1%")

@@ -21,7 +21,7 @@ define(['app', 'services.Modal'], function(app)
         apiRegExpStr += (apiContext && apiContext[param]?'(?:\\/(\\w+))?':'\\/(\\w+)');
         api.api += '/<%= ' + param + ' %>';
       })
-      if (apiType === 'stream'){
+      if (_.indexOf(['stream', 'query'], apiType) >= 0){
         api.apiRegExpMap.push('urlParams');
         apiRegExpStr += '(\\?.*)?';
         api.api += '<%= urlParams %>';
@@ -73,7 +73,7 @@ define(['app', 'services.Modal'], function(app)
     apis.push(createApi('stream', 'user-clips', ['user']));
     apis.push(createApi('stream', 'user-interests', ['user']));
     apis.push(createApi('object', 'follow-clip', ['clip', 'user'], {'user':'$currentUser'}));
-    apis.push(createApi('stream', 'recent-user-subscriptions', ['user'], {'user':'$currentUser'}));
+    apis.push(createApi('query', 'recent-user-subscriptions', ['user'], {'user':'$currentUser'}));
     apis.push(createApi('stream', 'clip-comments', ['clip']));
     apis.push(createApi('object', 'new-comment', ['clip'], {'user':'$currentUser'}));
 
@@ -247,7 +247,7 @@ define(['app', 'services.Modal'], function(app)
             //get data
             var retData;
             return Thenjs(function(defer){
-              if (apiData.api.apiType === 'stream'){
+              if (_.indexOf(['stream', 'query'], apiData.api.apiType) >= 0){
                 Restangular.allUrl(newLink).getList().then(function(response){
                   scope[scopeDataField] = response.data;
                   if (options && options.itearator){
@@ -272,7 +272,7 @@ define(['app', 'services.Modal'], function(app)
                     defer(undefined, response.data);
                   }
                 }, function(error){
-                  defer('Get list error', error);
+                  defer(error);
                 });
               }
               else if (apiData.api.apiType === 'object'){
@@ -296,12 +296,21 @@ define(['app', 'services.Modal'], function(app)
           return getData(apiLink, scope, scopeDataField, options);
         },
         bindList: function(apiLink, scope, scopeDataField, options){
+          var apiData = this.parse(apiLink);
+          if (!apiData.api || _.indexOf(['stream', 'query'], apiData.api.apiType) < 0){
+            console.debug("Can't find stream or query api:", apiLink);
+            return undefined;
+          }
+
           var Api = this;
           var bindStruct = {
-            scope:scope,
-            scopeDataField:scopeDataField,
-            options:options,
+            scope: scope,
+            scopeDataField: scopeDataField,
+            options: options,
+            hasMoreValue: true,
+            hasMore: function(){return bindStruct.hasMoreValue;}
           };
+          bindStruct.moreAttr = apiData.api.type === 'stream'?'prev':'next';
 
           bindStruct.init = _.bind(function(apiLink, scope, scopeDataField, options){
             return this.getData(apiLink, scope, scopeDataField, options);
@@ -320,6 +329,31 @@ define(['app', 'services.Modal'], function(app)
             });
           }, 
           Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
+
+          bindStruct.more = _.bind(function(apiLink, scope, scopeDataField, options){
+            var tmp = {};
+            if (!scope[scopeDataField]) return Thenjs(function(defer){defer(undefined);});
+            // console.debug('get more data', scope[scopeDataField].meta[bindStruct.moreAttr]);
+            bindStruct.hasMoreValue = true;
+            return this.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, data){
+              console.debug(data);
+              // scope[scopeDataField] = data;
+              bindStruct.hasMoreValue = false;
+              defer(undefined);
+            }, function(defer, error){
+              if (error.status === 404){
+                bindStruct.hasMoreValue = false;
+                defer(undefined);
+              }
+              else{
+                bindStruct.hasMoreValue = false;
+                console.debug('get more data error: ', error);
+                defer('get more data error');
+              }
+            });
+          }, 
+          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
+
           return bindStruct;
 
           // if (!scope[scopeDataField]){

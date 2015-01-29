@@ -12,75 +12,97 @@ define(['app', 'services.Api'], function(app)
       var fromDetailSubcribe = '';
 
       var bindSubscribes = Api.bindList(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
-      itearator: {
-        callback: {
-          type: 'callback',
-          callback: function(subcribe){
-            // console.debug(subcribe);
-            return Thenjs(function(defer){
+        itearator: {
+          callback: {
+            type: 'callback',
+            callback: function(subcribe){
+              // console.debug(subcribe);
+              return Thenjs(function(defer){
 
-              //注册comet事件，只在本页时进行刷新
-              // console.debug("clipId", subcribe['@clip']._id);
-              if (!hasRegisterSubscribe[subcribe['@clip']._id]){
-                ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
-                  // console.debug("checkNewComments", $state.current.name, $state.current);
+                //注册comet事件，只在本页时进行刷新
+                // console.debug("clipId", subcribe['@clip']._id);
+                if (!hasRegisterSubscribe[subcribe['@clip']._id]){
+                  ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
+                    // console.debug("checkNewComments", $state.current.name, $state.current);
 
-                  if ($state.current.name === 'tab.chats'){
-                    $timeout(function(){
-                      getSubscribes();
-                    },1); 
-                  }
-                });
-                hasRegisterSubscribe[subcribe['@clip']._id] = true;
-              }
-
-              // console.debug("getData 20",subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']);
-              if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
-                var comments = subcribe['@clip']['@comments']['slice'];
-                var tmpLastComment = comments[comments.length - 1];
-                console.debug(tmpLastComment);
-                Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
-                  Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
-                    // console.debug("getData 21");
-                    console.debug(subcribe['@clip'].lastCommentUserData)
-                    defer(undefined);
-                  }, function(){
-                    // console.debug("getData 22");
-                    defer("Get game data error");
+                    if ($state.current.name === 'tab.chats'){
+                      $timeout(function(){
+                        getSubscribes();
+                      },1); 
+                    }
                   });
-                }, function(innerDefer){
-                  // console.debug("getData 23");
-                  defer("Get user data error");
-                });
-              }else{
-                // console.debug("getData 24");
-                defer(undefined);
-              }
-            });//End of Thenjs
+                  hasRegisterSubscribe[subcribe['@clip']._id] = true;
+                }
+
+                // console.debug("getData 20",subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']);
+                if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
+                  var comments = subcribe['@clip']['@comments']['slice'];
+                  var tmpLastComment = comments[comments.length - 1];
+                  console.debug(tmpLastComment);
+                  Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
+                    Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
+                      // console.debug("getData 21");
+                      console.debug(subcribe['@clip'].lastCommentUserData)
+                      defer(undefined);
+                    }, function(){
+                      // console.debug("getData 22");
+                      defer("Get game data error");
+                    });
+                  }, function(innerDefer){
+                    // console.debug("getData 23");
+                    defer("Get user data error");
+                  });
+                }else{
+                  // console.debug("getData 24");
+                  defer(undefined);
+                }
+              });//End of Thenjs
+            }
           }
         }
-      }
-    });
+      });
+      bindSubscribes.init().then(function(){
 
-    //更新列表
-    var getSubscribes = function(){
-      console.debug('getSubscribes')
-      return bindSubscribes.refresh();
-    };
+        //更新列表
+        var getSubscribes = function(){
+          console.debug('getSubscribes')
+          return bindSubscribes.refresh();
+        };
 
-    $scope.$on("$ionicView.afterEnter", function() {
-      getSubscribes();
-    });
+        $scope.$on("$ionicView.afterEnter", function() {
+          getSubscribes();
+        });
+      });
 
-    // pull refresh
-    $scope.doRefresh = function() {
-      getSubscribes().then(function(defer){
-        $scope.$broadcast('scroll.refreshComplete');
-      }, function(defer){
-        $scope.$broadcast('scroll.refreshComplete');
-      })
+      // $scope.hasMore = true;
+      $scope.loadMore = function() {
+        console.debug("load more")
+        bindSubscribes.more().then(function(defer){
+          console.debug('loadMore success')
+          // $scope.hasMore = false;
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+          defer(undefined);
+        }, function(defer){
+          console.debug('loadMore error')
+          // $scope.hasMore = false;
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+          defer(undefined);
+        })
+        // .then(function(){
+          // $timeout(function(){
+          //   $scope.hasMore = true;
+          // }, 2000);
+        // })
+      };
 
-    };
+      // pull refresh
+      $scope.doRefresh = function() {
+        getSubscribes().then(function(defer){
+          $scope.$broadcast('scroll.refreshComplete');
+        }, function(defer){
+          $scope.$broadcast('scroll.refreshComplete');
+        })
+      };
 
     }
   ]);
