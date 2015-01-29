@@ -123,6 +123,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 			font-size:.875rem;
 			line-height: 1.375rem;
 			margin: 0 0.4rem;
+			@include force-line;
 		}
 	}
 }

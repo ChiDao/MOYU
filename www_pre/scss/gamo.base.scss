@@ -94,6 +94,10 @@ input::-webkit-input-placeholder {
 	margin: 0 $margin-left;
 }
 
+@mixin force-line() {
+word-break:break-all;
+}
+
 /*
 	組件
 */
@@ -143,6 +147,10 @@ h5 {
 
 .auto-width {
 	width: auto;
+}
+
+.force-line {
+	@include force-line;
 }
 
 .full-width {
