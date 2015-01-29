@@ -135,11 +135,15 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 .messages .m-right {
 	float:right;
 	text-align: right;
-
-	.content p {
-		background: $height-color;
-		color:#fff;
-		float: right;
+	.content {
+		h5 {
+			text-align: right;
+		}
+		p {
+			background: $height-color;
+			color:#fff;
+			float: right;
+		}
 	}
 	.avatar-frame {
 		float: right;
@@ -151,6 +155,12 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 	display:block;
 	max-width:65%;
 	border-radius:.75rem;
+}
+
+#Chat {
+	input {
+		width: 100%;
+	}
 }
 
 #Channels {

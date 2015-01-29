@@ -10414,6 +10414,8 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 .messages .m-right {
   float: right;
   text-align: right; }
+  .messages .m-right .content h5 {
+    text-align: right; }
   .messages .m-right .content p {
     background: #344b62;
     color: #fff;
@@ -10426,6 +10428,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   display: block;
   max-width: 65%;
   border-radius: 0.75rem; }
+
+#Chat input {
+  width: 100%; }
 
 #Channels ion-list .item:first-child {
   background-color: #ebf5ff !important; }
