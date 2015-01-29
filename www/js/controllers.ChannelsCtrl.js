@@ -21,13 +21,13 @@ define(['app', 'services.Api','services.Modal'], function(app)
 
       // pull refresh
       $scope.doRefresh = function() {
-        getSubscribes().then(function(defer){
+        bindChannels.refresh().then(function(defer){
           $scope.$broadcast('scroll.refreshComplete');
         }, function(defer){
           $scope.$broadcast('scroll.refreshComplete');
         })
-
       };
+      
       $scope.$on("$ionicView.afterEnter", function() {
         bindChannels.refresh();
       });
