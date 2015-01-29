@@ -72,7 +72,20 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 			//初始化获取讨论内容
 			var commentNextUrl = '';
 			$scope.getComment = function(){
-				Api.getData('/clip-comments/' + $stateParams.clipId + '?_last', $scope, 'comments').then(function(){
+				Api.getData('/clip-comments/' + $stateParams.clipId + '?_last', $scope, 'comments',{
+					itearator: {
+						isOwned: {
+							type: 'transfer',
+							attr: '@user',
+							transfer: function(user){
+								console.debug(user._id, Auth.currentUser().userData._id)
+								return user && user._id == Auth.currentUser().userData._id;
+							}
+						}
+						
+					}
+				}).then(function(){
+					console.debug($scope.comments)
 					$ionicScrollDelegate.scrollBottom();
 					commentNextUrl = $scope.comments.meta.next;
 				});

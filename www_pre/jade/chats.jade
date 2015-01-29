@@ -1,5 +1,5 @@
 ion-view#Chats(view-title='讨论')
-  ion-content
+  ion-content(on-infinite-scroll="loadMore")
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
       a.item.item-avatar(ng-repeat='subscribe in subscribes',type='item-text-wrap',  ng-click="Api.jumpTo(subscribe.clip, chats)")
