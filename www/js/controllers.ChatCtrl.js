@@ -78,8 +78,25 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 							type: 'transfer',
 							attr: '@user',
 							transfer: function(user){
-								console.debug(user._id, Auth.currentUser().userData._id)
 								return user && user._id == Auth.currentUser().userData._id;
+							}
+						},
+						userName: {
+							type: 'transfer',
+							attr: '@user',
+							transfer: function(user){
+								return (user['@profile'] && user['@profile'].nickname)
+									?user['@profile'].nickname
+									:user.email;
+							}
+						},
+						userLogo: {
+							type: 'transfer',
+							attr: '@user',
+							transfer: function(user){
+								return (user['@profile'] && user['@profile'].logo && user['@profile'].logo['100'])
+									?user['@profile'].logo['100']
+									:'img/ionic.png';
 							}
 						}
 						
