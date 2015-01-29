@@ -3,18 +3,12 @@ ion-view#Chat(view-title='讨论')
 		.chat-top
 
 		ol.messages
-			li(ng-repeat='comment in comments')
+			li(ng-repeat='comment in comments', class="{{comment.isOwned?'m-right':''}}")
 				.avatar-frame
 					img.avatar(src='img/mcfly.jpg')
 				.content
 					h5 A-FU
 					p {{comment.content}}
-			li(class="m-right")
-				.avatar-frame
-					img.avatar(src='img/mcfly.jpg')
-				.content
-					h5 ZAKK
-					p 嘿傻瓜234
 	ion-footer-bar
 		button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
 		form
