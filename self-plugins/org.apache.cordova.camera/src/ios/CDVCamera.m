@@ -224,7 +224,7 @@ static NSSet* org_apache_cordova_validArrowDirections;
     
     double startTime = ([[arguments objectAtIndex:0] doubleValue]) / 1000;
     bool orientation = [[arguments objectAtIndex:1] boolValue]; // default: false
-    int count = 0;
+    __block int count = 0;
     NSMutableArray *photos = [[NSMutableArray alloc] init];
     ALAssetsLibrary *library = [ALAssetsLibrary new];
     
