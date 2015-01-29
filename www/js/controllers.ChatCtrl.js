@@ -53,7 +53,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
 				//发送新消息
 				$scope.formData = {content:''};
-				$scope.send = function(newCommentForm){
+				$scope.send = function(keyCode){
 					//提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
 					$scope.clip.doPostComment($scope.formData)
 					.then(function(defer, response){
