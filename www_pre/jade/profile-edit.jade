@@ -1,16 +1,14 @@
 ion-view.full-card(view-title='資料')
   ion-content
     .list
-      label.item.item-input.item-stacked-label
-        span.input-label First Name
-        input(type='text', placeholder='John')
-      label.item.item-input.item-stacked-label
-        span.input-label Last Name
-        input(type='text', placeholder='Suhr')
-      label.item.item-input.item-stacked-label
-        span.input-label Email
-        input(type='text', placeholder='john@suhr.com')
+      .item 头像
+        img#logoImage(ng-src="{{imageURI}}",ng-click="getPicture()")
+      .hide
+        input(type="text" ng-model="imageURI" required ng-show="false")
+      .item.item-input
+        span.input-label  昵称
+        input(type='text', placeholder='nickname',ng-model="formData.nickname")
 
     .padding
-      button.button.button-block.button-positive.activated 保存
+      button.button.button-block.button-positive.activated(ng-click="save(formData)") 保存
 

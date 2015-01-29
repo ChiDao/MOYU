@@ -385,7 +385,7 @@ define(['app', 'services.Modal'], function(app)
             return false;
           }
           return Thenjs(function(defer){
-            Restangular.one(_.template(apiData.api.api, apiData.params)).doPut(data).then(function(response){
+            Restangular.one(_.template(apiData.api.api, apiData.params)).doPUT(data).then(function(response){
               console.debug('Put data to link:' + JSON.stringify(response));
               defer(undefined, response);
             }, function(error){
