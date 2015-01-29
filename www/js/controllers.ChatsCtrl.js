@@ -65,7 +65,7 @@ define(['app', 'services.Api'], function(app)
     //更新列表
     var getSubscribes = function(){
       console.debug('getSubscribes')
-      bindSubscribes.refresh();
+      return bindSubscribes.refresh();
     };
 
     $scope.$on("$ionicView.afterEnter", function() {
@@ -75,6 +75,8 @@ define(['app', 'services.Api'], function(app)
     // pull refresh
     $scope.doRefresh = function() {
       getSubscribes().then(function(defer){
+        $scope.$broadcast('scroll.refreshComplete');
+      }, function(defer){
         $scope.$broadcast('scroll.refreshComplete');
       })
 

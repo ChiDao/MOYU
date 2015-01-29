@@ -313,8 +313,10 @@ define(['app', 'services.Modal'], function(app)
             console.debug('fresh data', scope[scopeDataField]);
             return this.getData(apiLink, tmp, 'scopeDataField', options).then(function(defer, data){
               scope[scopeDataField] = data;
+              defer(undefined);
             }, function(defer){
               console.debug('fresh data error', scope[scopeDataField]);
+              defer('fresh data error');
             });
           }, 
           Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
