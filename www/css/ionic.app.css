@@ -10375,7 +10375,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   display: inline-block;
   float: left;
   clear: both;
-  max-width: 65%;
+  max-width: 85%;
   margin: 0 0 1.4rem 0;
   padding: 0; }
   .messages li .avatar {
