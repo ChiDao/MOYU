@@ -10415,7 +10415,8 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   float: right;
   text-align: right; }
   .messages .m-right .content h5 {
-    text-align: right; }
+    text-align: right;
+    width: 100%; }
   .messages .m-right .content p {
     background: #344b62;
     color: #fff;
