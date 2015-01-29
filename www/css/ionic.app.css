@@ -10363,7 +10363,11 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 .messages {
   margin: 0;
   padding: 0;
-  list-style-type: none; }
+  list-style-type: none;
+  position: relative; }
+  .messages .avatar {
+    border-radius: 50%;
+    width: 25px; }
 
 .messages li {
   display: block;
@@ -10373,11 +10377,11 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   margin: 0 0 1rem 0;
   padding: 0; }
 
-.messages li:nth-child(even) {
-  float: right; }
+.messages .m-right {
+  float: right !important; }
 
-.messages li:nth-child(even) img {
-  float: right; }
+.messages .m-right img {
+  float: right !important; }
 
 .messages p {
   border-radius: 0.75rem;
@@ -10387,7 +10391,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   margin: 0;
   font-size: 0.875rem; }
 
-.messages li:nth-child(even) p {
+.messages .m-right p {
   background: #344b62;
   color: #fff; }
 

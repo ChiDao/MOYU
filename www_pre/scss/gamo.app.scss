@@ -84,6 +84,11 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 	margin:0;
 	padding:0;
 	list-style-type:none;
+	position: relative;
+	.avatar {
+		border-radius: 50%;
+		width: 25px;
+	}
 }
 
 .messages li {
@@ -95,12 +100,12 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 	padding:0;
 }
 
-.messages li:nth-child(even) {
-	float:right;
+.messages .m-right {
+	float:right !important;
 }
 
-.messages li:nth-child(even) img {
-	float:right;
+.messages .m-right img {
+	float:right !important;
 }
 
 .messages p {
@@ -112,7 +117,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 	font-size:.875rem;
 }
 
-.messages li:nth-child(even) p {
+.messages .m-right p {
 	background: $height-color;
 	color:#fff;
 }

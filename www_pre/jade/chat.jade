@@ -3,7 +3,7 @@ ion-view#Chat(view-title='讨论')
 		.chat-top
 
 		ol.messages
-			li(ng-repeat='comment in comments')
+			li(class="m-right",ng-repeat='comment in comments')
 				p {{comment.content}}
 	ion-footer-bar
 		button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
