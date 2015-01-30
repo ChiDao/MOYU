@@ -62,6 +62,7 @@ define(['app', 'services.Api'], function(app)
         }
       });
       $scope.bindSubscribes.init().then(function(){
+        console.debug($scope['subscribes']);
 
         $scope.$on("$ionicView.afterEnter", function() {
           $scope.bindSubscribes.refresh();
