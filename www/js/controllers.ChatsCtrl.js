@@ -4,6 +4,8 @@ define(['app', 'services.Api'], function(app)
     'Auth', 'Api', 'ApiEvent', '$http', '$timeout',
     function($scope, $rootScope, $state, $stateParams, UI, Api, Restangular, Auth, Api, ApiEvent, $http, $timeout) {
 
+      $scope.subscribes = Array(10);
+
       //Todo: 用户id从auth模块获取
       $scope.Api = Api;
       var subscribeLastCommentId = {};
@@ -29,7 +31,7 @@ define(['app', 'services.Api'], function(app)
                     if ($state.current.name === 'tab.chats'){
                       $timeout(function(){
                         getSubscribes();
-                      },1); 
+                      },1);
                     }
                   });
                   hasRegisterSubscribe[subcribe['@clip']._id] = true;
@@ -126,7 +128,7 @@ define(['app', 'services.Api'], function(app)
       //     else if (subscribeLastCommentId[subscribe._id] != tmpLastCommentsId){
       //       //从讨论详情页回来，清除检查新comment
       //       console.debug(fromDetailSubcribe , fromDetailSubcribe == subscribe._id);
-      //       $scope.hasNewComments[subscribe['@clip']._id] = 
+      //       $scope.hasNewComments[subscribe['@clip']._id] =
       //         (fromDetailSubcribe && fromDetailSubcribe == subscribe._id?false:true);
       //       subscribeLastCommentId[subscribe._id] = tmpLastCommentsId;
       //       localStorage.setItem('subscribeLastCommentId'+subscribe._id, tmpLastCommentsId);

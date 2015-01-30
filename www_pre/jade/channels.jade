@@ -4,8 +4,8 @@ ion-view#Channels(view-title='刀塔传奇')
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
-      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', ng-click="Api.jumpTo(channel.game)")
-        img(src="{{channel['@game'].logo}}")
+      a.item.item-avatar(ng-repeat='channel in channels track by $index', type='item-text-wrap', ng-click="Api.jumpTo(channel.game)")
+        img(src="{{channel['@game'].logo?channel['@game'].logo:''}}")
         | {{channel['@game'].name}}
         span.item-note(ng-class='{first:$first}')
           | <hide ng-if="channel.lastClip._modified">你的瞬間：</hide> {{channel.lastClip._modified | timeBefore}}
