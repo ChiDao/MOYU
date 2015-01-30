@@ -20,6 +20,7 @@ var pluginlist = [
     "de.appplant.cordova.plugin.local-notification",
     "nl.x-services.plugins.launchmyapp",
     "com.phonegap.plugins.PushPlugin",
+    "nl.x-services.plugins.actionsheet",
 ];
 
 // no need to configure below

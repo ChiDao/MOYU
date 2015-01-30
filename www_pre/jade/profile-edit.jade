@@ -1,12 +1,13 @@
-ion-view.full-card(view-title='資料')
+ion-view.full-card(view-title='更新资料')
   ion-content
     .list
-      .item 头像
-        img#logoImage(ng-src="{{imageURI}}",ng-click="getPicture()")
       .hide
         input(type="text" ng-model="imageURI" required ng-show="false")
       .item.item-input
-        span.input-label  昵称
+        span.input-label 头像
+        img#logoImage(ng-src="{{imageURI}}",ng-click="getPicture()")
+      .item.item-input
+        span.input-label 昵称
         input(type='text', placeholder='nickname',ng-model="formData.nickname")
 
     .padding
