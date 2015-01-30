@@ -99,6 +99,7 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
           Api.putData('/user-profile/' + $scope.userData._id, $scope.formData).then(function(defer, response){
             // console.log("aaa1"+response.data.rawData);
             getProfile();
+            Auth.updateUser();
             alert("保存成功！")            
           });
         })  

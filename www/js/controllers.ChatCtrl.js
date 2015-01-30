@@ -29,21 +29,38 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         })();
 
         $scope.toggleSubscribe = function(){
+          
           var checkPush =  PushProcessingService.checkResult();
           if(checkPush == "No"){
             Auth.disallow();
-          }
-
-          if ($scope.hasFollowedPost){
-            var tmp = {};
-            Api.deleteData($scope.clip.subscribe).then(function(){
-              $scope.checkHasFollowedPost();
-            });
-          }
-          else{
-            Api.putData($scope.clip.subscribe, {}).then(function(){
-              $scope.checkHasFollowedPost();
-            });
+          }else{
+            if(Auth.currentUser().userData['#profile'] == 404){
+              $timeout(function(){
+                alert("你还没有设置个人信息，赶快去个人主页设置吧！")
+              },1)
+            }else{
+              if(Auth.currentUser().userData['@profile'].nickname ==''){
+                $timeout(function(){
+                  alert("你还没有填写昵称，赶快去个人主页设置吧！")
+                },1)
+              }else if(Auth.currentUser().userData['@profile'].logo['100']==''){
+                $timeout(function(){
+                  alert("你还没有上传头像，赶快去个人主页设置吧！")
+                },1)
+              }else{
+                if ($scope.hasFollowedPost){
+                  var tmp = {};
+                  Api.deleteData($scope.clip.subscribe).then(function(){
+                    $scope.checkHasFollowedPost();
+                  });
+                }
+                else{
+                  Api.putData($scope.clip.subscribe, {}).then(function(){
+                    $scope.checkHasFollowedPost();
+                  });
+                }
+              }
+            }
           }
         }
 

@@ -148,6 +148,23 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
         refreshToken: function(){
           //Todo
         },
+        updateUser: function(){
+          Api.getData(currentUser.userData.homeData.me, {}, 'me').then(function(defer, me){
+            console.log("update"+JSON.stringify(me));
+            currentUser.userName = me.email;
+            currentUser.role = userRoles.user;
+            me.homeData = currentUser.userData.homeData;
+            currentUser.userData = me;
+            //存储用户信息到localStorage
+            localStorage.setItem('user', JSON.stringify(me));
+            console.log("update1"+JSON.stringify(me));
+
+            defer(undefined);
+          }, function(defer, error){
+            console.log('fail, get data: ' + JSON.stringify(error));
+            defer('login fail', JSON.stringify(error));
+          })
+        },
         logout:function(success){
           currentUser.userName = '';
           currentUser.role = userRoles.public;

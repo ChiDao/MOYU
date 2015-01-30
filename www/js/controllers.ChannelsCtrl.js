@@ -2,6 +2,10 @@ define(['app', 'services.Api','services.Modal'], function(app)
 {
   app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth','$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q','Modal',
     function($scope, $state, $stateParams, UI, Api, Auth,$ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q,Modal) {
+      //检查上传事件是否结束
+      if (localStorage.getItem('playGameTm') !== null){
+        $state.go('tab.channel',{gameId:localStorage.getItem('playGameId')});
+      }
       $scope.channels = new Array(10);
       var bindChannels = Api.bindList('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels', {
         reverse: true,

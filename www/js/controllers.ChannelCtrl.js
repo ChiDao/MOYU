@@ -109,8 +109,19 @@ define(['app', 'services.Api'], function(app)
                 scope.hideModal();
               }
             })
+            //上传事件终结，清楚缓存
+            localStorage.removeItem('playGameId');
+            localStorage.removeItem('playGameDt');
+            localStorage.removeItem('playGameTm');
+            console.log('localStorage' + localStorage.removeItem('playGameTm'));
           };//End of new clip
 
+          //如果上传事件未结束，则打开clip模态框
+          if (localStorage.getItem('playGameTm') !== null){
+             var time = localStorage.getItem('playGameTm');
+             var direct = localStorage.getItem('playGameDt');
+             $scope.newClip(time,direct);
+          }
         });//End of then function
       });
 
@@ -126,6 +137,10 @@ define(['app', 'services.Api'], function(app)
         var now                  = new Date().getTime(),
         _60_seconds_from_now = new Date(now + 5*1000);
         var id = Math.random();
+        //缓存信息，以登记截图上传事件
+        localStorage.setItem('playGameTm',now);
+        localStorage.setItem('playGameDt',direct);
+        localStorage.setItem('playGameId',$stateParams.gameId);
 
         if (window.plugin && window.plugin.notification && window.plugin.notification.local){
 
