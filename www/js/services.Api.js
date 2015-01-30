@@ -249,10 +249,10 @@ define(['app', 'services.Modal'], function(app)
             return Thenjs(function(defer){
               if (_.indexOf(['stream', 'query'], apiData.api.apiType) >= 0){
                 Restangular.allUrl(newLink).getList().then(function(response){
-                  scope[scopeDataField] = options.reverse?response.data.reverse():response.data;
+                  (options&&options.reverse)?response.data.reverse():response.data;
                   if (options && options.itearator){
                     //循环处理数据
-                    async.each(scope[scopeDataField], function(data, callback){
+                    async.each(response.data, function(data, callback){
                       // callback(undefined);
                       //虚幻处理iterator
                       iteratorData(data).then(function(iteaDefer){
@@ -265,10 +265,12 @@ define(['app', 'services.Modal'], function(app)
                         defer(error);
                       }
                       else {
+                        scope[scopeDataField] = response.data;
                         defer(undefined, response.data)
                       }
                     })
                   }else{
+                    scope[scopeDataField] = response.data;
                     defer(undefined, response.data);
                   }
                 }, function(error){
