@@ -21,6 +21,7 @@ var pluginlist = [
     "https://github.com/katzer/cordova-plugin-local-notifications",
     "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=gamo",
     "self-plugins/pushPluginEx",
+    "self-plugins/nl.x-services.plugins.actionsheet",
 ];
 
 // no need to configure below

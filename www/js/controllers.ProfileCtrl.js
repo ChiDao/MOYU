@@ -1,7 +1,7 @@
 define(['app', 'services.Api', 'services.Auth'], function(app)
 {
-  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api','$ionicActionSheet',
-    function($scope, $stateParams, UI, Auth, Api, $ionicActionSheet) {
+  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api',
+    function($scope, $stateParams, UI, Auth, Api) {
       $scope.Auth = Auth;
       $scope.userData = Auth.currentUser().userData;
       console.debug($scope.userData);
@@ -33,15 +33,14 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
 
       //编辑资料
       $scope.getPicture = function(){
-        $ionicActionSheet.show({
-          buttons: [
-            { text: '拍照' },
-            { text: '从手机相册选择' }
-          ],
-          cancelText: '取消',
-          cancel: function() {},
-          buttonClicked: function(index) {
-            if(index == 0){
+        var options = {
+            'buttonLabels': ['拍照', '从手机相册选择'],
+            'androidEnableCancelButton' : true, // default false
+            'winphoneEnableCancelButton' : true, // default false
+            'addCancelButtonWithLabel': '取消',
+        };
+        var callback = function(buttonIndex) {
+            if(buttonIndex == 1){
               navigator.camera.getPicture(onSuccess, onFail, { 
                 quality: 100, 
                 destinationType: Camera.DestinationType.FILE_URI,
@@ -54,7 +53,6 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
                 sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM
               });
             }
-
             function onSuccess(imageURI) {
               $scope.imageURI = imageURI;
             }
@@ -62,10 +60,8 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
             function onFail(message) {
               console.log('Failed because: ' + message);
             }
-                      
-            return true;
-          }
-        });
+        };
+        window.plugins.actionsheet.show(options, callback);
       }
       $scope.save = function(){
         Thenjs(function(defer){
