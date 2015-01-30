@@ -143,7 +143,6 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
           return currentUser.role == userRoles.user;
         },
         currentUser: function(){
-          console.debug(currentUser);
           return currentUser;
         },
         refreshToken: function(){

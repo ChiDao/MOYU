@@ -4,6 +4,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth,$ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q,Modal) {
 
       var bindChannels = Api.bindList('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels', {
+        reverse: true,
         itearator: {
           lastClip:{
             type: 'transfer',
@@ -27,13 +28,15 @@ define(['app', 'services.Api','services.Modal'], function(app)
           $scope.$broadcast('scroll.refreshComplete');
         })
       };
-      
+
       $scope.$on("$ionicView.afterEnter", function() {
         bindChannels.refresh();
       });
 
       function getGame(scope){
         var getChannels = function(){
+
+          scope.channels = new Array(10);
           Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels',{
             itearator: {
               gameData: {
@@ -99,14 +102,14 @@ define(['app', 'services.Api','services.Modal'], function(app)
           //检查是否已有关注
           Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
             if((scope.interests.length)>0) scope.ifAbled = "able";
-            getChannels();                   
+            getChannels();
           });
-        }          
+        }
       }
 
       function addChannelModal(){
         Modal.okCancelModal('templates/modal-add-channel.html', {}, {
-          init: function(scope){  
+          init: function(scope){
             scope.ifAbled = "disabled";
 
             getGame(scope);
@@ -116,7 +119,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
 
             function refresh() {
               getGame(scope);
-              document.removeEventListener("resume",refresh,false); 
+              document.removeEventListener("resume",refresh,false);
             }
 
             scope.followGame = function(channle){
@@ -130,7 +133,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
                     getGame(scope);
                   });
                 }
-                else{                                
+                else{
                   var parsedUrl = /(\w+)$/.exec(channle.follow);
                   // console.debug(parsedUrl[1]);
                   channle.doFollow({});
@@ -139,9 +142,9 @@ define(['app', 'services.Api','services.Modal'], function(app)
                   channle.followed = "Yes";
                 }
               }//end else1
-            } 
+            }
 
-            scope.complete = function(){ 
+            scope.complete = function(){
               bindChannels.refresh();
               scope.hideModal();
             }

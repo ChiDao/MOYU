@@ -5,8 +5,8 @@ ion-modal-view#AddChannel.Pages
       button.button.button-clear(ng-click='complete()',ng-show="ifAbled == 'able' ") 完成
   ion-content
     ion-list
-      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap')
-        img(src='{{channel.gameData.logo}}')
+      a.item.item-avatar(ng-repeat='channel in channels track by $index', type='item-text-wrap')
+        img(src='{{channel.gameData.logo?channel.gameData.logo:""}}')
         | {{channel.gameData.name}}
         span.item-note(ng-click="followGame(channel)",ng-show="channel.installed == 'Yes' && channel.followed == 'No'")
           | 关注

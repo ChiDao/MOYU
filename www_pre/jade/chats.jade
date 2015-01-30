@@ -1,12 +1,12 @@
 ion-view#Chats(view-title='讨论')
   ion-content(on-infinite-scroll="loadMore")
-    ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
+    ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
     ion-list
       a.item.item-avatar(ng-repeat='subscribe in subscribes',type='item-text-wrap',  ng-click="Api.jumpTo(subscribe.clip, chats)")
-        img(src='http://zuju.cc/images/uploads/gaea/jiezoudashi.jpeg')
+        img(src='{{subscribe["@clip"].gameData.logo}}')
         i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
         b {{subscribe['@clip'].lastCommentUserData.email}} <br>
-        | {{subscribe["@clip"].content}} {{subscribe["@clip"]._modified | timeBefore}}
+        | {{subscribe["@clip"].content}} {{subscribe._modified | timeBefore}}
         span.item-note(ng-class='{first:$first}')
           img(src="{{subscribe['@clip'].img['100']}}")
-    //- ion-infinite-scroll(on-infinite="loadMore()", distance="1%")
+    ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore()", distance="10%")

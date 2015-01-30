@@ -249,10 +249,10 @@ define(['app', 'services.Modal'], function(app)
             return Thenjs(function(defer){
               if (_.indexOf(['stream', 'query'], apiData.api.apiType) >= 0){
                 Restangular.allUrl(newLink).getList().then(function(response){
-                  scope[scopeDataField] = response.data;
+                  (options&&options.reverse)?response.data.reverse():response.data;
                   if (options && options.itearator){
                     //循环处理数据
-                    async.each(scope[scopeDataField], function(data, callback){
+                    async.each(response.data, function(data, callback){
                       // callback(undefined);
                       //虚幻处理iterator
                       iteratorData(data).then(function(iteaDefer){
@@ -265,10 +265,12 @@ define(['app', 'services.Modal'], function(app)
                         defer(error);
                       }
                       else {
+                        scope[scopeDataField] = response.data;
                         defer(undefined, response.data)
                       }
                     })
                   }else{
+                    scope[scopeDataField] = response.data;
                     defer(undefined, response.data);
                   }
                 }, function(error){
@@ -304,55 +306,122 @@ define(['app', 'services.Modal'], function(app)
 
           var Api = this;
           var bindStruct = {
+            apiLink: apiLink,
             scope: scope,
             scopeDataField: scopeDataField,
             options: options,
-            hasMoreValue: true,
-            hasMore: function(){return bindStruct.hasMoreValue;}
+            clearedOptions: _.omit(options, 'last'),
+            moreAttr: apiData.api.apiType === 'stream'?'prev':'next',
+            newAttr: apiData.api.apiType === 'stream'?'next':undefined,
+            moreData: [],
+            hasMore: function(){return bindStruct.moreData.length;}
           };
-          bindStruct.moreAttr = apiData.api.type === 'stream'?'prev':'next';
 
-          bindStruct.init = _.bind(function(apiLink, scope, scopeDataField, options){
-            return this.getData(apiLink, scope, scopeDataField, options);
-          }, 
-          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
+          bindStruct.init = function(){
+            //获取首页数据
+            return Api.getData(bindStruct.apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options).then(function(defer, data){
+              //缓存下一页数据
+              // console.debug(scope[scopeDataField].meta[bindStruct.moreAttr], options);
+              var tmp = {};
+              Api.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, scopeDataField, bindStruct.clearedOptions).then(function(innerDefer, moreData){
+                bindStruct.moreData.length = 0
+                _.forEach(moreData, function(listItem){
+                  bindStruct.moreData.push(listItem);
+                })
+                scope[scopeDataField].meta[bindStruct.moreAttr] = moreData.meta[bindStruct.moreAttr];
+                defer(undefined, data);
+              },function(innerDefer, error){
+                if (error.status === 404) defer(undefined, data);
+                else defer(error);
+              })
+              defer(undefined, data);
+            }, function(defer, error){
+              if (error.status === 404) defer(undefined, undefined);
+              else defer(error);
+            });
+          };
 
           bindStruct.refresh = _.bind(function(apiLink, scope, scopeDataField, options){
             var tmp = {};
             console.debug('fresh data', scope[scopeDataField]);
             return this.getData(apiLink, tmp, 'scopeDataField', options).then(function(defer, data){
               scope[scopeDataField] = data;
-              defer(undefined);
-            }, function(defer){
-              console.debug('fresh data error', scope[scopeDataField]);
-              defer('fresh data error');
+              // var tmp = {};
+              // this.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, scopeDataField, options).then(function(innerDefer, innerData){
+              //   bindStruct.moreData.length = 0
+              //   bindStruct.concat(innerData);
+              //   defer(undefined, data);
+              // },function(innerDefer, error){
+              //   if (error.status === 404) defer(undefined, data);
+              //   else defer(error);
+              // })
+              defer(undefined, data);
+            }, function(defer, error){
+              if (error.status === 404) defer(undefined, undefined);
+              else {
+                console.debug('fresh data error', scope[scopeDataField]);
+                defer(error);
+              }
             });
           }, 
           Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
 
-          bindStruct.more = _.bind(function(apiLink, scope, scopeDataField, options){
+          bindStruct.more = function(){
             var tmp = {};
-            if (!scope[scopeDataField]) return Thenjs(function(defer){defer(undefined);});
-            // console.debug('get more data', scope[scopeDataField].meta[bindStruct.moreAttr]);
-            bindStruct.hasMoreValue = true;
-            return this.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, data){
-              console.debug(data);
-              // scope[scopeDataField] = data;
-              bindStruct.hasMoreValue = false;
+            if (!bindStruct.hasMore()) return Thenjs(function(defer){defer(undefined);});
+            var targetStruct = bindStruct.scope[bindStruct.scopeDataField];
+            var options = _.omit(bindStruct.options, 'last');
+            console.debug('get more data', bindStruct.moreAttr, targetStruct.meta[bindStruct.moreAttr]);
+            return Api.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, moreData){
+              var listItem;
+              //更新数据
+              while(listItem = bindStruct.moreData.pop()){
+                targetStruct.unshift(listItem);
+              }
+              //缓存下一页数据
+              _.forEach(moreData, function(listItem){
+                bindStruct.moreData.push(listItem);
+              })
+              targetStruct.meta[bindStruct.moreAttr] = moreData.meta[bindStruct.moreAttr];
+              console.debug(bindStruct.moreData, targetStruct)
               defer(undefined);
             }, function(defer, error){
               if (error.status === 404){
-                bindStruct.hasMoreValue = false;
+                //更新数据
+                while(listItem = bindStruct.moreData.pop()){
+                  targetStruct.unshift(listItem);
+                }
                 defer(undefined);
               }
               else{
-                bindStruct.hasMoreValue = false;
-                console.debug('get more data error: ', error);
-                defer('get more data error');
+                console.debug('get more data error: ');
+                defer(error);
               }
             });
-          }, 
-          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
+            return Thenjs(function(defer){defer(undefined);});
+          }
+
+          
+          bindStruct.newer = function(){
+            var tmp = {};
+            var targetStruct = bindStruct.scope[bindStruct.scopeDataField];
+            console.debug('get new data', bindStruct.moreAttr, targetStruct.meta[bindStruct.newAttr]);
+            return Api.getData(targetStruct.meta[bindStruct.newAttr], tmp, 'scopeDataField', bindStruct.clearedOptions).then(function(defer, data){
+              _.forEach(data, function(listItem){
+                targetStruct.push(listItem);
+              })
+              targetStruct.meta[bindStruct.newAttr] = data.meta[bindStruct.newAttr];
+              console.debug(targetStruct, data)
+              defer(undefined, data);
+            }, function(defer, error){
+              if (error.status === 404) defer(undefined, undefined);
+              else {
+                console.debug('get newer data error', targetStruct);
+                defer(error);
+              }
+            });
+          };
+
 
           return bindStruct;
 

@@ -1,7 +1,7 @@
 ion-view#Chat(view-title='讨论')
 	ion-content(han-header='true',padding='true', start-y='120')
+		ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
 		.chat-top
-
 		ol.messages
 			li(ng-repeat='comment in comments', class="{{comment.isOwned?'m-right':''}}")
 				.avatar-frame
