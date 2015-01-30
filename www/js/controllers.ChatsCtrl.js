@@ -70,6 +70,7 @@ define(['app', 'services.Api'], function(app)
         // pull refresh
         $scope.pullRefresh = function() {
           $scope.bindSubscribes.refresh().then(function(defer){
+            $scope.$apply();
             $scope.$broadcast('scroll.refreshComplete');
           }, function(defer){
             $scope.$broadcast('scroll.refreshComplete');

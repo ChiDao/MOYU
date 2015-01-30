@@ -98,6 +98,14 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
           $ionicScrollDelegate.scrollBottom();
 
+          $scope.pullRefresh = function(){
+            $scope.bindComments.more().then(function(){
+              $scope.$broadcast('scroll.refreshComplete');
+            }, function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+            })
+          }
+
           //在讨论页面内，根据comet更新comment
           ApiEvent.registerByResource('clip', $stateParams.clipId, function(event){
             console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
