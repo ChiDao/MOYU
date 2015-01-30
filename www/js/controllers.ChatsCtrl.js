@@ -12,6 +12,7 @@ define(['app', 'services.Api'], function(app)
       var fromDetailSubcribe = '';
 
       $scope.bindSubscribes = Api.bindList(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
+        reverse: true,
         itearator: {
           callback: {
             type: 'callback',

@@ -249,7 +249,7 @@ define(['app', 'services.Modal'], function(app)
             return Thenjs(function(defer){
               if (_.indexOf(['stream', 'query'], apiData.api.apiType) >= 0){
                 Restangular.allUrl(newLink).getList().then(function(response){
-                  scope[scopeDataField] = response.data;
+                  scope[scopeDataField] = options.reverse?response.data.reverse():response.data;
                   if (options && options.itearator){
                     //循环处理数据
                     async.each(scope[scopeDataField], function(data, callback){
