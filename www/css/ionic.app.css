@@ -10312,6 +10312,9 @@ h5 {
   .right-buttons .button-image img {
     width: 100%; }
 
+ion-list .item {
+  min-height: 64px !important; }
+
 img[src=""] {
   display: none; }
 

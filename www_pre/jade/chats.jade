@@ -2,8 +2,8 @@ ion-view#Chats(view-title='讨论')
   ion-content(on-infinite-scroll="loadMore")
     ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
     ion-list
-      a.item.item-avatar(ng-repeat='subscribe in subscribes',type='item-text-wrap',  ng-click="Api.jumpTo(subscribe.clip, chats)")
-        img(src='{{subscribe["@clip"].gameData.logo}}')
+      a.item.item-avatar(ng-repeat='subscribe in subscribes track by $index',type='item-text-wrap',  ng-click="Api.jumpTo(subscribe.clip, chats)")
+        img(src='{{subscribe["@clip"].gameData.logo?subscribe["@clip"].gameData.logo:""}}')
         i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
         b {{subscribe['@clip'].lastCommentUserData.email}} <br>
         | {{subscribe["@clip"].content}} {{subscribe._modified | timeBefore}}

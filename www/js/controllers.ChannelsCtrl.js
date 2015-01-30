@@ -2,7 +2,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
 {
   app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth','$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q','Modal',
     function($scope, $state, $stateParams, UI, Api, Auth,$ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q,Modal) {
-
+      $scope.channels = new Array(10);
       var bindChannels = Api.bindList('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels', {
         reverse: true,
         itearator: {
