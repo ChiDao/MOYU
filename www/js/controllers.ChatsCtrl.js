@@ -11,7 +11,7 @@ define(['app', 'services.Api'], function(app)
       $scope.hasNewComments = {};
       var fromDetailSubcribe = '';
 
-      var bindSubscribes = Api.bindList(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
+      $scope.bindSubscribes = Api.bindList(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
         itearator: {
           callback: {
             type: 'callback',
@@ -61,48 +61,36 @@ define(['app', 'services.Api'], function(app)
           }
         }
       });
-      bindSubscribes.init().then(function(){
-
-        //更新列表
-        var getSubscribes = function(){
-          console.debug('getSubscribes')
-          return bindSubscribes.refresh();
-        };
+      $scope.bindSubscribes.init().then(function(){
 
         $scope.$on("$ionicView.afterEnter", function() {
-          getSubscribes();
+          $scope.bindSubscribes.refresh();
         });
+
+        // pull refresh
+        $scope.pullRefresh = function() {
+          $scope.bindSubscribes.refresh().then(function(defer){
+            $scope.$broadcast('scroll.refreshComplete');
+          }, function(defer){
+            $scope.$broadcast('scroll.refreshComplete');
+          })
+        };
       });
 
-      // $scope.hasMore = true;
+      $scope.hasMore = $scope.bindSubscribes.hasMore;
       $scope.loadMore = function() {
         console.debug("load more")
-        bindSubscribes.more().then(function(defer){
+        $scope.bindSubscribes.more().then(function(defer){
           console.debug('loadMore success')
-          // $scope.hasMore = false;
           $scope.$broadcast('scroll.infiniteScrollComplete');
           defer(undefined);
         }, function(defer){
           console.debug('loadMore error')
-          // $scope.hasMore = false;
           $scope.$broadcast('scroll.infiniteScrollComplete');
           defer(undefined);
         })
-        // .then(function(){
-          // $timeout(function(){
-          //   $scope.hasMore = true;
-          // }, 2000);
-        // })
       };
 
-      // pull refresh
-      $scope.doRefresh = function() {
-        getSubscribes().then(function(defer){
-          $scope.$broadcast('scroll.refreshComplete');
-        }, function(defer){
-          $scope.$broadcast('scroll.refreshComplete');
-        })
-      };
 
     }
   ]);
