@@ -7,6 +7,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
       $scope.hasFollowedPost = true;
 
+      //获取截屏话题信息
       Api.getData(Api.getStateUrl(), $scope, 'clip', {
         itearator: {
           checkHasFollowedPost: {
@@ -27,23 +28,23 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           });
         })();
 
-            $scope.toggleSubscribe = function(){
-              var checkPush =  PushProcessingService.checkResult();
-            if(checkPush == "No"){
-              Auth.disallow();
-            }
+        $scope.toggleSubscribe = function(){
+          var checkPush =  PushProcessingService.checkResult();
+          if(checkPush == "No"){
+            Auth.disallow();
+          }
 
-            if ($scope.hasFollowedPost){
-              var tmp = {};
-              Api.deleteData($scope.clip.subscribe).then(function(){
-                $scope.checkHasFollowedPost();
-              });
-            }
-            else{
-              Api.putData($scope.clip.subscribe, {}).then(function(){
-                $scope.checkHasFollowedPost();
-              });
-            }
+          if ($scope.hasFollowedPost){
+            var tmp = {};
+            Api.deleteData($scope.clip.subscribe).then(function(){
+              $scope.checkHasFollowedPost();
+            });
+          }
+          else{
+            Api.putData($scope.clip.subscribe, {}).then(function(){
+              $scope.checkHasFollowedPost();
+            });
+          }
         }
 
         //发送新消息
@@ -59,83 +60,57 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           });
         }
 
-        console.debug($scope.clip)
-        $scope.getComment = function(){
-          Api.getData($scope.clip.comments, $scope, 'comments',{
-            last: true,
-            itearator: {
-              isOwned: {
-                type: 'transfer',
-                attr: '@user',
-                transfer: function(user){
-                  return user && user._id == Auth.currentUser().userData._id;
-                }
-              },
-              userName: {
-                type: 'transfer',
-                attr: '@user',
-                transfer: function(user){
-                  return (user['@profile'] && user['@profile'].nickname)
-                    ?user['@profile'].nickname
-                    :user.email;
-                }
-              },
-              userLogo: {
-                type: 'transfer',
-                attr: '@user',
-                transfer: function(user){
-                  return (user['@profile'] && user['@profile'].logo && user['@profile'].logo['100'])
-                    ?user['@profile'].logo['100']
-                    :'img/ionic.png';
-                }
+        //绑定列表Api
+        $scope.bindComments = Api.bindList($scope.clip.comments, $scope, 'comments',{
+          last: true,
+          itearator: {
+            isOwned: {
+              type: 'transfer',
+              attr: '@user',
+              transfer: function(user){
+                return user && user._id == Auth.currentUser().userData._id;
               }
-              
+            },
+            userName: {
+              type: 'transfer',
+              attr: '@user',
+              transfer: function(user){
+                return (user['@profile'] && user['@profile'].nickname)
+                  ?user['@profile'].nickname
+                  :user.email;
+              }
+            },
+            userLogo: {
+              type: 'transfer',
+              attr: '@user',
+              transfer: function(user){
+                return (user['@profile'] && user['@profile'].logo && user['@profile'].logo['100'])
+                  ?user['@profile'].logo['100']
+                  :'img/ionic.png';
+              }
             }
-          }).then(function(){
-            console.debug($scope.comments)
-            $ionicScrollDelegate.scrollBottom();
-            commentNextUrl = $scope.comments.meta.next;
-          });
-        };
-
-
-        //初始化获取讨论内容
-        var commentNextUrl = '';
-        
-        var tmp = {};
-        $scope.refreshComment = function(){
-          if (commentNextUrl){
-            Api.getData(commentNextUrl, tmp, 'comments', {
-              itearator: {
-                isOwned: {
-                  type: 'transfer',
-                  attr: '@user',
-                  transfer: function(user){
-                    console.debug(user._id, Auth.currentUser().userData._id)
-                    return user && user._id == Auth.currentUser().userData._id;
-                  }
-                }
-              }
-            }).then(function(){
-              $scope.comments = $scope.comments.concat(tmp.comments);
-              $ionicScrollDelegate.scrollBottom();
-              commentNextUrl = tmp.comments.meta.next;
-              $timeout(function(){
-                $scope.refreshComment();
-              },1)
-            });
-          }
-        }
-        $scope.getComment();
-
-        //在讨论页面内，根据comet更新数据
-        if (!$scope.comments) $scope.comments = [];
-        ApiEvent.registerByResource('clip', $stateParams.clipId, function(event){
-          console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
-          if ($state.current.name === 'tab.chat' && $state.current.params.clipId == $stateParams.clipId){
-            $scope.refreshComment();
+            
           }
         });
+
+        //初始化列表
+        $scope.bindComments.init().then(function(defer){
+
+          $ionicScrollDelegate.scrollBottom();
+
+          //在讨论页面内，根据comet更新comment
+          ApiEvent.registerByResource('clip', $stateParams.clipId, function(event){
+            console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
+            if ($state.current.name === 'tab.chat' && $state.current.params.clipId == $stateParams.clipId){
+              $scope.bindComments.newer().then(function(){
+                $timeout(function(){
+                  $ionicScrollDelegate.scrollBottom();
+                }, 200)
+              })
+            }
+          });
+        })
+        
       }, function(defer, error){
         console.debug(error);
       })

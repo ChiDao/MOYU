@@ -311,6 +311,7 @@ define(['app', 'services.Modal'], function(app)
             hasMore: function(){return bindStruct.moreData.length;}
           };
           bindStruct.moreAttr = apiData.api.type === 'stream'?'prev':'next';
+          bindStruct.newAttr = apiData.api.type === 'stream'?'next':undefined;
 
           bindStruct.init = _.bind(function(apiLink, scope, scopeDataField, options){
             //获取首页数据
@@ -383,6 +384,30 @@ define(['app', 'services.Modal'], function(app)
             });
           }, 
           Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
+
+          
+          bindStruct.newer = _.bind(function(bindStruct){
+            var tmp = {};
+            var targetStruct = bindStruct.scope[bindStruct.scopeDataField];
+            var options = _.omit(bindStruct.options, 'last');
+            console.debug('get new data', targetStruct.meta[bindStruct.moreAttr]);
+            return Api.getData(targetStruct.meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, data){
+              _.forEach(data, function(listItem){
+                targetStruct.push(listItem);
+              })
+              targetStruct.meta[bindStruct.moreAttr] = data.meta[bindStruct.moreAttr];
+              console.debug(targetStruct, data)
+              defer(undefined, data);
+            }, function(defer, error){
+              if (error.status === 404) defer(undefined, undefined);
+              else {
+                console.debug('get newer data error', targetStruct);
+                defer(error);
+              }
+            });
+          }, 
+          Api, bindStruct);
+
 
           return bindStruct;
 
