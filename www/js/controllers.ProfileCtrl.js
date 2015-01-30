@@ -46,7 +46,7 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
                 destinationType: Camera.DestinationType.FILE_URI,
                 sourceType: Camera.PictureSourceType.CAMERA
               });
-            }else{
+            }else if(buttonIndex == 2){
               navigator.camera.getPicture(onSuccess, onFail, { 
                 quality: 100, 
                 destinationType: Camera.DestinationType.FILE_URI,
