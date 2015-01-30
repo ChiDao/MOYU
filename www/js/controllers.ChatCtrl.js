@@ -98,6 +98,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
           $ionicScrollDelegate.scrollBottom();
 
+          //下拉刷新
           $scope.pullRefresh = function(){
             $scope.bindComments.more().then(function(){
               $scope.$broadcast('scroll.refreshComplete');
