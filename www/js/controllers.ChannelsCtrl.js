@@ -104,7 +104,16 @@ define(['app', 'services.Api','services.Modal'], function(app)
           getChannels();
         }else{
           //检查是否已有关注
-          Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(){
+          Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(defer){
+            defer(undefined);
+          }, function(defer, error){
+            console.debug(error);
+            if (error.status === 404){
+              scope.interests = '';
+              defer(undefined);
+            }
+            else defer('error');
+          }).then(function(){
             if((scope.interests.length)>0) scope.ifAbled = "able";
             getChannels();
           });
