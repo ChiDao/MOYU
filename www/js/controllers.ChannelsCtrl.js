@@ -69,6 +69,9 @@ define(['app', 'services.Api','services.Modal'], function(app)
             //异步检测应用是否存在函数
             function asyncCheck(channel){
               var deferred = $q.defer();
+
+              deferred.resolve("Yes");
+
               if (typeof(appAvailability) !== 'undefined'){
                 appAvailability.check(
                   channel.url + "://", // URI Scheme
@@ -78,9 +81,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
                   function() {  // Error callback
                     deferred.resolve("No");
                   }
-                  );
-              }else{
-                deferred.resolve("Yes");
+                );
               }
               return deferred.promise;
             }
@@ -88,7 +89,6 @@ define(['app', 'services.Api','services.Modal'], function(app)
             //加入到promises数组
             var promises=[];
             for(var key=0;key<scope.channels.length;key++){
-
               promises.push(asyncCheck(scope.channels[key]));
             }
 
