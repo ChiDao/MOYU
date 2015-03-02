@@ -1,46 +1,58 @@
-#前提条件
+#說明文檔
 
-```bash
+## 準備工作
+
+```
 npm install cordova-icon -g
-npm install cordova-splash -g
-brew install ImageMagick
+npm install cordova-splash -g  
+brew install ImageMagick  
 npm install
 ```
 
-
 ##项目编译
 
-###增加平台，注意ios平台需指定版本，否则url schema的处理不正常
+**增加平台，注意 iOS 平台需指定版本，否则 url schema 的处理不正常**
 
-```bash
+```
 cordova platforms add ios@3.6.3 android
 ```
 
-###打开项目并运行
+### 打开项目并运行
 
-####ios，用xcode打开项目并编译执行
+##### iOS
+用xcode打开项目并编译执行
 
-```bash
+```
 xed platforms/ios/Gamo.xcodeproj/
 ```
 
-####android，用ADT打开项目并编译执行
+##### Android
+用ADT打开项目并编译执行
 
 ##页面开发
 
-###打开gulp watch，自动转换jade,scss
+##### 打开 gulp watch，自动转换 jade,scss
  
- ```bash
- gulp watch
- ```
+```
+gulp watch
+```
  
-###打开ionic reload
+##### 打开ionic reload
 
-```bash
+```
 ionic serve
 ```
 
-###文件路径：
+### 文件路径
  1. jade文件路径：www_pre/jade
  2. scss文件路径：www_pre/scss
  
+## 環境問題
+根據以下處理
+
+##### /bin/sh: cordova: command not found
+
+```
+sudo npm cache clear  
+npm install -g cordova
+```
