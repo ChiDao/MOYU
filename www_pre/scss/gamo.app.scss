@@ -65,6 +65,12 @@ ion-content {
 }
 
 button {
+	// background-color: $height-color !important;
+	// border-color: darken($height-color,10%) !important;
+	// box-shadow: none !important;
+}
+
+.button-positive {
 	background-color: $height-color !important;
 	border-color: darken($height-color,10%) !important;
 	box-shadow: none !important;

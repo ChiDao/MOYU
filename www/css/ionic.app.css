@@ -10360,7 +10360,7 @@ ion-content {
 .item-input {
   background-color: #fff; }
 
-button {
+.button-positive {
   background-color: #344b62 !important;
   border-color: #223141 !important;
   box-shadow: none !important; }
