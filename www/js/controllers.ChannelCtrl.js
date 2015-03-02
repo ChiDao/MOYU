@@ -1,7 +1,7 @@
 define(['app', 'services.Api'], function(app)
 {
-  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', 
-    function($scope, $stateParams, UI, Api, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout) {
+  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
+    function($scope, $stateParams, UI, Api, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup) {
 
       
       //
@@ -134,43 +134,73 @@ define(['app', 'services.Api'], function(app)
         }else{
           var direct = false;
         }
-        var now                  = new Date().getTime(),
-        _60_seconds_from_now = new Date(now + 5*1000);
-        var id = Math.random();
-        //缓存信息，以登记截图上传事件
-        localStorage.setItem('playGameTm',now);
-        localStorage.setItem('playGameDt',direct);
-        localStorage.setItem('playGameId',$stateParams.gameId);
 
-        if (window.plugin && window.plugin.notification && window.plugin.notification.local){
+        $scope.data = {};
+        // An elaborate, custom popup
+        var myPopup = $ionicPopup.show({
+          template: '<input type="text" ng-model="data.time" placeholder="minute">',
+          title: '游戏时间',
+          subTitle: '亲，你要离开多久呢？',
+          scope: $scope,
+          buttons: [
+            { text: '取消' },
+            {
+              text: '<b>确定</b>',
+              type: 'button-positive',
+              onTap: function(e) {
+                if (!$scope.data.time) {
+                  e.preventDefault();
+                } else {
+                  return $scope.data.time;
+                }
+              }
+            }
+          ]
+        });
+        myPopup.then(function(res) {
+          console.log('Tapped!', res);
+          if(res !== undefined){
+            var now                  = new Date().getTime();
+            var backDate = new Date(now + res *60000);
 
-          //返回应用时取消对应的推送并开启截图上传页
-          document.addEventListener("resume", openNewClip, false);
-                            
-          function openNewClip() {
-            $scope.newClip(now,direct);
+            console.log("现在"+new Date(now)+"离开"+backDate);
+            var id = Math.random();
+            //缓存信息，以登记截图上传事件
+            localStorage.setItem('playGameTm',now);
+            localStorage.setItem('playGameDt',direct);
+            localStorage.setItem('playGameId',$stateParams.gameId);
 
-            window.plugin.notification.local.cancel(id,function () {
-              console.log("已取消");
-            }, $scope);
-            
-            document.removeEventListener("resume",openNewClip,false); //删除返回监听事件
-            return;
-          }
+            if (window.plugin && window.plugin.notification && window.plugin.notification.local){
 
-          window.plugin.notification.local.onclick = function(id, state, json){
-            $scope.newClip();
-          }
-          window.plugin.notification.local.add({
-            id:      id,
-            title:   'Reminder',
-            message: 'Dont forget to buy some flowers.',
-            repeat:  'secondly',
-            date:    _60_seconds_from_now
-          });
-        }
+              //返回应用时取消对应的推送并开启截图上传页
+              document.addEventListener("resume", openNewClip, false);
+                                
+              function openNewClip() {
+                $scope.newClip(now,direct);
 
-        window.open($scope.channel.clientsData[0].url + '://');
+                window.plugin.notification.local.cancel(id,function () {
+                  console.log("已取消");
+                }, $scope);
+                
+                document.removeEventListener("resume",openNewClip,false); //删除返回监听事件
+                return;
+              }
+
+              window.plugin.notification.local.onclick = function(id, state, json){
+                $scope.newClip();
+              }
+              window.plugin.notification.local.add({
+                id:      id,
+                title:   'Reminder',
+                message: 'Dont forget to buy some flowers.',
+                repeat:  'secondly',
+                date:    backDate
+              });
+            }
+
+            window.open($scope.channel.clientsData[0].url + '://');
+          }          
+        });        
       }
     }
   ]);
