@@ -12,7 +12,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
       console.log(userData);
       var currentUser = (localStorage.getItem('user') === null?
                          { userName: '', role: app.routingConfig.userRoles.public, userData: {} }:
-                         { userName: userData.email, role:app.routingConfig.userRoles.user, userData: userData}
+                         { userName: userData.tel, role:app.routingConfig.userRoles.user, userData: userData}
                          )
       // var currentUser = { userName: '', role: routingConfig.userRoles.public, userData: {} }
 
@@ -48,19 +48,25 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
           //填写邮箱signup对话框
           (function(preRegistModal){
             Api.postModal('/signup', {}, {
+              onOk: function(form, signupScope){
+                  return Thenjs(function(defer){
+                    signupScope.formData.tel = signupScope.formData.tel.toString();
+                    defer(undefined);
+                  });
+              },
               onSuccess: function(form, signupScope){
-                console.debug(signupScope.formData.email);
+                console.debug(signupScope.formData.tel);
                 signupScope.hideModal();
-                preRegistModal(signupScope.formData.email);
+                preRegistModal(signupScope.formData.tel);
               }
             });
           })
           //填写验证码pre-register对话框
           ((function(allowNotification){
-            return function(email){
-              Api.postModal('/pre-register', {}, {
+            return function(tel){
+              Api.postModal('/login', {}, {
                 init: function(scope){
-                  scope.formData.email = email
+                  scope.formData.tel = tel
                   scope.mustChoise = false;
                   scope.resetcommitFormError = function(ev){
                     scope.commitFormError = false;
@@ -75,7 +81,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
                 onSuccess: function(form, scope, data){
                   Api.getData(data.me, {}, 'me').then(function(defer, me){
                     console.log(me);
-                    currentUser.userName = me.email;
+                    currentUser.userName = me.tel;
                     currentUser.role = userRoles.user;
                     me.homeData = data;
                     currentUser.userData = me;
@@ -151,7 +157,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
         updateUser: function(){
           Api.getData(currentUser.userData.homeData.me, {}, 'me').then(function(defer, me){
             console.log("update"+JSON.stringify(me));
-            currentUser.userName = me.email;
+            currentUser.userName = me.tel;
             currentUser.role = userRoles.user;
             me.homeData = currentUser.userData.homeData;
             currentUser.userData = me;

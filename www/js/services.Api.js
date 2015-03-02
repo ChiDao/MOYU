@@ -58,7 +58,7 @@ define(['app', 'services.Modal'], function(app)
     //User
     apis.push(createApi('object', 'user-profile', ['user']));
     apis.push(createApi('stream', 'signup', []));
-    apis.push(createApi('stream', 'pre-register', []));
+    apis.push(createApi('stream', 'login', []));
     apis.push(createApi('object', 'home', []));
     apis.push(createApi('object', 'me', [], {'_id':'$currentUser'}));
     apis.push(createApi('stream', 'event-user', ['user'], {'user':'$currentUser'}));
@@ -88,7 +88,7 @@ define(['app', 'services.Modal'], function(app)
       'profile': 'tab.profile-chat',
     });
     setApiModal('signup', 'templates/modal-signup.html', {email: ''});
-    setApiModal('pre-register', 'templates/modal-login.html', {password: ''});
+    setApiModal('login', 'templates/modal-login.html', {password: ''});
     setApiModal('new-clip', 'templates/modal-new-clip.html');
 
     //第三个参数要与api的参数配置一致
