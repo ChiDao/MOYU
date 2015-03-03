@@ -4,7 +4,7 @@ ion-view.full-card(view-title='个人')
   ion-content
     .list.card.top-card
       a.item.item-avatar.item-icon-right
-        img(ng-src='imageURI')
+        img(ng-src='{{imageURI}}')
         h2 {{userData.email}}
         p
           span 发表：{{userData['@clips']['@count']}}
@@ -19,4 +19,3 @@ ion-view.full-card(view-title='个人')
     //-   .item.item-body
     //-     a(ng-click="Api.jumpTo(clip._self, 'profile')")
     //-       img.full-image(src="{{clip.img}}")
-    p {{imageURI}}
