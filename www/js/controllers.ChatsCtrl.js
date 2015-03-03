@@ -1,8 +1,9 @@
 define(['app', 'services.Api'], function(app)
 {
   app.controller('ChatsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'UI', 'Api', 'Restangular',
-    'Auth', 'Api', 'ApiEvent', '$http', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, UI, Api, Restangular, Auth, Api, ApiEvent, $http, $timeout) {
+    'Auth', 'Api', 'ApiEvent', '$http', '$timeout', '$ionicLoading', 
+    function($scope, $rootScope, $state, $stateParams, UI, Api, Restangular, 
+      Auth, Api, ApiEvent, $http, $timeout, $ionicLoading) {
 
       $scope.subscribes = Array(10);
 
@@ -64,8 +65,12 @@ define(['app', 'services.Api'], function(app)
           }
         }
       });
-      $scope.bindSubscribes.init().then(function(){
+      $ionicLoading.show();
+      $scope.bindSubscribes.init().then(function(defer, data){
         console.debug($scope['subscribes']);
+        if (data.status === 404){
+          $scope.subscribes.length = 0;
+        }
 
         $scope.$on("$ionicView.afterEnter", function() {
           $scope.bindSubscribes.refresh();
@@ -79,6 +84,11 @@ define(['app', 'services.Api'], function(app)
             $scope.$broadcast('scroll.refreshComplete');
           })
         };
+        defer(undefined);
+      }, function(defer, error){
+        defer(error);
+      }).fin(function(){
+        $ionicLoading.hide();
       });
 
       $scope.hasMore = $scope.bindSubscribes.hasMore;

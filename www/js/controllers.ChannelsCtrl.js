@@ -1,8 +1,8 @@
 define(['app', 'services.Api','services.Modal'], function(app)
 {
-  app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth',
+  app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth', '$ionicLoading',
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB',
-    function($scope, $state, $stateParams, UI, Api, Auth,
+    function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
       
       //测试缓存
@@ -51,7 +51,10 @@ define(['app', 'services.Api','services.Modal'], function(app)
       };
 
       $scope.$on("$ionicView.afterEnter", function() {
-        bindChannels.refresh();
+        $ionicLoading.show();
+        bindChannels.refresh().fin(function(){
+          $ionicLoading.hide();
+        });
       });
 
       function getGame(scope){

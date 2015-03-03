@@ -1,5 +1,9 @@
 
 define(['app', 'restangular'], function(app){
+  app.constant('$ionicLoadingConfig', {
+    template: '<div class="icon ion-loading-a"></div> 加载中...'
+  });
+  
   app.constant('DB_CONFIG', {
     name: 'DB',
     tables: [

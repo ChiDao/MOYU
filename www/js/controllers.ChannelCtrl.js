@@ -1,12 +1,15 @@
 define(['app', 'services.Api'], function(app)
 {
-  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
-    function($scope, $stateParams, UI, Api, $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup) {
-
-      
+  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', 
+    '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
+    '$ionicLoading',
+    function($scope, $stateParams, UI, Api, 
+      $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup,
+      $ionicLoading) {
       //
       $scope.$on("$ionicView.afterEnter", function() {
         var tmp = {};
+        $ionicLoading.show();
         Api.getData(Api.getStateUrl(), $scope, 'channel', {
           itearator: {
             clientsData: {
@@ -30,7 +33,7 @@ define(['app', 'services.Api'], function(app)
               }
             }
           }
-        }).then(function(){
+        }).then(function(defer){
           console.debug('$scope.channel:', $scope.channel);
           // get clips
           $scope.getClips = function(){
@@ -122,6 +125,12 @@ define(['app', 'services.Api'], function(app)
              var direct = localStorage.getItem('playGameDt');
              $scope.newClip(time,direct);
           }
+
+          defer(undefined);
+        }, function(defer, error){
+          defer(error)
+        }).fin(function(){
+          $ionicLoading.hide();
         });//End of then function
       });
 

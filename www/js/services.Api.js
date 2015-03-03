@@ -393,7 +393,7 @@ define(['app', 'services.Modal'], function(app)
               })
               defer(undefined, data);
             }, function(defer, error){
-              if (error.status === 404) defer(undefined, undefined);
+              if (error.status === 404) defer(undefined, error);
               else defer(error);
             });
           };
