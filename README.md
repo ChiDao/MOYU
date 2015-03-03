@@ -9,48 +9,47 @@ brew install ImageMagick
 npm install
 ```
 
-##项目编译
+## 項目編譯
 
-**增加平台，注意 iOS 平台需指定版本，否则 url schema 的处理不正常**
+**增加平台，注意 iOS 平台需指定版本，否則 url schema 的處理不正常**
 
 ```
 cordova platforms add ios@3.6.3 android
 ```
 
-### 打开项目并运行
+### 運行：
 
-##### iOS
-用xcode打开项目并编译执行
+##### iOS：
+用 xcode 開啟項目且編譯執行
 
 ```
 xed platforms/ios/Gamo.xcodeproj/
 ```
 
-##### Android
-用ADT打开项目并编译执行
+##### Android：
+用 ADT 開啟項目且編譯執行
 
-##页面开发
+## 頁面編碼
 
-##### 打开 gulp watch，自动转换 jade,scss
+##### 開啟 gulp watch，智慧轉碼 jade,scss。
  
 ```
 gulp watch
 ```
  
-##### 打开ionic reload
+##### 開啟 ionic reload。
 
 ```
 ionic serve
-或
+或    
 ionic emulate ios --target="iPhone-5" -l -c -s
 ```
 
-### 文件路径
- 1. jade文件路径：www_pre/jade
- 2. scss文件路径：www_pre/scss
+### 檔案路徑：
+ 1. jade文件路徑：www_pre/jade
+ 2. scss文件路徑：www_pre/scss
  
 ## 環境問題
-根據以下處理
 
 ##### /bin/sh: cordova: command not found
 
@@ -62,4 +61,4 @@ npm install -g cordova
 
 ## FAQ
 
-* ionic emulate 会导致 ionic.Platform.isWebView 把模拟器当成为真机。
+* ionic emulate 會導致 ionic.Platform.isWebView 把模擬器當成為真機。
