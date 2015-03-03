@@ -23,6 +23,7 @@ var pluginlist = [
     "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=gamo",
     "self-plugins/pushPluginEx",
     "self-plugins/nl.x-services.plugins.actionsheet",
+    "https://github.com/brodysoft/Cordova-SQLitePlugin",
 ];
 
 // no need to configure below
