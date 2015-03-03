@@ -1,11 +1,11 @@
 ion-list.talk-list
   a.item.item-avatar(ng-repeat='clip in clips',type='item-text-wrap',  ng-click="Api.jumpTo(subscribe.clip, chats)")
-    img(src='{{clip.gameData.logo?clip.gameData.logo:""}}')
+    img(ng-src='{{clip.gameData.logo?clip.gameData.logo:""}}')
     i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
     b {{clip.content}} <br>
     | {{clip._modified | date: 'yyyy-MM-dd'}}
     span.item-note(ng-class='{first:$first}')
-      img(src="{{clip.img['100']}}")
+      img(ng-src="{{clip.img['100']}}")
 
 //- subscribe
 //- .list.card(ng-repeat='clip in clips')

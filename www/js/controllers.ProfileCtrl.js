@@ -16,7 +16,9 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
         }
       }).then(function(){
         // console.debug($scope.clips);
-	    });
+	    }, function(defer, error){
+        console.debug(error);
+      });
 
       //获取资料
       $scope.imageURI = 'img/upload-photo.png';
@@ -27,6 +29,8 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
           // console.log("bbb"+JSON.stringify($scope.formData));
           $scope.imageURI = $scope.formData.logo['100'];
           // console.debug($scope.clips);
+        }, function(defer, error){
+          console.debug(error);
         });
       };
       getProfile();
