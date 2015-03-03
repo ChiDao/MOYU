@@ -1,6 +1,6 @@
 ion-view#channel(view-title='{{channel.name}}')
   ion-nav-buttons(side="right")
-    button.button.button-image(ng-click="newClip()")
+    button.button.button-image.button-clear(ng-click="newClip()")
       img2x(src2x="img/icon-NewScreen",ext="png")
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
@@ -14,5 +14,5 @@ ion-view#channel(view-title='{{channel.name}}')
         img(src='img/mcfly.jpg')
         h2 {{clip.userData.email}}
         p {{clip._created | date: 'yyyy-MM-dd HH:mm'}}
-  ion-footer-bar
-    button.button-calm(ng-click="playGame()") 玩游戏
+  ion-footer-bar.play-game
+    button.button-play.button-calm(ng-click="playGame()") 玩游戏

@@ -4,15 +4,19 @@ ion-view.full-card(view-title='个人')
   ion-content
     .list.card.top-card
       a.item.item-avatar.item-icon-right
-        img(src='img/mcfly.jpg')
+        img(ng-src='imageURI')
         h2 {{userData.email}}
         p
           span 发表：{{userData['@clips']['@count']}}
+        p
           span 关注：{{userData['@interests']['@count']}}
-    .list.card(ng-repeat='clip in clips')
-      .item.item-divider
-        img(src='{{clip.gameData.logo}}', style="width:20px")
-        | {{clip.gameData.name}} - {{clip.content}} {{subscribe.unread}}
-      .item.item-body
-        a(ng-click="Api.jumpTo(clip._self, 'profile')")
-          img.full-image(src="{{clip.img}}")
+
+    ng-include(src="'templates/profile-tempSrc.html'")
+    //- .list.card(ng-repeat='clip in clips')
+    //-   .item.item-divider
+    //-     img(src='{{clip.gameData.logo}}', style="width:20px")
+    //-     | {{clip.gameData.name}} - {{clip.content}} {{subscribe.unread}}
+    //-   .item.item-body
+    //-     a(ng-click="Api.jumpTo(clip._self, 'profile')")
+    //-       img.full-image(src="{{clip.img}}")
+    p {{imageURI}}

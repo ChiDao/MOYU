@@ -214,4 +214,10 @@ define(['app', 'services.Api','services.Modal'], function(app)
       return secondDiff;
     };
   })
+
+  app.filter('timeFormat', function(){
+    return function(dataTime){
+      return '時間';
+    };
+  })
 });

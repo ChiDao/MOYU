@@ -39,8 +39,6 @@ define([
     };
   });
 
-// img(src="img/data/soul-clash/sotre.png" srcset="img/data/soul-clash/sotre@2x.png 2x")
-
   starter.run(function($state, $ionicPlatform,PushProcessingService, DB) {
     PushProcessingService.checkinitialize();
 
@@ -57,6 +55,16 @@ define([
     $ionicPlatform.ready(function() {
       DB.init();
 
+      if (ionic.Platform.isWebView()) {
+        console.log("》Machine");
+        window.alert = function (txt) {
+           navigator.notification.alert(txt, null, "Gamo", "关闭");
+        }
+      } else {
+        console.log("》Chrome View");
+      }
+
+
       if (typeof(Keyboard) !== "undefined") {
         if (window.cordova && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -64,7 +72,6 @@ define([
       }
 
       if (window.StatusBar) {
-        // org.apache.cordova.statusbar required
         StatusBar.styleLightContent();
       }
 
