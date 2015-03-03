@@ -36,6 +36,7 @@
     "org.apache.cordova.splashscreen",
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.inappbrowser",
-    "technology.kulak.cordova.appopen"
+    "technology.kulak.cordova.appopen",
+    "org.apache.cordova.dialogs"
   ]
 }

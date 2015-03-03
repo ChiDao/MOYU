@@ -41,6 +41,8 @@ gulp watch
 
 ```
 ionic serve
+或
+ionic emulate ios --target="iPhone-5" -l -c -s
 ```
 
 ### 文件路径
@@ -56,3 +58,8 @@ ionic serve
 sudo npm cache clear  
 npm install -g cordova
 ```
+
+
+## FAQ
+
+* ionic emulate 会导致 ionic.Platform.isWebView 把模拟器当成为真机。
