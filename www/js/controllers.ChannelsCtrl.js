@@ -143,7 +143,12 @@ define(['app', 'services.Api','services.Modal'], function(app)
                 if (!Auth.isLoggedIn()){
                   Auth.login(function(){
                     console.log("ok!" + Auth.currentUser().userData._id);
-                    getGame(scope);
+                    Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(defer){
+                      console.log("login");
+                      if((scope.interests.length)>0) scope.hideModal();
+                    }, function(defer, error){
+                      getGame(scope);
+                    })
                   });
                 }
                 else{

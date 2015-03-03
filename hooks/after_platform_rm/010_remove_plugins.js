@@ -22,6 +22,7 @@ var pluginlist = [
     "com.phonegap.plugins.PushPlugin",
     "nl.x-services.plugins.actionsheet",
     "org.apache.cordova.dialogs"
+    "com.brodysoft.sqlitePlugin",
 ];
 
 // no need to configure below

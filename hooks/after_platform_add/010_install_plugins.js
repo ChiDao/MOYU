@@ -14,6 +14,7 @@ var pluginlist = [
     "technology.kulak.cordova.appopen",
     "https://github.com/ohh2ahh/AppAvailability.git",
     "https://github.com/EddyVerbruggen/CameraRoll-PhoneGap-Plugin",
+    "https://github.com/brodysoft/Cordova-SQLitePlugin",
     // MA QIAN ADD:
     // "https://github.com/katzer/cordova-plugin-local-notifications",
     "self-plugins/de.appplant.cordova.plugin.local-notification",
