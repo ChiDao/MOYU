@@ -38,7 +38,7 @@
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
-    "org.apache.cordova.dialogs"
+    "org.apache.cordova.dialogs",
     "https://github.com/brodysoft/Cordova-SQLitePlugin"
   ]
 }

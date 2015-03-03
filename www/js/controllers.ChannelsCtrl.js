@@ -5,22 +5,24 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
       
-      DB.flatSave('documents', 'id', {id: 'xxx', title: 'test'})
-      .then(function(defer, result){
-        DB.flatQueryAll('documents')
-        .then(function(defer, result){
-          console.log(JSON.stringify(result));
-        }, function(defer, error){
-          console.log(error);
-        });
-      }, function(defer, error){
-        console.log(error);
-      });
+      //测试缓存
+      // DB.flatSave('documents', 'id', {id: 'xxx', title: 'test'})
+      // .then(function(defer, result){
+      //   DB.flatQueryAll('documents')
+      //   .then(function(defer, result){
+      //     console.log(JSON.stringify(result));
+      //   }, function(defer, error){
+      //     console.log(error);
+      //   });
+      // }, function(defer, error){
+      //   console.log(error);
+      // });
 
       //检查上传事件是否结束
       if (localStorage.getItem('playGameTm') !== null){
         $state.go('tab.channel',{gameId:localStorage.getItem('playGameId')});
       }
+
       $scope.channels = new Array(10);
       var bindChannels = Api.bindList('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels', {
         reverse: true,
