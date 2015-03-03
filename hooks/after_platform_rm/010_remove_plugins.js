@@ -21,6 +21,7 @@ var pluginlist = [
     "nl.x-services.plugins.launchmyapp",
     "com.phonegap.plugins.PushPlugin",
     "nl.x-services.plugins.actionsheet",
+    "com.brodysoft.sqlitePlugin",
 ];
 
 // no need to configure below
