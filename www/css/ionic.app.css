@@ -10279,7 +10279,7 @@ h5 {
 
 .right-buttons .button-image {
   border: none;
-  margin-top: 6px; }
+  margin-top: 5px; }
   .right-buttons .button-image img {
     width: 100%; }
 
@@ -10443,9 +10443,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 #AddChannel a {
   height: 64px; }
 
-#Chats ion-list .icon {
+.talk-list .icon {
   margin-right: 0.2em; }
-#Chats ion-list .item {
+.talk-list .item {
   border-color: #d8d8d8;
   font-size: 12px;
   line-height: 16px;
@@ -10456,16 +10456,16 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
   padding: 14px;
   padding-left: 58px;
   overflow: hidden; }
-  #Chats ion-list .item img {
+  .talk-list .item img {
     border-radius: 7px;
     height: 30px;
     width: 30px;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24); }
-  #Chats ion-list .item .item-note {
+  .talk-list .item .item-note {
     position: absolute;
     top: 0;
     right: 0; }
-    #Chats ion-list .item .item-note img {
+    .talk-list .item .item-note img {
       height: auto;
       width: 70px;
       clip: rect(0px, 70px, 70px, 0px);
@@ -10490,6 +10490,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 
 #Newclip #newPostImage {
   width: 80px; }
+
+.play-game {
+  background: none; }
 
 /*
 	screen
