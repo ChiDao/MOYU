@@ -41,7 +41,7 @@ define([
 
 // img(src="img/data/soul-clash/sotre.png" srcset="img/data/soul-clash/sotre@2x.png 2x")
 
-  starter.run(function($state, $ionicPlatform,PushProcessingService) {
+  starter.run(function($state, $ionicPlatform,PushProcessingService, DB) {
     PushProcessingService.checkinitialize();
 
     //启动应用则取消全部本地推送
@@ -55,6 +55,7 @@ define([
           PushProcessingService.initialize();
     }
     $ionicPlatform.ready(function() {
+      DB.init();
 
       if (typeof(Keyboard) !== "undefined") {
         if (window.cordova && window.cordova.plugins.Keyboard) {

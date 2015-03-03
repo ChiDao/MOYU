@@ -1,7 +1,22 @@
 define(['app', 'services.Api','services.Modal'], function(app)
 {
-  app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth','$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q','Modal',
-    function($scope, $state, $stateParams, UI, Api, Auth,$ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q,Modal) {
+  app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth',
+    '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB',
+    function($scope, $state, $stateParams, UI, Api, Auth,
+      $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
+      
+      DB.flatSave('documents', 'id', {id: 'xxx', title: 'test'})
+      .then(function(defer, result){
+        DB.flatQueryAll('documents')
+        .then(function(defer, result){
+          console.log(JSON.stringify(result));
+        }, function(defer, error){
+          console.log(error);
+        });
+      }, function(defer, error){
+        console.log(error);
+      });
+
       //检查上传事件是否结束
       if (localStorage.getItem('playGameTm') !== null){
         $state.go('tab.channel',{gameId:localStorage.getItem('playGameId')});
