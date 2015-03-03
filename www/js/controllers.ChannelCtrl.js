@@ -198,7 +198,7 @@ define(['app', 'services.Api'], function(app)
               });
             }
 
-            window.open($scope.channel.clientsData[0].url + '://');
+            window.open(_.result(_.find($scope.channel.clientsData,{'platform': 'ios'}), 'url') + '://');
           }          
         });        
       }
