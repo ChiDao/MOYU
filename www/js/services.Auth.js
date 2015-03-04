@@ -101,15 +101,15 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
                   .then(function(){
                     var checkPush = PushProcessingService.checkResult();
                     console.log("checkPush"+checkPush);
-                    if(checkPush == "No"){
-                      allowNotification();
-                    }else{
+                    // if(checkPush == "No"){
+                    //   allowNotification();
+                    // }else{
                       // $ionicHistory.nextViewOptions({
                       //   disableAnimate: true,
                       //   disableBack: true
                       // });
                       // $state.go('app.wait-open');
-                    }
+                    // }
                     success();
                   })
                 },
