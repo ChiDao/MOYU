@@ -41,21 +41,33 @@ define(['app', 'services.Api','services.Modal'], function(app)
         }
       });
 
-      // pull refresh
-      $scope.doRefresh = function() {
-        bindChannels.refresh().then(function(defer){
-          $scope.$broadcast('scroll.refreshComplete');
-        }, function(defer){
-          $scope.$broadcast('scroll.refreshComplete');
-        })
-      };
+      $ionicLoading.show();
+      bindChannels.init()
+      .then(function(defer){
+        // pull refresh
+        $scope.doRefresh = function() {
+          bindChannels.refresh().then(function(defer){
+            $scope.$broadcast('scroll.refreshComplete');
+          }, function(defer){
+            $scope.$broadcast('scroll.refreshComplete');
+          })
+        };
 
-      $scope.$on("$ionicView.afterEnter", function() {
-        $ionicLoading.show();
-        bindChannels.refresh().fin(function(){
-          $ionicLoading.hide();
+        $scope.$on("$ionicView.afterEnter", function() {
+          $ionicLoading.show();
+          bindChannels.refresh().fin(function(){
+            $ionicLoading.hide();
+          });
         });
-      });
+        defer(undefined);
+      }, function(defer, error){
+        defer(error)
+      })
+      .fin(function(defer){
+        $ionicLoading.hide();
+      })
+      
+
 
       function getGame(scope){
         var getChannels = function(){

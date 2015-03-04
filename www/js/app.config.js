@@ -115,7 +115,7 @@ define(['app', 'restangular'], function(app){
           //game client
           ['stream', 'game-clients', [['game'],{}]],
           ['object', 'follow-game', [['game', 'user'],{}],{'user':'$currentUser'}],
-          ['stream', 'recent-played-games', [['user'],{}],{'user':'$currentUser'}],
+          ['query', 'recent-played-games', [['user'],{}],{'user':'$currentUser'}],
           ['stream', 'clients-by-platform', [['platform'],{}]],
           //clip comments
           ['stream', 'new-clip', [['game'],{}],{'user':'$currentUser'}],

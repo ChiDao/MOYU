@@ -368,19 +368,18 @@ define(['app', 'services.Modal'], function(app)
             options: options,
             clearedOptions: _.omit(options, 'last'),
             moreAttr: this.getMoreAttr(apiData.server, apiData.api.apiType),
-            // moreAttr: apiData.api.apiType === 'stream'?'prev':'next',
             newAttr: apiData.api.apiType === 'stream'?'next':undefined,
             moreData: [],
-            // hasMore: function(){return bindStruct.moreData.length;}
           };
+          console.debug(bindStruct);
 
           bindStruct.init = function(){
             //获取首页数据
             return Api.getData(bindStruct.apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options).then(function(defer, data){
               //缓存下一页数据
-              // console.debug(scope[scopeDataField].meta[bindStruct.moreAttr], options);
+              // console.debug(scope[scopeDataField].meta, scope[scopeDataField].meta[bindStruct.moreAttr], options);
               var tmp = {};
-              Api.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, scopeDataField, bindStruct.clearedOptions).then(function(innerDefer, moreData){
+              Api.getData(apiData.serverPrefix + scope[scopeDataField].meta[bindStruct.moreAttr], tmp, scopeDataField, bindStruct.clearedOptions).then(function(innerDefer, moreData){
                 bindStruct.moreData.length = 0
                 _.forEach(moreData, function(listItem){
                   bindStruct.moreData.push(listItem);
@@ -391,56 +390,77 @@ define(['app', 'services.Modal'], function(app)
                 if (error.status === 404) defer(undefined, data);
                 else defer(error);
               })
-              defer(undefined, data);
             }, function(defer, error){
               if (error.status === 404) defer(undefined, error);
               else defer(error);
             });
           };
 
-          bindStruct.refresh = _.bind(function(apiLink, scope, scopeDataField, options){
+          bindStruct.refresh = function(){
             var tmp = {};
-            console.debug('fresh data', scope[scopeDataField]);
-            return this.getData(apiLink, tmp, 'scopeDataField', options).then(function(defer, data){
-              scope[scopeDataField] = data;
-              // var tmp = {};
-              // this.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, scopeDataField, options).then(function(innerDefer, innerData){
-              //   bindStruct.moreData.length = 0
-              //   bindStruct.concat(innerData);
-              //   defer(undefined, data);
-              // },function(innerDefer, error){
-              //   if (error.status === 404) defer(undefined, data);
-              //   else defer(error);
-              // })
-              defer(undefined, data);
+            // console.debug('fresh data', scope[scopeDataField]);
+            return Api.getData(bindStruct.apiLink, tmp, bindStruct.scopeDataField, bindStruct.options).then(function(defer, data){
+              Api.getData(apiData.serverPrefix + data.meta[bindStruct.moreAttr], tmp, 'scopeDataField', bindStruct.clearedOptions).then(function(innerDefer, moreData){
+                bindStruct.moreData.length = 0
+                _.forEach(moreData, function(listItem){
+                  bindStruct.moreData.push(listItem);
+                })
+                //改用了merge，但未处理原有属性，后来变为空的情况
+                for(var index = 0; index < data.length; index++){
+                  if (scope[scopeDataField][index]){
+                    _.merge(scope[scopeDataField][index], data[index])
+                  } else {
+                    scope[scopeDataField].push(data[index]);
+                  }
+                }
+                // scope[scopeDataField].length = 0
+                // _.forEach(data, function(listItem){
+                //   scope[scopeDataField].push(listItem);
+                // })
+                scope[scopeDataField].meta[bindStruct.moreAttr] = moreData.meta[bindStruct.moreAttr];
+                // console.debug(bindStruct);
+                defer(undefined, scope[scopeDataField]);
+              },function(innerDefer, error){
+                if (error.status === 404) {
+                  //改用了merge，但未处理原有属性，后来变为空的情况
+                  for(var index = 0; index < data.length; index++){
+                    if (scope[scopeDataField][index]){
+                      _.merge(scope[scopeDataField][index], data[index])
+                    } else {
+                      scope[scopeDataField].push(data[index]);
+                    }
+                  }
+                  defer(undefined, scope[scopeDataField]);
+                }
+                else defer(error);
+              })
             }, function(defer, error){
-              if (error.status === 404) defer(undefined, undefined);
+              if (error.status === 404) defer(undefined, error);
               else {
                 console.debug('fresh data error', scope[scopeDataField]);
                 defer(error);
               }
             });
-          }, 
-          Api, apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options);
+          };
 
           bindStruct.more = function(){
             var tmp = {};
-            if (!bindStruct.hasMore()) return Thenjs(function(defer){defer(undefined);});
+            if (!bindStruct.moreData.length) return Thenjs(function(defer){defer(undefined);});
             var targetStruct = bindStruct.scope[bindStruct.scopeDataField];
             var options = _.omit(bindStruct.options, 'last');
             console.debug('get more data', bindStruct.moreAttr, targetStruct.meta[bindStruct.moreAttr]);
-            return Api.getData(scope[scopeDataField].meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, moreData){
+            return Api.getData(apiData.serverPrefix + scope[scopeDataField].meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, moreData){
               var listItem;
               //更新数据
-              while(listItem = bindStruct.moreData.pop()){
-                targetStruct.unshift(listItem);
+              while(listItem = bindStruct.moreData.shift()){
+                targetStruct.push(listItem);
               }
               //缓存下一页数据
               _.forEach(moreData, function(listItem){
                 bindStruct.moreData.push(listItem);
               })
               targetStruct.meta[bindStruct.moreAttr] = moreData.meta[bindStruct.moreAttr];
-              console.debug(bindStruct.moreData, targetStruct)
+              // console.debug(bindStruct.moreData, targetStruct)
               defer(undefined);
             }, function(defer, error){
               if (error.status === 404){
@@ -451,7 +471,7 @@ define(['app', 'services.Modal'], function(app)
                 defer(undefined);
               }
               else{
-                console.debug('get more data error: ');
+                console.debug('get more data error');
                 defer(error);
               }
             });
@@ -463,7 +483,7 @@ define(['app', 'services.Modal'], function(app)
             var tmp = {};
             var targetStruct = bindStruct.scope[bindStruct.scopeDataField];
             console.debug('get new data', bindStruct.moreAttr, targetStruct.meta[bindStruct.newAttr]);
-            return Api.getData(targetStruct.meta[bindStruct.newAttr], tmp, 'scopeDataField', bindStruct.clearedOptions).then(function(defer, data){
+            return Api.getData(apiData.serverPrefix + targetStruct.meta[bindStruct.newAttr], tmp, 'scopeDataField', bindStruct.clearedOptions).then(function(defer, data){
               _.forEach(data, function(listItem){
                 targetStruct.push(listItem);
               })
@@ -481,6 +501,10 @@ define(['app', 'services.Modal'], function(app)
 
 
           return bindStruct;
+
+          // if (!scope[scopeDataField]){
+          //   return this.getData(apiLink, scope, scopeDataField, options);
+          // }
         },
         postData: function(apiLink, data){
           //get api
