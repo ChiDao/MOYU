@@ -36,18 +36,27 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
             Auth.disallow();
           }else{
             if(Auth.currentUser().userData['#profile'] == 404){
-              $timeout(function(){
-                alert("你还没有设置个人信息，赶快去个人主页设置吧！")
-              },1)
+              var alertSet1 = $ionicPopup.alert({
+                title: '你还没有设置个人信息，赶快去个人主页设置吧！',
+              });
+              // $timeout(function(){
+              //   alert("你还没有设置个人信息，赶快去个人主页设置吧！")
+              // },1)
             }else{
               if(Auth.currentUser().userData['@profile'].nickname ==''){
-                $timeout(function(){
-                  alert("你还没有填写昵称，赶快去个人主页设置吧！")
-                },1)
+                var alertSet2 = $ionicPopup.alert({
+                  title: '你还没有填写昵称，赶快去个人主页设置吧！',
+                });
+                // $timeout(function(){
+                //   alert("你还没有填写昵称，赶快去个人主页设置吧！")
+                // },1)
               }else if(Auth.currentUser().userData['@profile'].logo['100']==''){
-                $timeout(function(){
-                  alert("你还没有上传头像，赶快去个人主页设置吧！")
-                },1)
+                var alertSet3 = $ionicPopup.alert({
+                  title: '你还没有上传头像，赶快去个人主页设置吧！',
+                });
+                // $timeout(function(){
+                //   alert("你还没有上传头像，赶快去个人主页设置吧！")
+                // },1)
               }else{
                 if ($scope.hasFollowedPost){
                   var tmp = {};
