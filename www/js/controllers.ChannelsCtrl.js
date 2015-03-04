@@ -23,49 +23,56 @@ define(['app', 'services.Api','services.Modal'], function(app)
         $state.go('tab.channel',{gameId:localStorage.getItem('playGameId')});
       }
 
-      $scope.channels = new Array(10);
-      var bindChannels = Api.bindList('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels', {
-        reverse: true,
-        itearator: {
-          lastClip:{
-            type: 'transfer',
-            attr: '@clips',
-            transfer: function(clips){
-              if (clips && clips['slice']){
-                return clips['slice'][clips['slice'].length - 1]
-              }else{
-                return undefined;
+      $scope.bindInit = function(){
+        $scope.channels = new Array(10);
+        var bindChannels = Api.bindList('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels', {
+          reverse: true,
+          itearator: {
+            lastClip:{
+              type: 'transfer',
+              attr: '@clips',
+              transfer: function(clips){
+                if (clips && clips['slice']){
+                  return clips['slice'][clips['slice'].length - 1]
+                }else{
+                  return undefined;
+                }
               }
             }
           }
-        }
-      });
-
-      $ionicLoading.show();
-      bindChannels.init()
-      .then(function(defer){
-        // pull refresh
-        $scope.doRefresh = function() {
-          bindChannels.refresh().then(function(defer){
-            $scope.$broadcast('scroll.refreshComplete');
-          }, function(defer){
-            $scope.$broadcast('scroll.refreshComplete');
-          })
-        };
-
-        $scope.$on("$ionicView.afterEnter", function() {
-          $ionicLoading.show();
-          bindChannels.refresh().fin(function(){
-            $ionicLoading.hide();
-          });
         });
-        defer(undefined);
-      }, function(defer, error){
-        defer(error)
-      })
-      .fin(function(defer){
-        $ionicLoading.hide();
-      })
+
+        $ionicLoading.show();
+        bindChannels.init()
+        .then(function(defer){
+          // pull refresh
+          $scope.doRefresh = function() {
+            bindChannels.refresh().then(function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+            }, function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+            })
+          };
+
+          $scope.enterRefresh = function(){
+            $ionicLoading.show();
+            bindChannels.refresh().fin(function(){
+              $ionicLoading.hide();
+            });
+          }
+
+          $scope.$on("$ionicView.afterEnter", $scope.enterRefresh);
+          defer(undefined);
+        }, function(defer, error){
+          defer(error)
+        })
+        .fin(function(defer){
+          $ionicLoading.hide();
+        })
+      }
+      if (Auth.isLoggedIn()){
+        $scope.bindInit();
+      }
       
 
 
@@ -176,10 +183,14 @@ define(['app', 'services.Api','services.Modal'], function(app)
               }else{
                 if (!Auth.isLoggedIn()){
                   Auth.login(function(){
+                    $scope.bindInit();
                     console.log("ok!" + Auth.currentUser().userData._id);
                     Api.getData('/user-interests/'+ Auth.currentUser().userData._id + '?_last=&r=' + Math.random(), scope, 'interests').then(function(defer){
                       console.log("login");
-                      if((scope.interests.length)>0) scope.hideModal();
+                      if((scope.interests.length)>0){
+                        scope.hideModal();
+                        $scope.enterRefresh();
+                      }
                     }, function(defer, error){
                       getGame(scope);
                     })
@@ -197,8 +208,8 @@ define(['app', 'services.Api','services.Modal'], function(app)
             }
 
             scope.complete = function(){
-              bindChannels.refresh();
               scope.hideModal();
+              $scope.enterRefresh();
             }
 
           }
