@@ -1,15 +1,38 @@
 angular.module('angular-preload-image', []);
-angular.module('angular-preload-image').factory('preLoader', function(){
-    return function (url, successCallback, errorCallback) {
+angular.module('angular-preload-image').factory('preLoader', function($timeout){
+    return function (url, successCallback, errorCallback, gotSize) {
         //Thank you Adriaan for this little snippet: http://www.bennadel.com/members/11887-adriaan.htm
-        angular.element(new Image()).bind('load', function(){
+        var img = new Image();
+        var set = setInterval(function(){
+            if (gotSize && img.width){
+                gotSize(img.width, img.height);
+                clearInterval(set);
+            }
+        },10);
+        angular.element(img).bind('load', function(){
+            clearInterval(set);
             successCallback();
         }).bind('error', function(){
+            clearInterval(set);
             errorCallback();
         }).attr('src', url);
     }
 });
-angular.module('angular-preload-image').directive('preloadImage', ['preLoader', function(preLoader){
+angular.module('angular-preload-image').factory('getBase64', function(){
+    var base64imgs = {};
+    return function(width, height){
+        if (base64imgs[width + '-' + height]){
+            return base64imgs[width + '-' + height];
+        }else{
+            var canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            base64imgs[width + '-' + height] = canvas.toDataURL('png');
+            return base64imgs[width + '-' + height];
+        }
+    }
+});
+angular.module('angular-preload-image').directive('preloadImage', ['getBase64','preLoader','$ionicFrostedDelegate', function(getBase64, preLoader,$ionicFrostedDelegate){
     return {
         restrict: 'A',
         terminal: true,
@@ -20,9 +43,15 @@ angular.module('angular-preload-image').directive('preloadImage', ['preLoader', 
             attrs.$set('src', scope.default);
             preLoader(url, function(){
                 attrs.$set('src', url);
+                $ionicFrostedDelegate.update();
             }, function(){
                 if (attrs.fallbackImage != undefined) {
                     attrs.$set('src', attrs.fallbackImage);
+                }
+            }, function(width, height){
+                console.debug(width, height);
+                if (attrs.src == scope.default){
+                    attrs.$set('src', getBase64(width, height));
                 }
             });
         }

@@ -9,7 +9,7 @@ require.config({
     'angular-cookies': 'lib/angular-cookies/angular-cookies',
     'angular-translate-storage-cookie': 'lib/angular-translate-storage-cookie/angular-translate-storage-cookie',
     'angular-translate-storage-local': 'lib/angular-translate-storage-local/angular-translate-storage-local',
-    'angular-preload-image':'lib/angular-preload-image/angular-preload-image.min',
+    'angular-preload-image':'lib/angular-preload-image/angular-preload-image',
 
     'app': 'js/app',
     'routes': 'js/app.routes',
