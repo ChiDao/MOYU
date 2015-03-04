@@ -13,26 +13,42 @@ define(['app'], function(app)
           lastEventId = '';
 
       //执行回调函数
-      var runCallbacks = function(event){
-        var apiData = Api.parse(event.path);
-        if (apiData.api){
-          //根据api进行注册的回调函数
-          if (apiCallbacks[apiData.api.name]){
-            _.forEach(apiCallbacks[apiData.api.name], function(callback){
-              callback(event);
-            })
+      var runCallbacks = function(events){
+        _.forEach(events, function(event){
+          event.apiData = Api.parse(event.path);
+          event.resourceId = event.apiData.params[event.apiData.api.resourceId];
+        });
+
+        _.forEach(_.uniq(events, function(event){
+          return event.apiData.api;
+        }), function(event){
+          if (event.apiData.api){
+            //根据api进行注册的回调函数
+            if (apiCallbacks[event.apiData.api.name]){
+              _.forEach(apiCallbacks[event.apiData.api.name], function(callback){
+                callback(event);
+              })
+            }
           }
-          //根据资源进行注册的回调函数
-          var tmpResourceCallbacks = resourceCallbacks[apiData.api.resource];
-          var resourceId = apiData.params[apiData.api.resourceId];
-          console.debug(tmpResourceCallbacks , apiData.params, resourceId , tmpResourceCallbacks[resourceId])
-          if (tmpResourceCallbacks && resourceId && tmpResourceCallbacks[resourceId]){
-            console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
-            _.forEach(tmpResourceCallbacks[resourceId], function(callback){
-              callback(event);
-            })
-          }
-        }
+        });
+
+        //先去重然后执行
+        _.forEach(_.uniq(events, function(event){
+          return '' + event.apiData.api.resource + '-' + event.resourceId;
+        }), function(event){
+          if (event.apiData.api){
+            //根据资源进行注册的回调函数
+            var tmpResourceCallbacks = resourceCallbacks[event.apiData.api.resource];
+            var resourceId = event.resourceId;
+            console.debug(tmpResourceCallbacks , event.apiData.params, resourceId , tmpResourceCallbacks[resourceId])
+            if (tmpResourceCallbacks && resourceId && tmpResourceCallbacks[resourceId]){
+              console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
+              _.forEach(tmpResourceCallbacks[resourceId], function(callback){
+                callback(event);
+              })
+            }
+          };
+        });
       }
 
       //递归请求数据
@@ -44,9 +60,7 @@ define(['app'], function(app)
             if (tmp.events && tmp.events.length && tmp.events.meta.next){
               $timeout(function(){
                 if (!isInit){
-                  _.forEach(tmp.events, function(event){
-                    runCallbacks(event);
-                  })
+                  runCallbacks(tmp.events);
                 }
                 var next = tmp.events.meta.next;
                 tmp.events = undefined;
