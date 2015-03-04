@@ -6,7 +6,7 @@ ion-modal-view#AddChannel.Pages
   ion-content
     ion-list
       a.item.item-avatar(ng-repeat='channel in channels track by $index', type='item-text-wrap')
-        img(src='{{channel.gameData.logo?channel.gameData.logo:""}}')
+        img(preload-image default-image="img/loading.png" src='{{channel.gameData.logo?channel.gameData.logo:""}}')
         | {{channel.gameData.name}}
         span.item-note(ng-click="followGame(channel)",ng-show="channel.installed == 'Yes' && channel.followed == 'No'")
           | 关注

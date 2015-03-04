@@ -5,7 +5,7 @@ ion-view#Chat(view-title='讨论')
 		ol.messages
 			li(ng-repeat='comment in comments', class="{{comment.isOwned?'m-right':''}}")
 				.avatar-frame
-					img.avatar(src='{{comment.userLogo}}')
+					img.avatar(preload-image default-image="img/loading.png" src='{{comment.userLogo}}')
 				.content
 					h5.text-overflow {{comment.userName}}
 					p {{comment.content}}

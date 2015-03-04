@@ -5,7 +5,7 @@ ion-view#Channels(view-title='游戏')
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
       a.item.item-avatar(ng-repeat='channel in channels track by $index', type='item-text-wrap', ng-click="Api.jumpTo(channel.game)")
-        img(ng-src="{{channel['@game'].logo?channel['@game'].logo:''}}")
+        img(ng-if="channel['@game'].logo" preload-image default-image="img/loading.png" ng-src="{{channel['@game'].logo?channel['@game'].logo:''}}")
         | {{channel['@game'].name}}
         span.item-note(ng-class='{first:$first}')
           | <hide ng-if="channel.lastClip._modified">你的瞬間：</hide> {{channel.lastClip._modified | timeBefore}}
