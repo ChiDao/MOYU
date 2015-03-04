@@ -11,6 +11,7 @@ define([
     'restangular',
     'angular-messages',
     'angular-translate',
+    'angular-preload-image',
     ], function(){
 
   var starter = angular.module('starter', [
@@ -19,6 +20,7 @@ define([
     'ngMessages',
     'ngCookies',
     'pascalprecht.translate',
+    'angular-preload-image',
     ]);
 
   /*

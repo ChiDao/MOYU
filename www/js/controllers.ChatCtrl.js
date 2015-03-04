@@ -78,7 +78,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         $scope.formData = {content:''};
         $scope.send = function(keyCode){
           //提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
-          if($scope.formData.content != ''){
+          if($scope.formData.content != '' && $scope.formData.content != undefined){          
             $scope.clip.doPostComment($scope.formData)
             .then(function(defer, response){
               // console.debug(response.data.rawData);
@@ -87,6 +87,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
               $scope.formData.content = '';
             });
           }else{
+            console.log("aaa"+$scope.formData.content);
             var alertPopup = $ionicPopup.alert({
               title: '不可以发送空白信息哦！',
                  // template: 'hehe!'
