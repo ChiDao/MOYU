@@ -1,39 +1,50 @@
 define(['app', 'services.Api', 'services.Auth'], function(app)
 {
-  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api',
-    function($scope, $stateParams, UI, Auth, Api) {
+  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api', '$ionicLoading',
+    function($scope, $stateParams, UI, Auth, Api, $ionicLoading) {
       $scope.Auth = Auth;
       $scope.userData = Auth.currentUser().userData;
       console.debug($scope.userData);
-
-      Api.getData($scope.userData.clips, $scope, 'clips', {
-        last:true,
-        itearator: {
-          gameData: {
-            type: 'getData',
-            attr: 'game'
-          }
-        }
-      }).then(function(){
-        // console.debug($scope.clips);
-	    }, function(defer, error){
-        console.debug(error);
-      });
 
       //获取资料
       $scope.imageURI = 'img/upload-photo.png';
       $scope.formData = {logo:'',nickname:''};
       var getProfile = function(){
-        Api.getData('/user-profile/' + $scope.userData._id, $scope, 'formData', {
-        }).then(function(){
+        return Api.getData('/user-profile/' + $scope.userData._id, $scope, 'formData', {
+        }).then(function(defer){
           // console.log("bbb"+JSON.stringify($scope.formData));
           $scope.imageURI = $scope.formData.logo['100'];
+          defer(undefined);
           // console.debug($scope.clips);
         }, function(defer, error){
           console.debug(error);
+          defer(error);
         });
       };
-      getProfile();
+      
+      $ionicLoading.show();
+      getProfile().then(function(){
+        Api.getData($scope.userData.clips, $scope, 'clips', {
+          last:true,
+          itearator: {
+            gameData: {
+              type: 'getData',
+              attr: 'game'
+            }
+          }
+        }).then(function(defer){
+          // console.debug($scope.clips);
+          defer(undefined);
+        }, function(defer, error){
+          console.debug(error);
+          defer(error);
+        })
+        .fin(function(){
+          $ionicLoading.hide();
+        });
+      }, function(){
+        $ionicLoading.hide();
+      });
 
       //编辑资料
       $scope.getPicture = function(){

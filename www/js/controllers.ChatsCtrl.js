@@ -73,7 +73,10 @@ define(['app', 'services.Api'], function(app)
         }
 
         $scope.$on("$ionicView.afterEnter", function() {
-          $scope.bindSubscribes.refresh();
+          $ionicLoading.show();
+          $scope.bindSubscribes.refresh().fin(function(){
+            $ionicLoading.hide();
+          });
         });
 
         // pull refresh
