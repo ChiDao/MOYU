@@ -1,13 +1,14 @@
 define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(app)
 {
-  app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate',
-    '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService','$ionicPopup',
-    function($scope, $state, $timeout, $ionicScrollDelegate,
-      $stateParams, Auth, Api, ApiEvent,PushProcessingService,$ionicPopup) {
+  app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate','$ionicPopup',
+    '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService', '$ionicLoading',
+    function($scope, $state, $timeout, $ionicScrollDelegate,$ionicPopup,
+      $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading) {
 
       $scope.hasFollowedPost = true;
 
       //获取截屏话题信息
+      $ionicLoading.show();
       Api.getData(Api.getStateUrl(), $scope, 'clip', {
         itearator: {
           checkHasFollowedPost: {
@@ -127,16 +128,19 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         });
 
         //初始化列表
-        $scope.bindComments.init().then(function(defer){
+        $scope.bindComments
+        .init().then(function(defer){
 
           $ionicScrollDelegate.scrollBottom();
 
           //下拉刷新
           $scope.pullRefresh = function(){
-            $scope.bindComments.more().then(function(){
+            $scope.bindComments.more().then(function(defer){
               $scope.$broadcast('scroll.refreshComplete');
-            }, function(defer){
+              defer(undefined);
+            }, function(defer, error){
               $scope.$broadcast('scroll.refreshComplete');
+              defer(error)
             })
           }
 
@@ -151,6 +155,12 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
               })
             }
           });
+          defer(undefined);
+        }, function(defer, error){
+          defer(error);
+        })
+        .fin(function(defer){
+          $ionicLoading.hide();
         })
         
       }, function(defer, error){
