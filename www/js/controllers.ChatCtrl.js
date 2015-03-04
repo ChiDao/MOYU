@@ -1,8 +1,8 @@
 define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(app)
 {
-  app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate',
+  app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate','$ionicPopup',
     '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService', '$ionicLoading',
-    function($scope, $state, $timeout, $ionicScrollDelegate,
+    function($scope, $state, $timeout, $ionicScrollDelegate,$ionicPopup,
       $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading) {
 
       $scope.hasFollowedPost = true;
@@ -69,13 +69,20 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         $scope.formData = {content:''};
         $scope.send = function(keyCode){
           //提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
-          $scope.clip.doPostComment($scope.formData)
-          .then(function(defer, response){
-            // console.debug(response.data.rawData);
-            // $scope.comments.push(response.data.rawData);
-            $ionicScrollDelegate.scrollBottom();
-            $scope.formData.content = '';
-          });
+          if($scope.formData.content != ''){
+            $scope.clip.doPostComment($scope.formData)
+            .then(function(defer, response){
+              // console.debug(response.data.rawData);
+              // $scope.comments.push(response.data.rawData);
+              $ionicScrollDelegate.scrollBottom();
+              $scope.formData.content = '';
+            });
+          }else{
+            var alertPopup = $ionicPopup.alert({
+              title: '不可以发送空白信息哦！',
+                 // template: 'hehe!'
+            });
+          }
         }
 
         //绑定列表Api
