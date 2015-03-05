@@ -2,8 +2,10 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 {
   app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate','$ionicPopup',
     '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService', '$ionicLoading',
+    '$location', '$anchorScroll',
     function($scope, $state, $timeout, $ionicScrollDelegate,$ionicPopup,
-      $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading) {
+      $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading,
+      $location, $anchorScroll) {
 
       $scope.hasFollowedPost = true;
 
@@ -132,12 +134,17 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         $scope.bindComments
         .init().then(function(defer){
 
-          $ionicScrollDelegate.scrollBottom();
+          $ionicScrollDelegate.scrollBottom(false);
 
           //下拉刷新
           $scope.pullRefresh = function(){
+            var tmpHash = $scope.comments[0]._id;
+            console.debug('tmpHash', tmpHash, _.pluck($scope.comments, '_id'));
             $scope.bindComments.more().then(function(defer){
               $scope.$broadcast('scroll.refreshComplete');
+              console.debug('tmpHash', tmpHash, _.pluck($scope.comments, '_id'));
+              $location.hash(tmpHash);
+              $ionicScrollDelegate.anchorScroll();
               defer(undefined);
             }, function(defer, error){
               $scope.$broadcast('scroll.refreshComplete');
@@ -149,13 +156,15 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           ApiEvent.registerByResource('clip', $stateParams.clipId, function(event){
             console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
             if ($state.current.name === 'tab.chat' && $state.current.params.clipId == $stateParams.clipId){
+              var currentPosition = $ionicScrollDelegate.getScrollPosition().top;
+              var scrollHeight = $ionicScrollDelegate.getScrollView().__maxScrollTop;
               $scope.bindComments.newer().then(function(){
                 $timeout(function(){
-                  $ionicScrollDelegate.scrollBottom();
+                  if (currentPosition == scrollHeight) $ionicScrollDelegate.scrollBottom();
                 }, 200)
               })
             }
-          });
+          }, '1');
           defer(undefined);
         }, function(defer, error){
           defer(error);

@@ -25,10 +25,12 @@ define(['app', 'restangular'], function(app){
 
     RestangularProvider.setDefaultHeaders({
         'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        'cache-control': 'no-cache', 
     });
     RestangularProvider.setDefaultHttpFields({
-      withCredentials: true
+      withCredentials: true,
+      catch: false
     });
 
     RestangularProvider.setFullResponse(true);

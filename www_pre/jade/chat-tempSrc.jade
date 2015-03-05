@@ -2,6 +2,7 @@ ion-list.talk-list
   .item.item-avatar(collection-repeat='subscribe in subscribes track by $index', type='item-text-wrap',  ng-click="Api.jumpTo(subscribe.clip, chats)",collection-item-width="'100%'"
       collection-item-height="64",ng-style="{left: 0,right: 0}")
     img(ng-if='subscribe["@clip"].gameData.logo' preload-image default-image="img/loading.png" ng-src='{{subscribe["@clip"].gameData.logo?subscribe["@clip"].gameData.logo:""}}')
+
     i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
     b {{subscribe['@clip'].lastCommentUserData.email}}
     | {{subscribe["@clip"].content}} {{subscribe._modified | timeBefore}} {{subscribe["@clip"]}}
