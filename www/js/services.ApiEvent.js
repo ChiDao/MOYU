@@ -1,13 +1,14 @@
 define(['app'], function(app)
 {
-  app.factory('ApiEvent', ['Auth', '$timeout', 'Api',
-    function(Auth, $timeout, Api) {
+  app.factory('ApiEvent', ['$rootScope', 'Auth', '$timeout', 'Api', '$state',
+    function($rootScope, Auth, $timeout, Api, $state) {
 
       console.log('Load ApiEvent Service');
       var tmp = {};
       var lastEventId = localStorage.getItem('lastEventId');
       var apiCallbacks = {};
       var resourceCallbacks = {};
+      var bindUrls = [];
 
       if (lastEventId === null) 
           lastEventId = '';
@@ -43,7 +44,7 @@ define(['app'], function(app)
             console.debug(tmpResourceCallbacks , event.apiData.params, resourceId , tmpResourceCallbacks[resourceId])
             if (tmpResourceCallbacks && resourceId && tmpResourceCallbacks[resourceId]){
               console.debug(tmpResourceCallbacks , resourceId , tmpResourceCallbacks[resourceId])
-              _.forEach(tmpResourceCallbacks[resourceId], function(callback){
+              _.forIn(tmpResourceCallbacks[resourceId], function(callback){
                 callback(event);
               })
             }
@@ -80,6 +81,24 @@ define(['app'], function(app)
       };
       // console.debug("Auth.isLoggedIn()", Auth.isLoggedIn());
       if (Auth.isLoggedIn()) request('/event-user?_last', true);
+
+      //路由改变，清楚绑定路由的注册
+      $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
+        var url = _.template(fromState.url.replace(/:(\w+)/g, "<%= $1 %>"), fromParams);
+        console.debug(resourceCallbacks)
+        _.forIn(resourceCallbacks, function(aResourceCallbacks){
+          // console.debug(aResourceCallback)
+          _.forIn(aResourceCallbacks, function(resourceCallbacks){
+            // console.debug(resourceCallbacks);
+            _.forIn(resourceCallbacks, function(callback, key){
+              // console.debug(callback, key)
+              if (key, url + '-', key.indexOf(url + '-') >= 0){
+                delete resourceCallbacks[key];
+              }
+            })
+          });
+        })
+      });
 
       return {
         //检查是否有新的评论
@@ -133,13 +152,17 @@ define(['app'], function(app)
           apiCallbacks[apiConfigName].push(callback);
           // console.debug('Register', apiConfigName, apiCallbacks[apiConfigName])
         },
-        //注册资源回调函数，Todo:检查是否重复
-        registerByResource: function(resourceName, resourceId, callback){
+        //注册资源回调函数
+        registerByResource: function(resourceName, resourceId, callback, bindId){
           if (!resourceCallbacks[resourceName]) resourceCallbacks[resourceName] = {};
           if (!resourceCallbacks[resourceName][resourceId]) resourceCallbacks[resourceName][resourceId] = [];
-          resourceCallbacks[resourceName][resourceId].push(callback);
+          if (bindId){
+            var url = _.template($state.current.url.replace(/:(\w+)/g, "<%= $1 %>"), $state.current.params);
+            resourceCallbacks[resourceName][resourceId][url+ '-' + bindId] = callback;
+          } else {
+            resourceCallbacks[resourceName][resourceId][''+(new Date).getTime()] = callback;
+          }
         }
-        //Todo: 取消注册
       }
     }
   ]);

@@ -155,7 +155,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
                 }, 200)
               })
             }
-          });
+          }, '1');
           defer(undefined);
         }, function(defer, error){
           defer(error);
