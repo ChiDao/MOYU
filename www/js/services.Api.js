@@ -110,6 +110,21 @@ define(['app', 'services.Modal'], function(app)
             }
           }
         },
+        getMoreDirection: function(serverName, isReverse){
+          if (serverApis[serverName]){
+            var directions = {
+              'asc': {
+                'false': 'top',
+                'true': 'bottom'
+              },
+              'desc': {
+                'true': 'top',
+                'false': 'bottom'
+              }
+            }
+            return directions[serverApis[serverName].lastOrder][isReverse];
+          }
+        },
         parse: function(apiLink){
           var apiData = {};
           console.log(apiLink);
@@ -369,9 +384,10 @@ define(['app', 'services.Modal'], function(app)
             clearedOptions: _.omit(options, 'last'),
             moreAttr: this.getMoreAttr(apiData.server, apiData.api.apiType),
             newAttr: apiData.api.apiType === 'stream'?'next':undefined,
+            moreDirection: this.getMoreDirection(apiData.server, options.reserve?'true':'false'),
             moreData: [],
           };
-          console.debug(bindStruct);
+          console.debug('bindStruct', bindStruct);
 
           bindStruct.init = function(){
             //获取首页数据
@@ -452,8 +468,16 @@ define(['app', 'services.Modal'], function(app)
             return Api.getData(apiData.serverPrefix + scope[scopeDataField].meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, moreData){
               var listItem;
               //更新数据
-              while(listItem = bindStruct.moreData.shift()){
-                targetStruct.push(listItem);
+              if (bindStruct.moreDirection === 'top'){
+                console.debug('tmpHash',1,options.reserve,bindStruct.moreAttr)
+                while(listItem = bindStruct.moreData.pop()){
+                  targetStruct.unshift(listItem);
+                }
+              } else {
+                console.debug('tmpHash',2, options.reserve,bindStruct.moreAttr)
+                while(listItem = bindStruct.moreData.shift()){
+                  targetStruct.push(listItem);
+                }
               }
               //缓存下一页数据
               _.forEach(moreData, function(listItem){

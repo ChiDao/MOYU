@@ -2,8 +2,10 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 {
   app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate','$ionicPopup',
     '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService', '$ionicLoading',
+    '$location', '$anchorScroll',
     function($scope, $state, $timeout, $ionicScrollDelegate,$ionicPopup,
-      $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading) {
+      $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading,
+      $location, $anchorScroll) {
 
       $scope.hasFollowedPost = true;
 
@@ -136,8 +138,13 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
           //下拉刷新
           $scope.pullRefresh = function(){
+            var tmpHash = $scope.comments[0]._id;
+            console.debug('tmpHash', tmpHash, _.pluck($scope.comments, '_id'));
             $scope.bindComments.more().then(function(defer){
               $scope.$broadcast('scroll.refreshComplete');
+              console.debug('tmpHash', tmpHash, _.pluck($scope.comments, '_id'));
+              $location.hash(tmpHash);
+              $ionicScrollDelegate.anchorScroll();
               defer(undefined);
             }, function(defer, error){
               $scope.$broadcast('scroll.refreshComplete');
