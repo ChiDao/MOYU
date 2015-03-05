@@ -104,7 +104,7 @@ define(['app', 'services.Api'], function(app)
                   //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
 
                   var ft = new FileTransfer();
-                  ft.upload(scope.imageURI, encodeURI("http://42.120.45.236:8485/upload"), win, fail, options);
+                  ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
                 });
               },
               onSuccess: function(form, scope){

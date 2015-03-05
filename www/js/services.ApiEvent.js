@@ -79,6 +79,7 @@ define(['app'], function(app)
             },10000);
           })
       };
+      // console.debug(Auth.currentUser().userData.homeData.upload);
       // console.debug("Auth.isLoggedIn()", Auth.currentUser().userData.homeData.event);
       if (Auth.isLoggedIn()) request(Auth.currentUser().userData.homeData.event + '?_last', true);
 
