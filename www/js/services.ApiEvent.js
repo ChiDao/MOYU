@@ -79,8 +79,8 @@ define(['app'], function(app)
             },10000);
           })
       };
-      // console.debug("Auth.isLoggedIn()", Auth.isLoggedIn());
-      if (Auth.isLoggedIn()) request('/event-user?_last', true);
+      // console.debug("Auth.isLoggedIn()", Auth.currentUser().userData.homeData.event);
+      if (Auth.isLoggedIn()) request(Auth.currentUser().userData.homeData.event + '?_last', true);
 
       //路由改变，清楚绑定路由的注册
       $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
@@ -107,7 +107,7 @@ define(['app'], function(app)
           return Thenjs(function(defer){
             if (!lastEventId){
               // console.debug('checkedNewEvent 1');
-              Api.getData('/event-user?_last', tmp, 'events').then(function(){
+              Api.getData(Auth.currentUser().userData.homeData.event + '?_last', tmp, 'events').then(function(){
                 if (tmp.events.length > 0){ 
                   var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
                   lastEventId = tmpLastEventId;
@@ -117,7 +117,7 @@ define(['app'], function(app)
               });
             }else{
               // console.debug('checkedNewEvent 2');
-              Api.getData('/event-user?_last', tmp, 'events').then(function(){
+              Api.getData(Auth.currentUser().userData.homeData.event + '?_last', tmp, 'events').then(function(){
                 if (tmp.events.length > 0){ 
                   var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
                   if (lastEventId === tmpLastEventId){
@@ -138,7 +138,7 @@ define(['app'], function(app)
           });
         },
         updateEventId: function(){
-          Api.getData('/event-user?_last', tmp, 'events').then(function(){
+          Api.getData(Auth.currentUser().userData.homeData.event + '?_last', tmp, 'events').then(function(){
             if (tmp.events.length > 0){ 
               var tmpLastEventId = tmp.events[tmp.events.length - 1]._id;
               lastEventId = tmpLastEventId;

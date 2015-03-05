@@ -134,7 +134,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         $scope.bindComments
         .init().then(function(defer){
 
-          $ionicScrollDelegate.scrollBottom();
+          $ionicScrollDelegate.scrollBottom(false);
 
           //下拉刷新
           $scope.pullRefresh = function(){
@@ -156,9 +156,11 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           ApiEvent.registerByResource('clip', $stateParams.clipId, function(event){
             console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
             if ($state.current.name === 'tab.chat' && $state.current.params.clipId == $stateParams.clipId){
+              var currentPosition = $ionicScrollDelegate.getScrollPosition().top;
+              var scrollHeight = $ionicScrollDelegate.getScrollView().__maxScrollTop;
               $scope.bindComments.newer().then(function(){
                 $timeout(function(){
-                  $ionicScrollDelegate.scrollBottom();
+                  if (currentPosition == scrollHeight) $ionicScrollDelegate.scrollBottom();
                 }, 200)
               })
             }
