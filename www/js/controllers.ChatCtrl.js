@@ -1,11 +1,49 @@
 define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(app)
 {
+  // app.directive('focusOn', function() {
+  //   return function(scope, elem, attr) {
+  //     scope.$on('focusOn', function(e, name) {
+  //       if(name === attr.focusOn) {
+  //         elem[0].focus();
+  //       }
+  //     });
+  //   };
+  // });
+
+  // app.factory('focus', function ($rootScope, $timeout) {
+  //   return function(name) {
+  //     $timeout(function (){
+  //       $rootScope.$broadcast('focusOn', name);
+  //     });
+  //   }
+  // });
+
+  // app.directive('isFocused', function($timeout) {
+  //   return {
+  //     scope: { trigger: '@isFocused' },
+  //     link: function(scope, element) {
+  //       scope.$watch('trigger', function(value) {
+  //         if(value === "true") {
+  //           $timeout(function() {
+  //             element[0].focus();
+
+  //             element.on('blur', function() {
+  //               element[0].focus();
+  //             });
+  //           });
+  //         }
+
+  //       });
+  //     }
+  //   };
+  // });
+
   app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate','$ionicPopup',
     '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService', '$ionicLoading',
-    '$location', '$anchorScroll',
+    '$location', '$anchorScroll', 'focus',
     function($scope, $state, $timeout, $ionicScrollDelegate,$ionicPopup,
       $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading,
-      $location, $anchorScroll) {
+      $location, $anchorScroll, focus) {
 
       $scope.hasFollowedPost = true;
 
