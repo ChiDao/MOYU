@@ -89,11 +89,14 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
               $scope.formData.content = '';
             });
           }else{
-            console.log("aaa"+$scope.formData.content);
-            var alertPopup = $ionicPopup.alert({
-              title: '不可以发送空白信息哦！',
-                 // template: 'hehe!'
-            });
+            // console.log("aaa"+$scope.formData.content);
+            $timeout(function(){
+              alert("不可以发送空白信息哦！")
+            },1)
+            // var alertPopup = $ionicPopup.alert({
+            //   title: '不可以发送空白信息哦！',
+            //      // template: 'hehe!'
+            // });
           }
         }
 
@@ -152,6 +155,20 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
             })
           }
 
+          $scope.goNewComments = function(){
+            $scope.getNewComments = false;
+            $ionicScrollDelegate.scrollBottom();
+          }
+
+          $scope.doScroll = function(){
+            var currentPosition = $ionicScrollDelegate.getScrollPosition().top;
+            var scrollHeight = $ionicScrollDelegate.getScrollView().__maxScrollTop;
+            if (currentPosition >= scrollHeight - 50){
+              $scope.getNewComments = false;
+              $ionicScrollDelegate.resize();
+            }
+          }
+
           //在讨论页面内，根据comet更新comment
           ApiEvent.registerByResource('clip', $stateParams.clipId, function(event){
             console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
@@ -160,7 +177,11 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
               var scrollHeight = $ionicScrollDelegate.getScrollView().__maxScrollTop;
               $scope.bindComments.newer().then(function(){
                 $timeout(function(){
-                  if (currentPosition == scrollHeight) $ionicScrollDelegate.scrollBottom();
+                  if (currentPosition == scrollHeight){
+                    $ionicScrollDelegate.scrollBottom();
+                  } else {
+                    $scope.getNewComments = true;
+                  }
                 }, 200)
               })
             }
@@ -187,6 +208,11 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         } else {
           console.debug("copy the text：", text);
         }
+        $scope.currentChatIndex = -1;
+      }
+
+      $scope.onTouch = function (argument) {
+        $scope.currentChatIndex = -1;
       }
 
   }]);
