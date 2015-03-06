@@ -132,7 +132,7 @@ define(['app', 'restangular'], function(app){
         apiRouteMaps:[
           ['recent-played-games',{'default': 'tab.channels'}],
           ['recent-user-subscriptions', {'default': 'tab.chats'}],
-          ['me', {'default': 'tab.profile'}],
+          ['user-profile', {'default': 'tab.profile'}],
           ['game', {'default': 'tab.channel'}],
           ['clip', {
             'default': 'tab.chat',
