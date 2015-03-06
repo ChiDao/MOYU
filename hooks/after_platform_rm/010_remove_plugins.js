@@ -21,6 +21,7 @@ var pluginlist = [
     "nl.x-services.plugins.launchmyapp",
     "com.phonegap.plugins.PushPlugin",
     "nl.x-services.plugins.actionsheet",
+    "com.verso.cordova.clipboard",
     "org.apache.cordova.dialogs"
     "com.brodysoft.sqlitePlugin",
 ];

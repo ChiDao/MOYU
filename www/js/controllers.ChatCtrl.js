@@ -86,11 +86,14 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
               $scope.formData.content = '';
             });
           }else{
-            console.log("aaa"+$scope.formData.content);
-            var alertPopup = $ionicPopup.alert({
-              title: '不可以发送空白信息哦！',
-                 // template: 'hehe!'
-            });
+            // console.log("aaa"+$scope.formData.content);
+            $timeout(function(){
+              alert("不可以发送空白信息哦！")
+            },1)
+            // var alertPopup = $ionicPopup.alert({
+            //   title: '不可以发送空白信息哦！',
+            //      // template: 'hehe!'
+            // });
           }
         }
 
@@ -198,8 +201,22 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         console.debug(error);
       })
 
+      $scope.onHold= function(index){
+        $scope.currentChatIndex = index;
+      }
+      
+      $scope.copy= function(text){
+        if (ionic.Platform.isWebView() && cordova.plugins.clipboard){
+          cordova.plugins.clipboard.copy(text);
+        } else {
+          console.debug("copy the text：", text);
+        }
+        $scope.currentChatIndex = -1;
+      }
 
-
+      $scope.onTouch = function (argument) {
+        $scope.currentChatIndex = -1;
+      }
 
   }]);
 });
