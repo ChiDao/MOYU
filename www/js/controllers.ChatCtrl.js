@@ -40,10 +40,10 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
   app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate','$ionicPopup',
     '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService', '$ionicLoading',
-    '$location', '$anchorScroll', 'focus',
+    '$location', '$anchorScroll', 
     function($scope, $state, $timeout, $ionicScrollDelegate,$ionicPopup,
       $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading,
-      $location, $anchorScroll, focus) {
+      $location, $anchorScroll) {
 
       $scope.hasFollowedPost = true;
 
