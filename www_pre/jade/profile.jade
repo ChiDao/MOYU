@@ -1,16 +1,15 @@
 ion-view.full-card(view-title='个人')
   ion-nav-buttons(side="right")
     a.button.icon.ion-ios-gear-outline.button-clear.color-w(href='#/tab/profile-feels')
+  ion-header-bar.bar.bar-subheader.list.card.top-card
+    a.item.item-avatar.item-icon-right
+      img(ng-src='{{imageURI}}')
+      h2 {{userData.email}}
+      p
+        span 发表：{{userData['@clips']['@count']}}
+      p
+        span 关注：{{userData['@interests']['@count']}}
   ion-content
-    .list.card.top-card
-      a.item.item-avatar.item-icon-right
-        img(ng-src='{{imageURI}}')
-        h2 {{userData.email}}
-        p
-          span 发表：{{userData['@clips']['@count']}}
-        p
-          span 关注：{{userData['@interests']['@count']}}
-
     ng-include(src="'templates/profile-tempSrc.html'")
     //- .list.card(ng-repeat='clip in clips')
     //-   .item.item-divider
