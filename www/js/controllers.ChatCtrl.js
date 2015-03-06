@@ -58,7 +58,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           doPostComment: {
             type: 'postFunction',
             attr: 'comment'
-          }
+          },
         }
       }).then(function(){
         console.debug($scope.clip);
@@ -254,6 +254,28 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
       $scope.onTouch = function (argument) {
         $scope.currentChatIndex = -1;
+      }
+
+      $scope.action = function(){
+        var options = {
+            'buttonLabels': ['举报'],
+            'androidEnableCancelButton' : true, // default false
+            'winphoneEnableCancelButton' : true, // default false
+            'addCancelButtonWithLabel': '取消',
+            'addDestructiveButtonWithLabel' : '退出讨论'
+        };
+        var callback = function(buttonIndex) {
+            if(buttonIndex == 1){
+              Api.getData($scope.clip.subscribe,$scope,'subscribe').then(function(){
+                console.log("退出讨论"+$scope.subscribe.edit);
+                Api.deleteData($scope.subscribe.edit);
+              })             
+            }else if(buttonIndex == 2){
+              console.log("举报"+$scope.clip.report);
+              Api.putData($scope.clip.report,{});             
+            }
+        };
+        window.plugins.actionsheet.show(options, callback);
       }
 
   }]);

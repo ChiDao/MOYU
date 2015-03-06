@@ -128,6 +128,8 @@ define(['app', 'restangular'], function(app){
           ['query', 'recent-user-subscriptions', [['user'],{}],{'user':'$currentUser'}],
           ['stream', 'clip-comments', [['clip'],{}]],
           ['object', 'new-comment', [['clip'],{}],{'user':'$currentUser'}],
+          ['object', 'report-clip', [['clip'],{}],{'user':'$currentUser'}],
+          ['object', 'subscribe-edit', [['clip'],{}],{'user':'$currentUser'}],
         ],
         apiRouteMaps:[
           ['recent-played-games',{'default': 'tab.channels'}],
