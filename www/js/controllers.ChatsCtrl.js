@@ -25,7 +25,7 @@ define(['app', 'services.Api'], function(app)
 
                 //注册comet事件，只在本页时进行刷新
                 // console.debug("clipId", subcribe['@clip']._id);
-                if (!hasRegisterSubscribe[subcribe['@clip']._id]){
+                if (subcribe['@clip'] && !hasRegisterSubscribe[subcribe['@clip']._id]){
                   ApiEvent.registerByResource('clip', subcribe['@clip']._id, function(event){
                     // console.debug("checkNewComments", $state.current.name, $state.current);
 
