@@ -79,12 +79,9 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         //发送新消息
         $scope.formData = {content:''};
         $scope.send = function(keyCode){
-          //提交后等待comet的话很慢，因此如果提交成功直接本地增加内容
           if($scope.formData.content != '' && $scope.formData.content != undefined){          
             $scope.clip.doPostComment($scope.formData)
             .then(function(defer, response){
-              // console.debug(response.data.rawData);
-              // $scope.comments.push(response.data.rawData);
               $ionicScrollDelegate.scrollBottom();
               $scope.formData.content = '';
             });
@@ -94,6 +91,12 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
               title: '不可以发送空白信息哦！',
                  // template: 'hehe!'
             });
+          }
+        }
+
+        $scope.enter = function(event){
+          if (event.keyCode === 13){
+            $scope.formData.content;
           }
         }
 

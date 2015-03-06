@@ -13,7 +13,7 @@ ion-view#Chat(view-title='讨论')
 					h5.text-overflow {{comment.userName}}
 					p {{comment.content}}
 	ion-footer-bar
-		button.button.button-block.button-positive(ng-click="toggleSubscribe()") 加入讨论
-		//- button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
-		form(ng-if="hasFollowedPost")
-			input.button-block(type="text",ng-model="formData.content",required,ng-keydown="$event.keyCode === 13 && send();")
+		button.button.button-block.button-positive(ng-if="!hasFollowedPost" ng-click="toggleSubscribe()") 加入讨论
+		div.row(ng-if="hasFollowedPost")
+			textarea.col-80(ng-model="formData.content",required,ng-keydown="enter($event);")
+			button.button-clear.col-20(on-tap="send()") 发送
