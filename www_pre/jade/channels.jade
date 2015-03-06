@@ -10,6 +10,6 @@ ion-view#Channels(view-title='游戏')
         span.item-note(ng-class='{first:$first}')
           | <hide ng-if="channel.lastClip._modified">你的瞬間：</hide> {{channel.lastClip._modified | timeBefore}}
           b(ng-if="channel.unread"){{channel.unread?channel.unread:''}}
-
+    ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore", distance="10%")
 
 //- span.item-note(ng-class='{first:$first,hide:$last}')

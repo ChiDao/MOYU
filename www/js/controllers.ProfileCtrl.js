@@ -24,7 +24,7 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
       
       $ionicLoading.show();
       getProfile().then(function(){
-        Api.getData($scope.userData.clips, $scope, 'clips', {
+        var bindStruct = Api.bindList($scope.userData.clips, $scope, 'clips', {
           last:true,
           itearator: {
             gameData: {
@@ -32,8 +32,28 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
               attr: 'game'
             }
           }
-        }).then(function(defer){
-          // console.debug($scope.clips);
+        });
+
+        bindStruct.init().then(function(defer){
+          // pull refresh
+          $scope.pullRefresh = function() {
+            bindStruct.refresh().then(function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+              $scope.hasMore = bindStruct.moreData.length;
+            }, function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+              $scope.hasMore = bindStruct.moreData.length;
+            })
+          };
+          $scope.loadMore = function() {
+            bindStruct.more().then(function(defer){
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              $scope.hasMore = bindStruct.moreData.length;
+            }, function(defer){
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              $scope.hasMore = bindStruct.moreData.length;
+            })
+          };
           defer(undefined);
         }, function(defer, error){
           console.debug(error);

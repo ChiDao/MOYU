@@ -10,7 +10,9 @@ ion-view.full-card(view-title='个人')
       p
         span 关注：{{userData['@interests']['@count']}}
   ion-content
+    ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
     ng-include(src="'templates/profile-tempSrc.html'")
+    ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore", distance="10%")
     //- .list.card(ng-repeat='clip in clips')
     //-   .item.item-divider
     //-     img(src='{{clip.gameData.logo}}', style="width:20px")

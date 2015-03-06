@@ -49,11 +49,23 @@ define(['app', 'services.Api','services.Modal'], function(app)
           $scope.doRefresh = function() {
             bindChannels.refresh().then(function(defer){
               $scope.$broadcast('scroll.refreshComplete');
+              $scope.hasMore = bindChannels.moreData.length;
             }, function(defer){
               $scope.$broadcast('scroll.refreshComplete');
+              $scope.hasMore = bindChannels.moreData.length;
             })
           };
 
+          $scope.loadMore = function() {
+            bindChannels.more().then(function(defer){
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              $scope.hasMore = bindChannels.moreData.length;
+            }, function(defer){
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              $scope.hasMore = bindChannels.moreData.length;
+            })
+          };
+          
           $scope.enterRefresh = function(){
             $ionicLoading.show();
             bindChannels.refresh().fin(function(){

@@ -36,20 +36,46 @@ define(['app', 'services.Api'], function(app)
         }).then(function(defer){
           console.debug('$scope.channel:', $scope.channel);
           // get clips
-          $scope.getClips = function(){
-            return $scope.channel.getClips($scope, 'clips').then(function(){
-              console.debug($scope.clips);
-            });
-          };
-          $scope.getClips();
+          var bindStruct = Api.bindList($scope.channel.clips, $scope, 'clips', {
+            last: true,
+            itearator: {
+              userData: {
+                type: 'getData',
+                attr: 'user'
+              }
+            }
+          });
+          bindStruct.init().then(function(defer){
+            // pull refresh
+            $scope.doRefresh = function() {
+              console.debug(11111111)
+              bindStruct.refresh().then(function(defer){
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.hasMore = bindStruct.moreData.length;
+              }, function(defer){
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.hasMore = bindStruct.moreData.length;
+              })
+            };
+            $scope.loadMore = function() {
+              bindStruct.more().then(function(defer){
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.hasMore = bindStruct.moreData.length;
+              }, function(defer){
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.hasMore = bindStruct.moreData.length;
+              })
+            };
+          })
+          // $scope.getClips = function(){
+          //   return $scope.channel.getClips($scope, 'clips').then(function(){
+          //     console.debug($scope.clips);
+          //   });
+          // };
+          // $scope.getClips();
 
           // pull refresh
-          $scope.doRefresh = function() {
-            $scope.getClips().then(function(){
-              console.debug("refreshComplete ")
-              $scope.$broadcast('scroll.refreshComplete');
-            });
-          };//End of doRefresh
+          
 
           $scope.newClip = function(openGameTime,orientation){
             Api.postModal($scope.channel.addClip, {}, {
@@ -108,7 +134,7 @@ define(['app', 'services.Api'], function(app)
                 });
               },
               onSuccess: function(form, scope){
-                $scope.getClips();
+                $scope.doRefresh();
                 scope.hideModal();
               }
             })

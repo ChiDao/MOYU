@@ -83,8 +83,19 @@ define(['app', 'services.Api'], function(app)
         $scope.pullRefresh = function() {
           $scope.bindSubscribes.refresh().then(function(defer){
             $scope.$broadcast('scroll.refreshComplete');
+            $scope.hasMore = bindSubscribes.moreData.length;
           }, function(defer){
             $scope.$broadcast('scroll.refreshComplete');
+            $scope.hasMore = bindSubscribes.moreData.length;
+          })
+        };
+        $scope.loadMore = function() {
+          bindSubscribes.more().then(function(defer){
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.hasMore = bindSubscribes.moreData.length;
+          }, function(defer){
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.hasMore = bindSubscribes.moreData.length;
           })
         };
         defer(undefined);
