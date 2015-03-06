@@ -1,5 +1,8 @@
 ion-view#Chat(view-title='讨论')
-	ion-content(han-header='true',padding='true', start-y='120')
+	a(ng-if="getNewComments" ng-click="goNewComments()" style="position:absolute;top:450px;left:200px;z-index:2;background-color:pink")
+		span
+			| 收到新消息
+	ion-content(han-header='true',padding='true', start-y='120', on-scroll='doScroll()')
 		ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
 		.chat-top
 		ol.messages
