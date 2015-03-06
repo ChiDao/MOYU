@@ -177,8 +177,17 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         console.debug(error);
       })
 
-
-
+      $scope.onHold= function(index){
+        $scope.currentChatIndex = index;
+      }
+      
+      $scope.copy= function(text){
+        if (ionic.Platform.isWebView() && cordova.plugins.clipboard){
+          cordova.plugins.clipboard.copy(text);
+        } else {
+          console.debug("copy the text：", text);
+        }
+      }
 
   }]);
 });

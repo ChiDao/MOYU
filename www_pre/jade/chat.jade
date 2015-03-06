@@ -8,7 +8,8 @@ ion-view#Chat(view-title='讨论')
 					img.avatar(preload-image default-image="img/loading.png" src='{{comment.userLogo}}')
 				.content
 					h5.text-overflow {{comment.userName}}
-					p {{comment.content}}
+					p(on-hold="onHold($index)") {{comment.content}}
+						span(ng-if="currentChatIndex==$index" ng-click="copy(comment.content)" style="position:absolute;top:-5px;left: 10px;z-index:2;background-color:grey") 复制
 	ion-footer-bar
 		button.button.button-block.button-positive(ng-click="toggleSubscribe()") 加入讨论
 		//- button.button.button-block.button-positive(ng-if="!hasFollowedPost",ng-click="toggleSubscribe()") 加入讨论
