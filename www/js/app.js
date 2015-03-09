@@ -42,6 +42,7 @@ define([
   });
 
   starter.run(function($state, $ionicPlatform,PushProcessingService, DB) {
+
     PushProcessingService.checkinitialize();
 
     //启动应用则取消全部本地推送
@@ -78,6 +79,7 @@ define([
       }
 
       console.debug(localStorage.getItem('user'));
+
       // if (localStorage.getItem('user') === null){
       //   $state.go('tab.add-channel');
       // }
