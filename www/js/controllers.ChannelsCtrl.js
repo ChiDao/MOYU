@@ -4,15 +4,8 @@ define(['app', 'services.Api','services.Modal'], function(app)
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB',
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
-<<<<<<< HEAD
-
-      //测试缓存
-      // DB.flatSave('documents', 'id', {id: 'xxx', title: 'test'})
-=======
-
       // //测试缓存
       // DB.flatSave('documents', 'id', [{id: 'xxx', title: 'test'},{id: 'yyy', title: 'test2'}])
->>>>>>> origin/master
       // .then(function(defer, result){
       //   DB.flatQueryAll('documents')
       //   .then(function(defer, result){
