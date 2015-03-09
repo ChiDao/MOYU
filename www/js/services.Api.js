@@ -571,7 +571,7 @@ define(['app', 'services.Modal'], function(app)
             console.debug("Can't find api:", apiLink);
             return false;
           }
-          return Restangular.oneUrl(_.template(apiData.api.api, apiData.params)).remove().then(function(response){
+          return apiData.Restangular.oneUrl(_.template(apiData.api.api, apiData.params)).remove().then(function(response){
             console.debug('Delete data from link:' + JSON.stringify(response));
           }, function(error){
             console.debug('Delete data from link error:' + JSON.stringify(error));
