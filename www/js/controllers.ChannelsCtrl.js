@@ -4,7 +4,6 @@ define(['app', 'services.Api','services.Modal'], function(app)
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB',
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
-      
       // //测试缓存
       // DB.flatSave('documents', 'id', [{id: 'xxx', title: 'test'},{id: 'yyy', title: 'test2'}])
       // .then(function(defer, result){
@@ -67,7 +66,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
                 $scope.hasMore = bindChannels.moreData.length;
               })
             };
-            
+
             $scope.enterRefresh = function(){
               $ionicLoading.show();
               bindChannels.refresh().fin(function(){
@@ -84,12 +83,12 @@ define(['app', 'services.Api','services.Modal'], function(app)
             $ionicLoading.hide();
           })
         },3000)
-        
+
       }
       if (Auth.isLoggedIn()){
         $scope.bindInit();
       }
-      
+
 
 
       function getGame(scope){
@@ -125,7 +124,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
             function asyncCheck(channel){
               var deferred = $q.defer();
 
-              
+              // deferred.resolve("Yes");
 
               if (typeof(appAvailability) !== 'undefined'){
                 appAvailability.check(

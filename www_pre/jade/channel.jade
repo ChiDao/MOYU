@@ -1,11 +1,11 @@
 ion-view#channel(view-title='{{channel.name}}')
   ion-nav-buttons(side="right")
-    button.button.button-image.button-clear(ng-click="newClip()")
-      img2x(src2x="img/icon-NewScreen",ext="png")
+    //- button.button.button-clear(ng-click="newClip()")
+      //- img2x(src2x="img/icon-NewScreen",ext="png")
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
-      .list.card(ng-repeat="clip in clips")
+      .list(ng-repeat="clip in clips")
         .item.item-image
           a(ng-click="Api.jumpTo(clip._self, 'channels')")
             img(preload-image default-image="img/loading.png" src="{{clip.img['294@2x']}}")
@@ -21,9 +21,8 @@ ion-view#channel(view-title='{{channel.name}}')
           p {{clip._created | date: 'yyyy-MM-dd HH:mm'}}
         .item.item-text-wrap
           a.button.button-tag(href='#/tab/profile-feels') #发布一个截图
-          a.button.button-tag(href='#/tab/profile-feels')
+          a.button.button-tag.icon-right.icon.g-icon-budicon-97(href='#/tab/profile-feels')
             | 有 42 人讨论
-            i.icon.g-icon-budicon-97
     ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore", distance="10%")
   .play-game
-    button.button-play.button-calm(ng-click="playGame()") 玩游戏
+    a.button-play(ng-click="playGame()") 玩游戏

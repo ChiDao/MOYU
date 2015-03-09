@@ -88,7 +88,7 @@ ion-tabs.tabs-color-active-positive .tab-item {
 }
 
 .tabs {
-	border-top: 1px solid #B0B0B0 !important;
+	// border-top: 1px solid #B0B0B0 !important;
 }
 
 /*
@@ -333,4 +333,5 @@ ion-tabs.tabs-color-active-positive .tab-item {
 	bottom: 10px;
 	left: 50%;
 	margin-left: -24px;
+	background-color: #f00;
 }
