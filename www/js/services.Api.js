@@ -219,7 +219,11 @@ define(['app', 'services.Modal', 'services.DB'], function(app)
                     getData(serverPrefix + data[oper[1].attr], data, oper[0], oper[1].options).then(function(defer){
                       callback(undefined);
                     }, function(defer, error){
-                      callback('itearator get data error', error);
+                      if (error.status === 404){
+                        callback(undefined);
+                      } else {
+                        callback('itearator get data error', error);
+                      }
                     });
                     break;
                   //默认函数

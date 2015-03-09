@@ -48,7 +48,8 @@ define(['app', 'services.Api'], function(app)
                     itearator:{
                       profileData:{
                         type: 'getData',
-                        attr: 'profile'
+                        attr: 'profile',
+                        successIf404: true
                       }
                     }
                   }).then(function(){
