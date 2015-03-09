@@ -16,5 +16,5 @@ ion-view#channel(view-title='{{channel.name}}')
           h2 {{clip.userData.email}}
           p {{clip._created | date: 'yyyy-MM-dd HH:mm'}}
     ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore", distance="10%")
-  ion-footer-bar.play-game
+  .play-game
     button.button-play.button-calm(ng-click="playGame()") 玩游戏
