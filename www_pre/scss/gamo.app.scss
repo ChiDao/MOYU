@@ -20,7 +20,7 @@ html,body {
 
 .bar-stable,ion-header-bar {
 	background-color: $height-color !important;
-	button {
+	button,a {
 		color: $bule-color !important;
 	}
 }
@@ -49,8 +49,9 @@ ion-content {
 
 .back-button {
 	.icon::before {
-		font-size: 24px !important;
-		margin-left: 8px;
+		font-size: 16px !important;
+		margin-left: -4px;
+		margin-top: 1px;
 	}
 }
 
@@ -94,6 +95,19 @@ ion-tabs.tabs-color-active-positive .tab-item {
 	Pages
 	頁面配置
 */
+
+.button-tag:before {
+	font-size: 16px !important;
+}
+
+.button-tag {
+	padding: 0;
+	margin: 0;
+	min-width: 12px;
+	min-height: 24px;
+	line-height: 24px;
+}
+
 
 .messages {
 	margin:0;
@@ -313,4 +327,10 @@ ion-tabs.tabs-color-active-positive .tab-item {
 
 .button-play {
 	height: 48px;
+	width: 48px;
+	border-radius: 50%;
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	margin-left: -24px;
 }

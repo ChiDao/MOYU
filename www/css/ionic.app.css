@@ -10302,7 +10302,7 @@ html, body {
 
 .bar-stable, ion-header-bar {
   background-color: #eff5fa !important; }
-  .bar-stable button, ion-header-bar button {
+  .bar-stable button, .bar-stable a, ion-header-bar button, ion-header-bar a {
     color: #2ea2fd !important; }
 
 .bar.bar-stable .title {
@@ -10315,8 +10315,9 @@ html, body {
   font-size: 10px; }
 
 .back-button .icon::before {
-  font-size: 24px !important;
-  margin-left: 8px; }
+  font-size: 16px !important;
+  margin-left: -4px;
+  margin-top: 1px; }
 
 .title {
   font-weight: 800 !important;
@@ -10341,6 +10342,16 @@ ion-tabs.tabs-color-active-positive .tab-item {
 	Pages
 	頁面配置
 */
+.button-tag:before {
+  font-size: 16px !important; }
+
+.button-tag {
+  padding: 0;
+  margin: 0;
+  min-width: 12px;
+  min-height: 24px;
+  line-height: 24px; }
+
 .messages {
   margin: 0;
   padding: 0;
@@ -10493,7 +10504,13 @@ ion-tabs.tabs-color-active-positive .tab-item {
   background: transparent; }
 
 .button-play {
-  height: 48px; }
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  margin-left: -24px; }
 
 /*
 	screen
