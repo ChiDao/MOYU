@@ -43,7 +43,20 @@ define(['app', 'services.Api'], function(app)
                   var comments = subcribe['@clip']['@comments']['slice'];
                   var tmpLastComment = comments[comments.length - 1];
                   console.debug(tmpLastComment);
-                  Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
+                  subcribe['@clip']['lastCommentData'] = tmpLastComment;
+                  Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData', {
+                    itearator:{
+                      profileData:{
+                        type: 'getData',
+                        attr: 'profile'
+                      }
+                    }
+                  }).then(function(){
+                    console.debug(subcribe['@clip']['lastCommentUserData']['profileData']);
+                    subcribe['@clip']['lastCommentUserData'].userName =
+                      (subcribe['@clip']['lastCommentUserData']['profileData']?
+                      subcribe['@clip']['lastCommentUserData']['profileData'].nickname:
+                      subcribe['@clip']['lastCommentUserData'].tel);
                     Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
                       // console.debug("getData 21");
                       console.debug(subcribe['@clip'].lastCommentUserData)
