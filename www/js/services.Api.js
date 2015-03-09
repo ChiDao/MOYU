@@ -1,4 +1,4 @@
-define(['app', 'services.Modal'], function(app)
+define(['app', 'services.Modal', 'services.DB'], function(app)
 {
   app.provider('Api', function() {
 
@@ -85,7 +85,7 @@ define(['app', 'services.Modal'], function(app)
       }
     };
 
-    this.$get = function(Restangular, Modal, $state, $stateParams){
+    this.$get = function(Restangular, Modal, $state, $stateParams, DB){
       return {
         getRestangular: function(serverName){
           if (serverApis[serverName]){
@@ -390,11 +390,24 @@ define(['app', 'services.Modal'], function(app)
           };
           console.debug('bindStruct', bindStruct);
 
+          bindStruct.setDBTable = function(tableName, idCol){
+            bindStruct.dbTable = tableName;
+            bindStruct.idCol = idCol;
+            return DB.flatQueryAll(bindStruct.dbTable)
+            .then(function(defer, result){
+              bindStruct.scope[bindStruct.scopeDataField] = result;
+              defer(undefined);
+            }, function(defer, error){
+              console.log(error);
+              defer(error)
+            });
+          }
+
           bindStruct.init = function(){
             //获取首页数据
             return Api.getData(bindStruct.apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options).then(function(defer, data){
               //缓存下一页数据
-              // console.debug(scope[scopeDataField].meta, scope[scopeDataField].meta[bindStruct.moreAttr], options);
+              if (bindStruct.dbTable && bindStruct.idCol) DB.flatSave(bindStruct.dbTable, bindStruct.idCol, data);
               var tmp = {};
               Api.getData(apiData.serverPrefix + scope[scopeDataField].meta[bindStruct.moreAttr], tmp, scopeDataField, bindStruct.clearedOptions).then(function(innerDefer, moreData){
                 bindStruct.moreData.length = 0
@@ -417,6 +430,7 @@ define(['app', 'services.Modal'], function(app)
             var tmp = {};
             // console.debug('fresh data', scope[scopeDataField]);
             return Api.getData(bindStruct.apiLink, tmp, bindStruct.scopeDataField, bindStruct.options).then(function(defer, data){
+              if (bindStruct.dbTable && bindStruct.idCol) DB.flatSave(bindStruct.dbTable, bindStruct.idCol, data);
               Api.getData(apiData.serverPrefix + data.meta[bindStruct.moreAttr], tmp, 'scopeDataField', bindStruct.clearedOptions).then(function(innerDefer, moreData){
                 bindStruct.moreData.length = 0
                 _.forEach(moreData, function(listItem){

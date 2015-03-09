@@ -4,9 +4,15 @@ define(['app', 'services.Api','services.Modal'], function(app)
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB',
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
+<<<<<<< HEAD
 
       //测试缓存
       // DB.flatSave('documents', 'id', {id: 'xxx', title: 'test'})
+=======
+
+      // //测试缓存
+      // DB.flatSave('documents', 'id', [{id: 'xxx', title: 'test'},{id: 'yyy', title: 'test2'}])
+>>>>>>> origin/master
       // .then(function(defer, result){
       //   DB.flatQueryAll('documents')
       //   .then(function(defer, result){
@@ -42,45 +48,49 @@ define(['app', 'services.Api','services.Modal'], function(app)
           }
         });
 
-        $ionicLoading.show();
-        bindChannels.init()
-        .then(function(defer){
-          // pull refresh
-          $scope.doRefresh = function() {
-            bindChannels.refresh().then(function(defer){
-              $scope.$broadcast('scroll.refreshComplete');
-              $scope.hasMore = bindChannels.moreData.length;
-            }, function(defer){
-              $scope.$broadcast('scroll.refreshComplete');
-              $scope.hasMore = bindChannels.moreData.length;
-            })
-          };
+        bindChannels.setDBTable('channels', '_id')
+        .fin(function(){
+          $ionicLoading.show();
+          bindChannels.init()
+          .then(function(defer){
+            // pull refresh
+            $scope.doRefresh = function() {
+              bindChannels.refresh().then(function(defer){
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.hasMore = bindChannels.moreData.length;
+              }, function(defer){
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.hasMore = bindChannels.moreData.length;
+              })
+            };
 
-          $scope.loadMore = function() {
-            bindChannels.more().then(function(defer){
-              $scope.$broadcast('scroll.infiniteScrollComplete');
-              $scope.hasMore = bindChannels.moreData.length;
-            }, function(defer){
-              $scope.$broadcast('scroll.infiniteScrollComplete');
-              $scope.hasMore = bindChannels.moreData.length;
-            })
-          };
+            $scope.loadMore = function() {
+              bindChannels.more().then(function(defer){
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.hasMore = bindChannels.moreData.length;
+              }, function(defer){
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.hasMore = bindChannels.moreData.length;
+              })
+            };
 
-          $scope.enterRefresh = function(){
-            $ionicLoading.show();
-            bindChannels.refresh().fin(function(){
-              $ionicLoading.hide();
-            });
-          }
+            $scope.enterRefresh = function(){
+              $ionicLoading.show();
+              bindChannels.refresh().fin(function(){
+                $ionicLoading.hide();
+              });
+            }
 
-          $scope.$on("$ionicView.afterEnter", $scope.enterRefresh);
-          defer(undefined);
-        }, function(defer, error){
-          defer(error)
-        })
-        .fin(function(defer){
-          $ionicLoading.hide();
-        })
+            $scope.$on("$ionicView.afterEnter", $scope.enterRefresh);
+            defer(undefined);
+          }, function(defer, error){
+            defer(error)
+          })
+          .fin(function(defer){
+            $ionicLoading.hide();
+          })
+        },3000)
+
       }
       if (Auth.isLoggedIn()){
         $scope.bindInit();

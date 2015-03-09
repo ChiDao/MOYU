@@ -1,7 +1,7 @@
 define(['app', 'config'], function(app)
 {
-  app.factory('DB', ['Auth', '$timeout', 'Api', '$q', 'DB_CONFIG',
-    function(Auth, $timeout, Api, $q, DB_CONFIG) {
+  app.factory('DB', ['$timeout', '$q', 'DB_CONFIG',
+    function($timeout, $q, DB_CONFIG) {
       self.db = null;
 
       self.init = function() {
@@ -85,7 +85,11 @@ define(['app', 'config'], function(app)
         })
         .then(function(defer){
           if (_.isArray(data)){
-
+            _.forEach(data, function(row){
+              self.query("INSERT INTO " + tableName + " (id, data) values (?, ?)", 
+                [row[idColName], JSON.stringify(row)]
+              );
+            })
           } else {
             self.query("INSERT INTO " + tableName + " (id, data) values (?, ?)", 
               [data[idColName], JSON.stringify(data)]

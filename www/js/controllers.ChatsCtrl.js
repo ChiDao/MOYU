@@ -78,45 +78,48 @@ define(['app', 'services.Api'], function(app)
           }
         }
       });
-      $ionicLoading.show();
-      $scope.bindSubscribes.init().then(function(defer, data){
-        console.debug($scope['subscribes']);
-        if (data.status === 404){
-          $scope.subscribes.length = 0;
-        }
+      $scope.bindSubscribes.setDBTable('chats', '_id').fin(function(){
+        $ionicLoading.show();
+        $scope.bindSubscribes.init().then(function(defer, data){
+          console.debug($scope['subscribes']);
+          if (data.status === 404){
+            $scope.subscribes.length = 0;
+          }
 
-        $scope.$on("$ionicView.afterEnter", function() {
-          $ionicLoading.show();
-          $scope.bindSubscribes.refresh().fin(function(){
-            $ionicLoading.hide();
+          $scope.$on("$ionicView.afterEnter", function() {
+            $ionicLoading.show();
+            $scope.bindSubscribes.refresh().fin(function(){
+              $ionicLoading.hide();
+            });
           });
-        });
 
-        // pull refresh
-        $scope.pullRefresh = function() {
-          $scope.bindSubscribes.refresh().then(function(defer){
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.hasMore = $scope.bindSubscribes.moreData.length;
-          }, function(defer){
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.hasMore = $scope.bindSubscribes.moreData.length;
-          })
-        };
-        $scope.loadMore = function() {
-          $scope.bindSubscribes.more().then(function(defer){
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-            $scope.hasMore = $scope.bindSubscribes.moreData.length;
-          }, function(defer){
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-            $scope.hasMore = $scope.bindSubscribes.moreData.length;
-          })
-        };
-        defer(undefined);
-      }, function(defer, error){
-        defer(error);
-      }).fin(function(){
-        $ionicLoading.hide();
-      });
+          // pull refresh
+          $scope.pullRefresh = function() {
+            $scope.bindSubscribes.refresh().then(function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+              $scope.hasMore = $scope.bindSubscribes.moreData.length;
+            }, function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+              $scope.hasMore = $scope.bindSubscribes.moreData.length;
+            })
+          };
+          $scope.loadMore = function() {
+            $scope.bindSubscribes.more().then(function(defer){
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              $scope.hasMore = $scope.bindSubscribes.moreData.length;
+            }, function(defer){
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              $scope.hasMore = $scope.bindSubscribes.moreData.length;
+            })
+          };
+          defer(undefined);
+        }, function(defer, error){
+          defer(error);
+        }).fin(function(){
+          $ionicLoading.hide();
+        });
+      })
+      
 
       $scope.hasMore = $scope.bindSubscribes.hasMore;
       $scope.loadMore = function() {
