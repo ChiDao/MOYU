@@ -75,7 +75,7 @@ define([
       }
 
       if (window.StatusBar) {
-        StatusBar.styleLightContent();
+        StatusBar.styleDefault();
       }
 
       console.debug(localStorage.getItem('user'));

@@ -39,6 +39,7 @@
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
     "org.apache.cordova.dialogs",
-    "https://github.com/brodysoft/Cordova-SQLitePlugin"
+    "https://github.com/brodysoft/Cordova-SQLitePlugin",
+    "https://github.com/VersoSolutions/CordovaClipboard"
   ]
 }
