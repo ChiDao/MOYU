@@ -124,7 +124,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
             function asyncCheck(channel){
               var deferred = $q.defer();
 
-              deferred.resolve("Yes");
+              // deferred.resolve("Yes");
 
               if (typeof(appAvailability) !== 'undefined'){
                 appAvailability.check(
