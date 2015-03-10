@@ -166,8 +166,7 @@ ion-tabs.tabs-color-active-positive .tab-item {
 }
 
 .item-padding {
-	margin-top: -18px;
-	margin-bottom: -18px;
+	margin-bottom: -12px;
 }
 
 .item-padding:first-child {
@@ -384,11 +383,14 @@ ion-tabs.tabs-color-active-positive .tab-item {
 		right: 10px;
 		top: 12px;
 	}
+	ion-list .item {
+		min-height: 54px !important;
+	}
 	.browse {
-		.g-icon-budicon-102 {
+		.icon {
 			padding-left: 28px;
 		}
-		.g-icon-budicon-102:before {
+		.icon:before {
 			position: absolute;
 			left: 12px;
 			width: 24px;

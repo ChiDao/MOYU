@@ -12,9 +12,9 @@ ion-view#Channel(view-title='{{channel.name}}')
         .item.item-text-wrap.item-padding
           .row
             .browse.col-90.font-9
-              i.icon.g-icon-budicon-102
-              span 2043 浏览次数
-            .more.col-10.text-right
+              i.icon.g-icon-budicon-25
+              span 有 42 人讨论
+            .more.col-10.text-right.hide
               a.icon.g-icon-budicon-129.button-tag(href='#/tab/profile-feels')
         .item.item-avatar.item-padding
           img(src='img/mcfly.jpg')
@@ -24,8 +24,7 @@ ion-view#Channel(view-title='{{channel.name}}')
             p.color-Minor.font-9 {{clip._created | date: 'yyyy-MM-dd HH:mm'}}
         .item.item-text-wrap.item-padding
           a.button-tag(href='#/tab/profile-feels') #发布一个截图
-          a.button.button-tag.icon-right.icon.g-icon-budicon-97(href='#/tab/profile-feels')
-            | 有 42 人讨论
+          //- a.button.button-tag.icon-right.icon.g-icon-budicon-97(href='#/tab/profile-feels') 有 42 人讨论
     ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore", distance="10%")
   .play-game
     a.button-play(on-tap="playGame()") 玩游戏
