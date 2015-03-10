@@ -21,7 +21,17 @@ define(['app', 'restangular'], function(app){
     }]
   });
 
-  app.config(function(RestangularProvider, ApiProvider) {
+  app.config(function(RestangularProvider, ApiProvider,upyunProvider) {
+
+    // upyunProvider.config({
+    //   form_api_secret: 'yMbT3X62MsoLeFiVqbPPRzY9qrM=',
+    //   bucket: 'together'
+    // });
+
+    upyunProvider.config({
+      form_api_secret: 'IRoTyNc75husfQD24cq0bNmRSDI=',
+      bucket: 'upyun-form'
+    });
 
     RestangularProvider.setDefaultHeaders({
         'Content-Type': 'application/json',

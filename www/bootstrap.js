@@ -10,6 +10,7 @@ require.config({
     'angular-translate-storage-cookie': 'lib/angular-translate-storage-cookie/angular-translate-storage-cookie',
     'angular-translate-storage-local': 'lib/angular-translate-storage-local/angular-translate-storage-local',
     'angular-preload-image':'lib/angular-preload-image/angular-preload-image',
+    'upyun':'lib/upyun/src/upyun',
 
     'app': 'js/app',
     'routes': 'js/app.routes',

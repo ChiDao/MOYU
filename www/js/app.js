@@ -12,6 +12,7 @@ define([
     'angular-messages',
     'angular-translate',
     'angular-preload-image',
+    'upyun',
     ], function(){
 
   var starter = angular.module('starter', [
@@ -21,6 +22,7 @@ define([
     'ngCookies',
     'pascalprecht.translate',
     'angular-preload-image',
+    'upyun',
     ]);
 
   /*
