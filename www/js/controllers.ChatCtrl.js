@@ -224,6 +224,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         
       }, function(defer, error){
         console.debug(error);
+        $ionicLoading.hide();
       })
 
       $scope.onHold= function(index){
