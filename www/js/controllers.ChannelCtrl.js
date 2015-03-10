@@ -2,10 +2,11 @@ define(['app', 'services.Api'], function(app)
 {
   app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', 
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
-    '$ionicLoading',
+    '$ionicLoading','upyun',
     function($scope, $stateParams, UI, Api, 
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup,
-      $ionicLoading) {
+      $ionicLoading,upyun) {
+
       //
       $scope.$on("$ionicView.afterEnter", function() {
         var tmp = {};
@@ -41,11 +42,21 @@ define(['app', 'services.Api'], function(app)
             itearator: {
               userData: {
                 type: 'getData',
-                attr: 'user'
+                attr: 'user',
+                options:{
+                  last: true,
+                  itearator: {
+                    profile: {
+                      type: 'getData',
+                      attr: 'profile'
+                    }
+                  }
+                }
               }
             }
           });
           bindStruct.init().then(function(defer){
+            console.debug($scope.clips[0].userData);
             // pull refresh
             $scope.doRefresh = function() {
               console.debug(11111111)
@@ -103,9 +114,37 @@ define(['app', 'services.Api'], function(app)
                     alert('Failed because: ' + message);
                   }
                 }
+                // scope.yupload = function() {
+                //    console.log('正在开始上传...');
+                //   upyun.upload('uploadForm', function(err, response, image){
+                //     if (err) return console.error(err);
+                //     console.log(response);
+                //     console.log(image);
+                //     if (image.code === 200 && image.message === 'ok') {
+                //                 scope.image = {};
+                //                 scope.image.ready = true;
+                //                 scope.image.url = image.absUrl;
+                //               }
+                //               // scope.$apply();
+                //   });
+                // }
               },
               onOk: function(form, scope){
                 return Thenjs(function(defer){
+                  // console.log('正在开始上传...');
+                  // upyun.upload('newPostForm',scope.imageURI, function(err, response, image){
+                  //   if (err) console.error(err);
+                  //   console.log('返回信息：');
+                  //   console.log(response);
+                  //   console.log('图片信息：');
+                  //   console.log(image);
+                  //   if (image.code === 200 && image.message === 'ok') {
+                  //     scope.imageURI = image.absUrl;
+                  //     scope.formData.img = image.absUrl;
+                  //     defer(undefined);
+                  //   }
+                  //   scope.$apply();
+                  // });
                   var win = function (r) {
                       console.log("Code = " + r.responseCode);
                       console.log("Response = " + r.response);
@@ -123,18 +162,19 @@ define(['app', 'services.Api'], function(app)
                   };
 
                   var options = new FileUploadOptions();
-                  options.fileKey = "file";
-                  options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
-                  console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
-                  options.mimeType = "image/jpeg";
+                  // options.fileKey = "file";
+                  // options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
+                  // console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
+                  // options.mimeType = "image/jpeg";
                   //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
+                  options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
 
                   var ft = new FileTransfer();
-                  ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
+                  ft.upload(scope.imageURI, encodeURI("http://v0.api.upyun.com/upyun-form"), win, fail, options);
                 });
               },
               onSuccess: function(form, scope){
-                $scope.doRefresh();
+                // $scope.doRefresh();
                 scope.hideModal();
               }
             })
