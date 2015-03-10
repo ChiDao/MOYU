@@ -1,50 +1,36 @@
 define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(app)
 {
-  // app.directive('focusOn', function() {
-  //   return function(scope, elem, attr) {
-  //     scope.$on('focusOn', function(e, name) {
-  //       if(name === attr.focusOn) {
-  //         elem[0].focus();
-  //       }
-  //     });
-  //   };
-  // });
+  app.directive('focusOn', function() {
+    console.debug(1111);
+    return {
+      restrict: 'A',
+      scope: { focusOn: '@focusOn' },
+      link: function(scope, elem, attr) {
+        scope.$on('focusOn', function(e, name) {
+          console.debug(name, attr.focusOn)
+          if(name === attr.focusOn) {
+            elem[0].focus();
+          }
+        });
+      }
+    };
+  });
 
-  // app.factory('focus', function ($rootScope, $timeout) {
-  //   return function(name) {
-  //     $timeout(function (){
-  //       $rootScope.$broadcast('focusOn', name);
-  //     });
-  //   }
-  // });
-
-  // app.directive('isFocused', function($timeout) {
-  //   return {
-  //     scope: { trigger: '@isFocused' },
-  //     link: function(scope, element) {
-  //       scope.$watch('trigger', function(value) {
-  //         if(value === "true") {
-  //           $timeout(function() {
-  //             element[0].focus();
-
-  //             element.on('blur', function() {
-  //               element[0].focus();
-  //             });
-  //           });
-  //         }
-
-  //       });
-  //     }
-  //   };
-  // });
+  app.factory('focus', function ($rootScope, $timeout) {
+    return function(name) {
+      $timeout(function (){
+        $rootScope.$broadcast('focusOn', name);
+      });
+    }
+  });
 
   app.controller('ChatCtrl', ['$scope', '$state', '$timeout', '$ionicScrollDelegate','$ionicPopup',
     '$stateParams', 'Auth', 'Api','ApiEvent','PushProcessingService', '$ionicLoading',
-    '$location', '$anchorScroll', 
+    '$location', '$anchorScroll', 'focus',
     function($scope, $state, $timeout, $ionicScrollDelegate,$ionicPopup,
       $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading,
-      $location, $anchorScroll) {
-
+      $location, $anchorScroll, focus) {
+      
       $scope.hasFollowedPost = true;
 
       //获取截屏话题信息
@@ -117,6 +103,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
         //发送新消息
         $scope.formData = {content:''};
         $scope.send = function(keyCode){
+          focus('focusMe')
           if($scope.formData.content != '' && $scope.formData.content != undefined){          
             $scope.clip.doPostComment($scope.formData)
             .then(function(defer, response){

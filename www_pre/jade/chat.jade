@@ -18,5 +18,5 @@ ion-view#Chat(view-title='讨论' on-touch="onTouch()")
 	ion-footer-bar
 		button.button.button-block.button-positive(ng-if="!hasFollowedPost" ng-click="toggleSubscribe()") 加入讨论
 		div.row(ng-if="hasFollowedPost")
-			textarea.col-80(ng-model="formData.content",required,ng-keydown="enter($event);")
+			textarea.col-80(ng-model="formData.content",required,ng-keydown="enter($event);",focus-on='focusMe')
 			button.button-clear.col-20(on-tap="send()") 发送
