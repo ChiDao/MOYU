@@ -14,6 +14,11 @@ define(['app', 'services.Api'], function(app)
       $scope.hasNewComments = {};
       var fromDetailSubcribe = '';
 
+      $scope.filterValid = function(value){
+        console.debug(value);
+        return value['@clip'];
+      }
+
       $scope.bindSubscribes = Api.bindList(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
         reverse: true,
         itearator: {
