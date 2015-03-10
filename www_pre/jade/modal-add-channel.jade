@@ -2,10 +2,10 @@ ion-modal-view#AddChannel.Pages
   ion-header-bar
     .title 查找游戏
     .buttons
-      button.button.button-clear(ng-click='complete()',ng-show="ifAbled == 'able' ") 完成
+      button.button.button-clear(on-tap='complete()',ng-show="ifAbled == 'able' ") 完成
   ion-content
     ion-list
-      a.item.item-avatar(ng-click="followGame(channel)",ng-repeat='channel in channels track by $index', type='item-text-wrap')
+      a.item.item-avatar(on-tap="followGame(channel)",ng-repeat='channel in channels track by $index', type='item-text-wrap')
         img(preload-image default-image="img/loading.png" src='{{channel.gameData.logo?channel.gameData.logo:""}}')
         | {{channel.gameData.name}}
         span.item-note(ng-show="channel.installed == 'Yes' && channel.followed == 'No'")

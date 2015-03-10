@@ -1,10 +1,10 @@
 ion-view#Channels(view-title='游戏')
   ion-nav-buttons(side="right")
-    button.button.button-clear(ng-click="addChannel()") 添加
+    button.button.button-clear(on-tap="addChannel()") 添加
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
-      a.item.item-avatar(ng-repeat='channel in channels track by $index', type='item-text-wrap', ng-click="Api.jumpTo(channel.game)")
+      a.item.item-avatar(ng-repeat='channel in channels track by $index', type='item-text-wrap', on-tap="Api.jumpTo(channel.game)")
         img(ng-src="{{channel['@game'].logo?channel['@game'].logo:''}}")
         | {{channel['@game'].name}}
         span.item-note(ng-class='{first:$first}')
