@@ -428,4 +428,32 @@ ion-tabs.tabs-color-active-positive .tab-item {
 .modalBlack {
 	background: none;
 	background-color: rgba(0,0,0,0.8);
+	color: #fff;
+}
+
+#RunGame {
+	.dots {
+		top: 0;
+		left: 18px;
+	}
+	.RedPoint {
+		width: 5px;
+		height: 5px;
+		display: block;
+	}
+	.plant {
+		left: 4px;
+		bottom: 10px;
+	}
+	.progress {
+		bottom: 10px;
+		li {
+			height: 32px;
+			margin-left: 26px;
+		}
+		.active {
+			margin-left: 38px;
+		}
+
+	}
 }

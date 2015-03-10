@@ -5,7 +5,11 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
 
-      // Modal.okCancelModal('templates/modal-HowToScreen.html', {}, {})
+      $timeout(function() {
+        Modal.okCancelModal('templates/modal-HowToScreen.html', {
+          animation:'fade-in'
+        }, {})
+      },600)
 
       $scope.filterValid = function(value){
         // console.debug(value);

@@ -1,5 +1,18 @@
-ion-modal-view.modalBlack
-  ion-content
+ion-modal-view#RunGame.modalBlack
+  p.text-right
+    button.color-bule.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()') 关闭
+  .padding.text-center
+    p 如何在你的设备上截图
+    p 请按下电源键和HOME键完成截图练习
+    img2x(src2x='/img/iphone6',ext='png')
+  .dots.posa
+    img2x(src2x='/img/Dots',ext='png')
+  .plant.posa
+    img2x(src2x='/img/Plane',ext='png')
+  .progress.posa
+    ul
+      li 跳转游戏
+      li 选择任务
+      li.active 如何截图
   .play-game
-    a.button-play.l1(on-tap="playGame()")
-      | 繼續
+    a.button-play.l1(on-tap="playGame()") 继续
