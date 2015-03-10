@@ -257,6 +257,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
               Api.getData($scope.clip.subscribe,$scope,'subscribe').then(function(){
                 console.log("退出讨论"+$scope.subscribe.edit);
                 Api.deleteData($scope.subscribe.edit);
+                $scope.checkHasFollowedPost();
               })             
             }else if(buttonIndex == 2){
               console.log("举报"+$scope.clip.report);
