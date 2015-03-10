@@ -5,6 +5,11 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
       $scope.Auth = Auth;
       $scope.userData = Auth.currentUser().userData;
       console.debug($scope.userData);
+      //setting only for ios8
+      $scope.setting = (ionic.Platform.device().platform=="iOS" && ionic.Platform.device().version.substr(0,1)>=8);
+      $scope.toSet = function(){
+        window.plugins.pushNotification.toSetting();
+      }
 
       //获取资料
       $scope.imageURI = 'img/upload-photo.png';

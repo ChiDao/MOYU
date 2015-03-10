@@ -128,6 +128,7 @@ define(['app'], function(app){
       views: {
         'tab-profile': {
           templateUrl: 'templates/profile-setting.html',
+          controller: 'ProfileCtrl'
         }
       },
       data: {

@@ -161,6 +161,19 @@ if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8)
 }
 }
 
+- (void)toSetting:(CDVInvokedUrlCommand*)command;
+{
+    self.callbackId = command.callbackId;
+    //only for ios8 to go to app-settings directly
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8){
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    }else
+    {
+        NSLog(@"该系统版本不支持");
+    }
+    
+}
+
 
 /*
 - (void)isEnabled:(NSMutableArray *)arguments withDict:(NSMutableDictionary *)options {

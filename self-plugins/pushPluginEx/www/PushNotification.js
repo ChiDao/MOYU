@@ -78,6 +78,10 @@ PushNotification.prototype.checkEnabled = function(successCallback, errorCallbac
     }          
     cordova.exec(successCallback, errorCallback, "PushPlugin", "checkEnabled", [options]);
 };
+//only for ios8 to go to app-settings directly
+PushNotification.prototype.toSetting = function() {
+    cordova.exec(null, null, "PushPlugin", "toSetting", []);
+};
 
 
 //-------------------------------------------------------------------
