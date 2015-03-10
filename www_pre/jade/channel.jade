@@ -27,4 +27,5 @@ ion-view#Channel(view-title='{{channel.name}}')
           //- a.button.button-tag.icon-right.icon.g-icon-budicon-97(href='#/tab/profile-feels') 有 42 人讨论
     ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore", distance="10%")
   .play-game
-    a.button-play(on-tap="playGame()") 玩游戏
+    a.button-play(on-tap="playGame()")
+      <small>运行</small><br>游戏

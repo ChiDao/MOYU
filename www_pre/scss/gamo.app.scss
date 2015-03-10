@@ -108,19 +108,27 @@ ion-tabs.tabs-color-active-positive .tab-item {
 }
 
 .button-play {
-	height: 48px;
-	width: 48px;
+	height: 52px;
+	width: 52px;
 	border-radius: 50%;
 	position: absolute;
 	bottom: 10px;
 	left: 50%;
-	margin-left: -24px;
-	background-color: #f00;
+	margin-left: -26px;
+	background-color: #f01010;
 	text-align: center;
-	line-height: 48px;
+	line-height: 16px;
 	color: #fff;
 	font-weight: 800;
 	box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.48);
+	padding-top: 10px;
+	font-size: 15px;
+	small {
+		font-size: 8px;
+	}
+	@include at2x("img/red");
+	// background-position: 50% 50%;
+	background-size: 100%;
 }
 
 

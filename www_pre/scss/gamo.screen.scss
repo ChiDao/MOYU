@@ -2,3 +2,9 @@
 	screen
 	兼容性
 */
+
+.platform-ios {
+	.bar-header {
+		top: 0 !important;
+	}
+}
