@@ -4,18 +4,8 @@ define(['app', 'services.Api','services.Modal'], function(app)
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB',
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
-      // //测试缓存
-      // DB.flatSave('documents', 'id', [{id: 'xxx', title: 'test'},{id: 'yyy', title: 'test2'}])
-      // .then(function(defer, result){
-      //   DB.flatQueryAll('documents')
-      //   .then(function(defer, result){
-      //     console.log(JSON.stringify(result));
-      //   }, function(defer, error){
-      //     console.log(error);
-      //   });
-      // }, function(defer, error){
-      //   console.log(error);
-      // });
+
+      // Modal.okCancelModal('templates/modal-HowToScreen.html', {}, {})
 
       $scope.filterValid = function(value){
         // console.debug(value);
