@@ -17,6 +17,11 @@ define(['app', 'services.Api','services.Modal'], function(app)
       //   console.log(error);
       // });
 
+      $scope.filterValid = function(value){
+        // console.debug(value);
+        return value['@game'];
+      }
+
       //检查上传事件是否结束
       if (localStorage.getItem('playGameTm') !== null){
         $state.go('tab.channel',{gameId:localStorage.getItem('playGameId')});

@@ -441,30 +441,33 @@ define(['app', 'services.Modal', 'services.DB'], function(app)
                   bindStruct.moreData.push(listItem);
                 })
                 //改用了merge，但未处理原有属性，后来变为空的情况
-                for(var index = 0; index < data.length; index++){
-                  if (scope[scopeDataField][index]){
-                    _.merge(scope[scopeDataField][index], data[index])
-                  } else {
-                    scope[scopeDataField].push(data[index]);
-                  }
-                }
-                // scope[scopeDataField].length = 0
-                // _.forEach(data, function(listItem){
-                //   scope[scopeDataField].push(listItem);
-                // })
+                // for(var index = 0; index < data.length; index++){
+                //   if (scope[scopeDataField][index]){
+                //     _.merge(scope[scopeDataField][index], data[index])
+                //   } else {
+                //     scope[scopeDataField].push(data[index]);
+                //   }
+                // }
+                bindStruct.scope[bindStruct.scopeDataField].length = 0;
+                _.forEach(data, function(listItem){
+                  bindStruct.scope[bindStruct.scopeDataField].push(listItem);
+                })
                 scope[scopeDataField].meta[bindStruct.moreAttr] = moreData.meta[bindStruct.moreAttr];
-                // console.debug(bindStruct);
                 defer(undefined, scope[scopeDataField]);
               },function(innerDefer, error){
                 if (error.status === 404) {
                   //改用了merge，但未处理原有属性，后来变为空的情况
-                  for(var index = 0; index < data.length; index++){
-                    if (scope[scopeDataField][index]){
-                      _.merge(scope[scopeDataField][index], data[index])
-                    } else {
-                      scope[scopeDataField].push(data[index]);
-                    }
-                  }
+                  // for(var index = 0; index < data.length; index++){
+                  //   if (scope[scopeDataField][index]){
+                  //     _.merge(scope[scopeDataField][index], data[index])
+                  //   } else {
+                  //     scope[scopeDataField].push(data[index]);
+                  //   }
+                  // }
+                  bindStruct.scope[bindStruct.scopeDataField].length = 0;
+                  _.forEach(data, function(listItem){
+                    bindStruct.scope[bindStruct.scopeDataField].push(listItem);
+                  })
                   defer(undefined, scope[scopeDataField]);
                 }
                 else defer(error);
