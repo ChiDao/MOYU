@@ -58,6 +58,9 @@ define([
           PushProcessingService.initialize();
     }
     $ionicPlatform.ready(function() {
+
+      // ionic.Platform.fullScreen();
+
       DB.init();
 
       if (ionic.Platform.isWebView()) {
@@ -77,7 +80,10 @@ define([
       }
 
       if (window.StatusBar) {
+        // StatusBar.overlaysWebView(true);
         StatusBar.styleDefault();
+        // StatusBar.backgroundColorByHexString("#eff5fa");
+        // ionic.Platform.fullScreen()
       }
 
       console.debug(localStorage.getItem('user'));
