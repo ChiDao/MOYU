@@ -1,4 +1,4 @@
-define(['app', 'services.Modal'], function(app)
+define(['app', 'services.Modal', 'services.DB'], function(app)
 {
   app.provider('Api', function() {
 
@@ -85,7 +85,7 @@ define(['app', 'services.Modal'], function(app)
       }
     };
 
-    this.$get = function(Restangular, Modal, $state, $stateParams){
+    this.$get = function(Restangular, Modal, $state, $stateParams, DB){
       return {
         getRestangular: function(serverName){
           if (serverApis[serverName]){
@@ -219,7 +219,11 @@ define(['app', 'services.Modal'], function(app)
                     getData(serverPrefix + data[oper[1].attr], data, oper[0], oper[1].options).then(function(defer){
                       callback(undefined);
                     }, function(defer, error){
-                      callback('itearator get data error', error);
+                      if (error.status === 404){
+                        callback(undefined);
+                      } else {
+                        callback('itearator get data error', error);
+                      }
                     });
                     break;
                   //默认函数
@@ -386,14 +390,28 @@ define(['app', 'services.Modal'], function(app)
             newAttr: apiData.api.apiType === 'stream'?'next':undefined,
             moreDirection: this.getMoreDirection(apiData.server, options.reserve?'true':'false'),
             moreData: [],
+            newMoreData: []
           };
           console.debug('bindStruct', bindStruct);
+
+          bindStruct.setDBTable = function(tableName, idCol){
+            bindStruct.dbTable = tableName;
+            bindStruct.idCol = idCol;
+            return DB.flatQueryAll(bindStruct.dbTable)
+            .then(function(defer, result){
+              bindStruct.scope[bindStruct.scopeDataField] = result;
+              defer(undefined);
+            }, function(defer, error){
+              console.log(error);
+              defer(error)
+            });
+          }
 
           bindStruct.init = function(){
             //获取首页数据
             return Api.getData(bindStruct.apiLink, bindStruct.scope, bindStruct.scopeDataField, bindStruct.options).then(function(defer, data){
               //缓存下一页数据
-              // console.debug(scope[scopeDataField].meta, scope[scopeDataField].meta[bindStruct.moreAttr], options);
+              if (bindStruct.dbTable && bindStruct.idCol) DB.flatSave(bindStruct.dbTable, bindStruct.idCol, data);
               var tmp = {};
               Api.getData(apiData.serverPrefix + scope[scopeDataField].meta[bindStruct.moreAttr], tmp, scopeDataField, bindStruct.clearedOptions).then(function(innerDefer, moreData){
                 bindStruct.moreData.length = 0
@@ -416,6 +434,7 @@ define(['app', 'services.Modal'], function(app)
             var tmp = {};
             // console.debug('fresh data', scope[scopeDataField]);
             return Api.getData(bindStruct.apiLink, tmp, bindStruct.scopeDataField, bindStruct.options).then(function(defer, data){
+              if (bindStruct.dbTable && bindStruct.idCol) DB.flatSave(bindStruct.dbTable, bindStruct.idCol, data);
               Api.getData(apiData.serverPrefix + data.meta[bindStruct.moreAttr], tmp, 'scopeDataField', bindStruct.clearedOptions).then(function(innerDefer, moreData){
                 bindStruct.moreData.length = 0
                 _.forEach(moreData, function(listItem){
@@ -459,50 +478,58 @@ define(['app', 'services.Modal'], function(app)
             });
           };
 
-          bindStruct.more = function(){
+          bindStruct.moreGetData = function(){
             var tmp = {};
             if (!bindStruct.moreData.length) return Thenjs(function(defer){defer(undefined);});
-            var targetStruct = bindStruct.scope[bindStruct.scopeDataField];
             var options = _.omit(bindStruct.options, 'last');
-            console.debug('get more data', bindStruct.moreAttr, targetStruct.meta[bindStruct.moreAttr]);
-            return Api.getData(apiData.serverPrefix + scope[scopeDataField].meta[bindStruct.moreAttr], tmp, 'scopeDataField', options).then(function(defer, moreData){
-              var listItem;
-              //更新数据
-              if (bindStruct.moreDirection === 'top'){
-                console.debug('tmpHash',1,options.reserve,bindStruct.moreAttr)
-                while(listItem = bindStruct.moreData.pop()){
-                  targetStruct.unshift(listItem);
-                }
-              } else {
-                console.debug('tmpHash',2, options.reserve,bindStruct.moreAttr)
-                while(listItem = bindStruct.moreData.shift()){
-                  targetStruct.push(listItem);
-                }
-              }
-              //缓存下一页数据
-              _.forEach(moreData, function(listItem){
-                bindStruct.moreData.push(listItem);
-              })
-              targetStruct.meta[bindStruct.moreAttr] = moreData.meta[bindStruct.moreAttr];
-              // console.debug(bindStruct.moreData, targetStruct)
-              defer(undefined);
+            return Api.getData(apiData.serverPrefix + scope[scopeDataField].meta[bindStruct.moreAttr], bindStruct, 'newMoreData', options).then(function(defer, newMoreData){
+              defer(undefined, newMoreData);
             }, function(defer, error){
+              bindStruct.newMoreData = error;
               if (error.status === 404){
-                //更新数据
-                while(listItem = bindStruct.moreData.pop()){
-                  targetStruct.unshift(listItem);
-                }
-                defer(undefined);
+                defer(undefined, error);
               }
               else{
                 console.debug('get more data error');
                 defer(error);
               }
             });
-            return Thenjs(function(defer){defer(undefined);});
           }
 
-          
+          bindStruct.moreUpdateData = function(){
+            if (!_.isArray(bindStruct.newMoreData) && bindStruct.newMoreData.status != 404) defer(bindStruct.newMoreData);
+            var targetStruct = bindStruct.scope[bindStruct.scopeDataField];
+            console.debug('get more data', bindStruct.moreAttr, targetStruct.meta[bindStruct.moreAttr]);
+            var listItem;
+            //更新数据
+            if (bindStruct.moreDirection === 'top'){
+              console.debug('tmpHash',1,options.reserve,bindStruct.moreAttr)
+              while(listItem = bindStruct.moreData.pop()){
+                targetStruct.unshift(listItem);
+              }
+            } else {
+              console.debug('tmpHash',2, options.reserve,bindStruct.moreAttr)
+              while(listItem = bindStruct.moreData.shift()){
+                targetStruct.push(listItem);
+              }
+            }
+            if (_.isArray(bindStruct.newMoreData)){
+              _.forEach(bindStruct.newMoreData, function(listItem){
+                bindStruct.moreData.push(listItem);
+              })
+              targetStruct.meta[bindStruct.moreAttr] = bindStruct.newMoreData.meta[bindStruct.moreAttr];
+            }
+          }
+
+          bindStruct.more = function(){
+            return bindStruct.moreGetData().then(function(defer){
+              bindStruct.moreUpdateData();
+              defer(undefined);
+            }, function(defer, error){
+              defer(error);
+            });
+          }
+
           bindStruct.newer = function(){
             var tmp = {};
             var targetStruct = bindStruct.scope[bindStruct.scopeDataField];

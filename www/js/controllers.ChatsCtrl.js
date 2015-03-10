@@ -43,7 +43,21 @@ define(['app', 'services.Api'], function(app)
                   var comments = subcribe['@clip']['@comments']['slice'];
                   var tmpLastComment = comments[comments.length - 1];
                   console.debug(tmpLastComment);
-                  Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData').then(function(){
+                  subcribe['@clip']['lastCommentData'] = tmpLastComment;
+                  Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData', {
+                    itearator:{
+                      profileData:{
+                        type: 'getData',
+                        attr: 'profile',
+                        successIf404: true
+                      }
+                    }
+                  }).then(function(){
+                    console.debug(subcribe['@clip']['lastCommentUserData']['profileData']);
+                    subcribe['@clip']['lastCommentUserData'].userName =
+                      (subcribe['@clip']['lastCommentUserData']['profileData']?
+                      subcribe['@clip']['lastCommentUserData']['profileData'].nickname:
+                      subcribe['@clip']['lastCommentUserData'].tel);
                     Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
                       // console.debug("getData 21");
                       console.debug(subcribe['@clip'].lastCommentUserData)
@@ -65,45 +79,48 @@ define(['app', 'services.Api'], function(app)
           }
         }
       });
-      $ionicLoading.show();
-      $scope.bindSubscribes.init().then(function(defer, data){
-        console.debug($scope['subscribes']);
-        if (data.status === 404){
-          $scope.subscribes.length = 0;
-        }
+      $scope.bindSubscribes.setDBTable('chats', '_id').fin(function(){
+        $ionicLoading.show();
+        $scope.bindSubscribes.init().then(function(defer, data){
+          console.debug($scope['subscribes']);
+          if (data.status === 404){
+            $scope.subscribes.length = 0;
+          }
 
-        $scope.$on("$ionicView.afterEnter", function() {
-          $ionicLoading.show();
-          $scope.bindSubscribes.refresh().fin(function(){
-            $ionicLoading.hide();
+          $scope.$on("$ionicView.afterEnter", function() {
+            $ionicLoading.show();
+            $scope.bindSubscribes.refresh().fin(function(){
+              $ionicLoading.hide();
+            });
           });
-        });
 
-        // pull refresh
-        $scope.pullRefresh = function() {
-          $scope.bindSubscribes.refresh().then(function(defer){
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.hasMore = bindSubscribes.moreData.length;
-          }, function(defer){
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.hasMore = bindSubscribes.moreData.length;
-          })
-        };
-        $scope.loadMore = function() {
-          bindSubscribes.more().then(function(defer){
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-            $scope.hasMore = bindSubscribes.moreData.length;
-          }, function(defer){
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-            $scope.hasMore = bindSubscribes.moreData.length;
-          })
-        };
-        defer(undefined);
-      }, function(defer, error){
-        defer(error);
-      }).fin(function(){
-        $ionicLoading.hide();
-      });
+          // pull refresh
+          $scope.pullRefresh = function() {
+            $scope.bindSubscribes.refresh().then(function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+              $scope.hasMore = $scope.bindSubscribes.moreData.length;
+            }, function(defer){
+              $scope.$broadcast('scroll.refreshComplete');
+              $scope.hasMore = $scope.bindSubscribes.moreData.length;
+            })
+          };
+          $scope.loadMore = function() {
+            $scope.bindSubscribes.more().then(function(defer){
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              $scope.hasMore = $scope.bindSubscribes.moreData.length;
+            }, function(defer){
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              $scope.hasMore = $scope.bindSubscribes.moreData.length;
+            })
+          };
+          defer(undefined);
+        }, function(defer, error){
+          defer(error);
+        }).fin(function(){
+          $ionicLoading.hide();
+        });
+      })
+      
 
       $scope.hasMore = $scope.bindSubscribes.hasMore;
       $scope.loadMore = function() {

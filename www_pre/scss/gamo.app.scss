@@ -3,7 +3,11 @@
 	顏色設置
 */
 
-$height-color:				#344b62;
+$height-color:				#eff5fa;
+$bule-color:					#2ea2fd;
+$red-color:						#f01010;
+$tab-height:					#A4A4A4;
+$tab-nol:							#C4C4C4;
 
 /*
 	app
@@ -16,23 +20,21 @@ html,body {
 
 .bar-stable,ion-header-bar {
 	background-color: $height-color !important;
-	div,span,button {
-		color: #fff !important;
+	button,a {
+		color: $bule-color !important;
 	}
 }
 
+.bar.bar-stable .title {
+	font-weight: 800;
+}
+
 ion-content {
-	background-color: #efefef !important;
+	// background-color: #efefef !important;
 }
 
 .tab-nav {
 	// box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.2);
-}
-
-.icon-fix {
-	.icon {
-		font-size: 26px !important;
-	}
 }
 
 .tab-item {
@@ -47,8 +49,9 @@ ion-content {
 
 .back-button {
 	.icon::before {
-		font-size: 24px !important;
-		margin-left: 8px;
+		font-size: 16px !important;
+		margin-left: -4px;
+		margin-top: 1px;
 	}
 }
 
@@ -71,19 +74,40 @@ button {
 }
 
 .button-positive {
-	background-color: $height-color !important;
-	border-color: darken($height-color,10%) !important;
-	box-shadow: none !important;
+	// background-color: $height-color !important;
+	// border-color: darken($height-color,10%) !important;
+	// box-shadow: none !important;
 }
 
 ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-color-active-positive .tab-item.activated {
-	color: $height-color !important;
+	color: $tab-height !important;
+}
+
+ion-tabs.tabs-color-active-positive .tab-item {
+  color: $tab-nol;
+}
+
+.tabs {
+	// border-top: 1px solid #B0B0B0 !important;
 }
 
 /*
 	Pages
 	頁面配置
 */
+
+.button-tag:before {
+	font-size: 16px !important;
+}
+
+.button-tag {
+	padding: 0;
+	margin: 0;
+	min-width: 12px;
+	min-height: 24px;
+	line-height: 24px;
+}
+
 
 .messages {
 	margin:0;
@@ -172,7 +196,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 #Channels {
 	ion-list {
 		.item:first-child {
-			background-color: #ebf5ff !important;
+			background-color: #FAFCFE !important;
 		}
 	}
 }
@@ -180,7 +204,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 #Channels,#AddChannel{
 	ion-list {
 		.item {
-			border-color: #d8d8d8;
+			border-color: #D7D7D7;
 			padding-left: 58px;
 			font-size: 14px;
 			line-height: 30px;
@@ -298,5 +322,16 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-col
 }
 
 .play-game {
-	background: none;
+	background: transparent;
+}
+
+.button-play {
+	height: 48px;
+	width: 48px;
+	border-radius: 50%;
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	margin-left: -24px;
+	background-color: #f00;
 }

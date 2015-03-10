@@ -183,10 +183,9 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           //下拉刷新
           $scope.pullRefresh = function(){
             var tmpHash = $scope.comments[0]._id;
-            console.debug('tmpHash', tmpHash, _.pluck($scope.comments, '_id'));
-            $scope.bindComments.more().then(function(defer){
+            $scope.bindComments.moreGetData().then(function(defer){
               $scope.$broadcast('scroll.refreshComplete');
-              console.debug('tmpHash', tmpHash, _.pluck($scope.comments, '_id'));
+              $scope.bindComments.moreUpdateData();
               $location.hash(tmpHash);
               $ionicScrollDelegate.anchorScroll();
               defer(undefined);
@@ -223,7 +222,8 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
                   } else {
                     $scope.getNewComments = true;
                   }
-                }, 200)
+                }, 200),
+                Api.getData($scope.clip.comments, $scope, 'tmpClip', {last:true});
               })
             }
           }, '1');

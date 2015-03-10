@@ -4,8 +4,9 @@ ion-list.talk-list
     img(ng-if='subscribe["@clip"].gameData.logo' preload-image default-image="img/loading.png" ng-src='{{subscribe["@clip"].gameData.logo?subscribe["@clip"].gameData.logo:""}}')
 
     i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
-    b {{subscribe['@clip'].lastCommentUserData.email}}
-    | {{subscribe["@clip"].content}} {{subscribe._modified | timeBefore}} {{subscribe["@clip"]}}
+    b 
+    | {{subscribe["@clip"].content}} <br/>
+    b {{subscribe['@clip'].lastCommentUserData.userName}}:{{subscribe['@clip'].lastCommentData.content}}于{{subscribe._modified | timeBefore}}
     span.item-note(ng-class='{first:$first}')
       img(ng-if="subscribe['@clip'].img['100']" preload-image default-image="img/loading.png" ng-src="{{subscribe['@clip'].img['100']}}")
 
