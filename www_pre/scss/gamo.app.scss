@@ -131,6 +131,10 @@ ion-tabs.tabs-color-active-positive .tab-item {
 	background-size: 100%;
 }
 
+.l1 {
+	line-height: 34px;
+}
+
 
 .item-avatar {
 	h2 {
@@ -377,16 +381,18 @@ ion-tabs.tabs-color-active-positive .tab-item {
 		}
 		border-radius: 0;
 	}
-	.item {
-		color: #555;
-		border: none;
-	}
 	.item-body {
 
 	}
 	.full-image {
 
 	}
+	.item {
+		color: #555;
+	}
+}
+
+#Channel {
 	.date {
 		right: 10px;
 		top: 12px;
@@ -407,10 +413,19 @@ ion-tabs.tabs-color-active-positive .tab-item {
 			text-align: center;
 		}
 	}
+	.item {
+		color: #555;
+		border: none;
+	}
 }
 
 #Newclip {
 	#newPostImage {
 		width: 80px;
 	}
+}
+
+.modalBlack {
+	background: none;
+	background-color: rgba(0,0,0,0.8);
 }

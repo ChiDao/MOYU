@@ -58,7 +58,6 @@ define([
           PushProcessingService.initialize();
     }
     $ionicPlatform.ready(function() {
-
       // ionic.Platform.fullScreen();
 
       DB.init();

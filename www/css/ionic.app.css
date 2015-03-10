@@ -10950,6 +10950,9 @@ ion-tabs.tabs-color-active-positive .tab-item {
   .button-play small {
     font-size: 8px; }
 
+.l1 {
+  line-height: 34px; }
+
 .item-avatar h2 {
   color: #919191; }
 
@@ -11133,25 +11136,32 @@ ion-tabs.tabs-color-active-positive .tab-item {
     #Channel .top-card .item h1, #Channel .top-card .item h2, #Channel .top-card .item h3, #Channel .top-card .item h4, #Channel .top-card .item h5, #Channel .top-card .item p, #Channel .top-card .item span, .full-card .top-card .item h1, .full-card .top-card .item h2, .full-card .top-card .item h3, .full-card .top-card .item h4, .full-card .top-card .item h5, .full-card .top-card .item p, .full-card .top-card .item span {
       color: #fff !important; }
 #Channel .item, .full-card .item {
-  color: #555;
-  border: none; }
-#Channel .date, .full-card .date {
+  color: #555; }
+
+#Channel .date {
   right: 10px;
   top: 12px; }
-#Channel ion-list .item, .full-card ion-list .item {
+#Channel ion-list .item {
   min-height: 54px !important; }
-#Channel .browse .icon, .full-card .browse .icon {
+#Channel .browse .icon {
   padding-left: 28px; }
-#Channel .browse .icon:before, .full-card .browse .icon:before {
+#Channel .browse .icon:before {
   position: absolute;
   left: 12px;
   width: 24px;
   top: 19px;
   display: inline-block;
   text-align: center; }
+#Channel .item {
+  color: #555;
+  border: none; }
 
 #Newclip #newPostImage {
   width: 80px; }
+
+.modalBlack {
+  background: none;
+  background-color: rgba(0, 0, 0, 0.8); }
 
 /*
 	screen
