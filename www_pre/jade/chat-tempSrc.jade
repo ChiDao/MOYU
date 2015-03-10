@@ -1,5 +1,5 @@
 ion-list.talk-list
-  .item.item-avatar(ng-repeat='subscribe in subscribes | filter: filterValid track by $index', type='item-text-wrap',  on-tap="Api.jumpTo(subscribe.clip, chats)",collection-item-width="'100%'"
+  .item.item-avatar(collection-repeat='subscribe in subscribes | filter: filterValid track by $index', type='item-text-wrap',  on-tap="Api.jumpTo(subscribe.clip, chats)",collection-item-width="'100%'"
       collection-item-height="64",ng-style="{left: 0,right: 0}")
     img(ng-if='subscribe["@clip"].gameData.logo' preload-image default-image="img/loading.png" ng-src='{{subscribe["@clip"].gameData.logo?subscribe["@clip"].gameData.logo:""}}')
     i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
