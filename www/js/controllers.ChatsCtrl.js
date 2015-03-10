@@ -15,7 +15,7 @@ define(['app', 'services.Api'], function(app)
       var fromDetailSubcribe = '';
 
       $scope.filterValid = function(value){
-        console.debug(value);
+        // console.debug(value);
         return value['@clip'];
       }
 
