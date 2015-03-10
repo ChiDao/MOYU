@@ -2,7 +2,7 @@ ion-modal-view#Newclip
   form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
     ion-header-bar.bar
       .buttons
-        button.button-clear.button(ng-click='mustChoise?cancelModal():closeModal()') 取消
+        button.button-clear.button(on-tap='mustChoise?cancelModal():closeModal()') 取消
       h1.title 瞬間
       .buttons
         button.color-bule.button-clear.button(type='submit') 發佈

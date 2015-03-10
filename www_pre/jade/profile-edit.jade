@@ -5,11 +5,11 @@ ion-view.full-card(view-title='更新资料')
         input(type="text" ng-model="imageURI" required ng-show="false")
       .item.item-input
         span.input-label 头像
-        img#logoImage(ng-src="{{imageURI}}",ng-click="getPicture()")
+        img#logoImage(ng-src="{{imageURI}}",on-tap="getPicture()")
       .item.item-input
         span.input-label 昵称
         input(type='text', placeholder='nickname',ng-model="formData.nickname")
 
     .padding
-      button.button.button-block.button-positive.activated(ng-click="save(formData)") 保存
+      button.button.button-block.button-positive.activated(on-tap="save(formData)") 保存
 

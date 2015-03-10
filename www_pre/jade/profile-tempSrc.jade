@@ -2,7 +2,7 @@ ion-list.talk-list
 
   //- a.item.item-avatar(ng-repeat='clip in clips',type='item-text-wrap',  ng-click="Api.jumpTo(subscribe.clip, chats)")
   //-   img(preload-image default-image="img/loading.png" ng-src='{{clip.gameData.logo?clip.gameData.logo:""}}')
-  a.item.item-avatar(ng-repeat='clip in clips',type='item-text-wrap',  ng-click="Api.jumpTo(clip._self, 'profile')")
+  a.item.item-avatar(ng-repeat='clip in clips',type='item-text-wrap',  on-tap="Api.jumpTo(clip._self, 'profile')")
     img(preload-image default-image="img/loading.png" ng-src='{{clip.gameData.logo?clip.gameData.logo:""}}')
     i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
     b {{clip.content}} <br>
