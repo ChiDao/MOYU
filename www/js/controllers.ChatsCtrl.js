@@ -14,6 +14,11 @@ define(['app', 'services.Api'], function(app)
       $scope.hasNewComments = {};
       var fromDetailSubcribe = '';
 
+      $scope.filterValid = function(value){
+        // console.debug(value);
+        return value['@clip'];
+      }
+
       $scope.bindSubscribes = Api.bindList(Restangular.configuration.baseUrl + '/recent-user-subscriptions/' + Auth.currentUser().userData._id + '?_start=0' + '&r=' + Math.random(),$scope,'subscribes',{
         reverse: true,
         itearator: {
@@ -44,32 +49,45 @@ define(['app', 'services.Api'], function(app)
                   var tmpLastComment = comments[comments.length - 1];
                   console.debug(tmpLastComment);
                   subcribe['@clip']['lastCommentData'] = tmpLastComment;
-                  Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData', {
-                    itearator:{
-                      profileData:{
-                        type: 'getData',
-                        attr: 'profile',
-                        successIf404: true
-                      }
+                  async.parallel([
+                    function(callback){
+                      Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
+                        // console.debug("getData 21");
+                        console.debug(subcribe['@clip'].lastCommentUserData)
+                        callback(undefined);
+                      }, function(){
+                        // console.debug("getData 22");
+                        callback("Get game data error");
+                      });
+                    },
+                    function(callback){
+                      Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData', {
+                        itearator:{
+                          profileData:{
+                            type: 'getData',
+                            attr: 'profile',
+                            successIf404: true
+                          }
+                        }
+                      }).then(function(){
+                        console.debug(subcribe['@clip']['lastCommentUserData']['profileData']);
+                        subcribe['@clip']['lastCommentUserData'].userName =
+                          (subcribe['@clip']['lastCommentUserData']['profileData']?
+                          subcribe['@clip']['lastCommentUserData']['profileData'].nickname:
+                          subcribe['@clip']['lastCommentUserData'].tel);
+                        callback(undefined);
+                      }, function(innerDefer){
+                        // console.debug("getData 23");
+                        callback("Get user data error");
+                      });
                     }
-                  }).then(function(){
-                    console.debug(subcribe['@clip']['lastCommentUserData']['profileData']);
-                    subcribe['@clip']['lastCommentUserData'].userName =
-                      (subcribe['@clip']['lastCommentUserData']['profileData']?
-                      subcribe['@clip']['lastCommentUserData']['profileData'].nickname:
-                      subcribe['@clip']['lastCommentUserData'].tel);
-                    Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
-                      // console.debug("getData 21");
-                      console.debug(subcribe['@clip'].lastCommentUserData)
-                      defer(undefined);
-                    }, function(){
-                      // console.debug("getData 22");
-                      defer("Get game data error");
-                    });
-                  }, function(innerDefer){
-                    // console.debug("getData 23");
-                    defer("Get user data error");
-                  });
+                  ], function(error){
+                    if (error){
+                      defer(error);
+                      return;
+                    }
+                    defer(undefined);
+                  })
                 }else{
                   // console.debug("getData 24");
                   defer(undefined);
