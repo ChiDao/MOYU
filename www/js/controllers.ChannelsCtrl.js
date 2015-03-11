@@ -1,9 +1,9 @@
 define(['app', 'services.Api','services.Modal'], function(app)
 {
   app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth', '$ionicLoading',
-    '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB',
+    '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB','$ionicPopup',
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
-      $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB) {
+      $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB,$ionicPopup) {
 
       $timeout(function() {
         Modal.okCancelModal('templates/modal-HowToScreen.html', {
@@ -192,8 +192,19 @@ define(['app', 'services.Api','services.Modal'], function(app)
 
             scope.followGame = function(channle){
               console.debug('followGame')
+           
               if (channle.installed == "No"){
-                window.open(channle.store, '_system');
+                var confirmPopup = $ionicPopup.confirm({
+                  title: '下载游戏',
+                  template: '您没有'+channle.gameData.name+'，是否前往App Store安装?'
+                 });
+                confirmPopup.then(function(res) {
+                  if(res) {
+                    window.open(channle.store, '_system');
+                  } else {
+                    console.log('download cancel');
+                  }
+                });               
               }else{
                 if (!Auth.isLoggedIn()){
                   Auth.login(function(){
