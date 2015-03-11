@@ -204,17 +204,18 @@ define(['app', 'services.Api'], function(app)
             // } else {
             //   scope.modalStep = 'task'
             // }
+            scope.formData = {selectedTask:undefined};
             scope.nextStepFunction = {
               trySnapshot: function(){
                 scope.modalStep = 'task'
                 Api.getData($scope.channel.tasks, scope, 'tasks', {
                   last:true
                 }).then(function(defer, tasks){
-                  console.debug(tasks)
+                  scope.formData.selectedTask = tasks?tasks[0]._id:undefined;
                 })
               },
               task: function(){
-                console.debug(11111);
+                $scope.selectedTask = scope.formData.selectedTask;
                 scope.modalStep = 'playGame';
                 $scope.playGame();
               }
