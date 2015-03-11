@@ -1,11 +1,11 @@
 define(['app', 'services.Api'], function(app)
 {
-  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', 
+  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api',
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
-    '$ionicLoading','upyun',
-    function($scope, $stateParams, UI, Api, 
+    '$ionicLoading','upyun', 'Modal',
+    function($scope, $stateParams, UI, Api,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup,
-      $ionicLoading,upyun) {
+      $ionicLoading,upyun,Modal) {
 
       //
       $scope.$on("$ionicView.afterEnter", function() {
@@ -77,16 +77,7 @@ define(['app', 'services.Api'], function(app)
                 $scope.hasMore = bindStruct.moreData.length;
               })
             };
-          })
-          // $scope.getClips = function(){
-          //   return $scope.channel.getClips($scope, 'clips').then(function(){
-          //     console.debug($scope.clips);
-          //   });
-          // };
-          // $scope.getClips();
-
-          // pull refresh
-          
+          })//End of bindStruct.init()
 
           $scope.newClip = function(openGameTime,orientation){
             Api.postModal($scope.channel.addClip, {}, {
@@ -98,10 +89,10 @@ define(['app', 'services.Api'], function(app)
                 console.log(scope.imageURI);
                 scope.formData = {};
                 scope.getPicture = function(){
-                  navigator.camera.getScreenShot(onSuccess, onFail, { 
+                  navigator.camera.getScreenShot(onSuccess, onFail, {
                     date: openGameTime,
                     orientation:orientation
-                  }); 
+                  });
 
                   function onSuccess(imageURI) {
                     var image = document.getElementById('newPostImage');
@@ -177,7 +168,7 @@ define(['app', 'services.Api'], function(app)
                 // $scope.doRefresh();
                 scope.hideModal();
               }
-            })
+            })//End of postModal
             //上传事件终结，清楚缓存
             localStorage.removeItem('playGameId');
             localStorage.removeItem('playGameDt');
@@ -200,8 +191,82 @@ define(['app', 'services.Api'], function(app)
         });//End of then function
       });
 
-      
-      
+      $scope.startGame = function(){
+        Modal.okCancelModal('templates/modal-HowToScreen.html', {
+          animation:'fade-in'
+        }, {
+          init: function(scope){
+
+            var deviceInformation = ionic.Platform.device();
+            scope.deviceImage = 'iphone5s';
+
+            switch(deviceInformation) {
+              case 'iPod1,1':
+              case 'iPod2,1':
+              case 'iPod3,1':
+              case 'iPod4,1':
+                scope.deviceImage = 'ipodtouch';
+                break;
+              case 'iPhone3,1':
+              case 'iPhone3,2':
+              case 'iPhone3,3':
+              case 'iPhone4,1':
+                scope.deviceImage = 'iphone4';
+                break;
+              case 'iPhone5,1':
+              case 'iPhone5,2':
+                scope.deviceImage = 'iphone5';
+                break;
+              case 'iPhone5,3':
+              case 'iPhone5,4':
+                scope.deviceImage = 'iphone5c';
+                break;
+              case 'iPhone6,1':
+              case 'iPhone6,2':
+                scope.deviceImage = 'iphone5s';
+                break;
+              case 'iPhone7,1':
+                scope.deviceImage = 'iphone6p';
+                break;
+              case 'iPhone7,2':
+                scope.deviceImage = 'iphone6';
+                break;
+            }
+
+            scope.modalStep = 'trySnapshot';
+            scope.shownHowToSnapshot = "null"
+            // scope.shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
+            // if (scope.shownHowToSnapshot === null){
+            //   scope.modalStep = 'trySnapshot';
+            //   localStorage.setItem('shownHowToSnapshot', true);
+            // } else {
+            //   scope.modalStep = 'task'
+            // }
+            scope.formData = {selectedTask:undefined};
+            scope.nextStepFunction = {
+              trySnapshot: function(){
+                scope.modalStep = 'task'
+                Api.getData($scope.channel.tasks, scope, 'tasks', {
+                  last:true
+                }).then(function(defer, tasks){
+                  scope.formData.selectedTask = tasks?tasks[0]._id:undefined;
+                })
+              },
+              task: function(){
+                $scope.selectedTask = scope.formData.selectedTask;
+                console.debug(scope.formData.selectedTask);
+                scope.modalStep = 'playGame';
+                $scope.playGame();
+              }
+            }
+            scope.next = function(){
+              console.debug(scope.modalStep);
+              scope.nextStepFunction[scope.modalStep]();
+            }
+          }
+        })
+      }//End of startGame
+
 
       $scope.playGame = function(){
         if($scope.channel.orientation == true){
@@ -249,14 +314,14 @@ define(['app', 'services.Api'], function(app)
 
               //返回应用时取消对应的推送并开启截图上传页
               document.addEventListener("resume", openNewClip, false);
-                                
+
               function openNewClip() {
                 $scope.newClip(now,direct);
 
                 window.plugin.notification.local.cancel(id,function () {
                   console.log("已取消");
                 }, $scope);
-                
+
                 document.removeEventListener("resume",openNewClip,false); //删除返回监听事件
                 return;
               }
@@ -274,9 +339,10 @@ define(['app', 'services.Api'], function(app)
             }
 
             window.open(_.result(_.find($scope.channel.clientsData,{'platform': 'ios'}), 'url') + '://');
-          }          
-        });        
-      }
+          }
+        });
+      }//End of playGame
+      $scope.startGame();
     }
   ]);
 });

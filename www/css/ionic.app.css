@@ -11164,6 +11164,23 @@ ion-tabs.tabs-color-active-positive .tab-item {
   background-color: rgba(0, 0, 0, 0.8);
   color: #fff; }
 
+#RunGame .device .screen {
+  left: 50%;
+  top: 50%;
+  margin-left: -160px;
+  margin-top: -190px;
+  z-index: 30; }
+#RunGame .device .text {
+  top: 36px;
+  left: 0;
+  width: 100%;
+  line-height: 8px; }
+#RunGame .device .phone {
+  left: 50%;
+  top: 50%;
+  margin-left: -160px;
+  margin-top: -190px;
+  z-index: 10; }
 #RunGame .dots {
   top: 0;
   left: 18px; }
@@ -11171,9 +11188,15 @@ ion-tabs.tabs-color-active-positive .tab-item {
   width: 5px;
   height: 5px;
   display: block; }
-#RunGame .plant {
+#RunGame .plantA {
   left: 4px;
   bottom: 14px; }
+#RunGame .plantB {
+  left: 4px;
+  bottom: 48px; }
+#RunGame .plantC {
+  left: 4px;
+  bottom: 78px; }
 #RunGame .progress {
   bottom: 10px; }
   #RunGame .progress li {
@@ -11189,6 +11212,18 @@ ion-tabs.tabs-color-active-positive .tab-item {
     margin-right: 0.6em; }
   #RunGame .progress .active {
     margin-left: 42px; }
+
+#RunGame[state="try-snapshot-true"] .hide-in-snapshot {
+  display: none; }
+#RunGame[state="try-snapshot-true"] .plantA {
+  left: 4px;
+  bottom: 14px; }
+#RunGame[state="try-snapshot-true"] .plantB {
+  left: 4px;
+  bottom: 14px; }
+#RunGame[state="try-snapshot-true"] .plantC {
+  left: 4px;
+  bottom: 48px; }
 
 /*
 	screen
