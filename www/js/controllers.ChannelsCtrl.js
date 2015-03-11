@@ -186,7 +186,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
 
             scope.followGame = function(channle){
               console.debug('followGame')
-           
+
               if (channle.installed == "No"){
                 var confirmPopup = $ionicPopup.confirm({
                   title: '下载游戏',
@@ -198,7 +198,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
                   } else {
                     console.log('download cancel');
                   }
-                });               
+                });
               }else{
                 if (!Auth.isLoggedIn()){
                   Auth.login(function(){
