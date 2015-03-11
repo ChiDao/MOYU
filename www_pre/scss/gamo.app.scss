@@ -443,17 +443,25 @@ ion-tabs.tabs-color-active-positive .tab-item {
 	}
 	.plant {
 		left: 4px;
-		bottom: 10px;
+		bottom: 14px;
 	}
 	.progress {
 		bottom: 10px;
 		li {
 			height: 32px;
-			margin-left: 26px;
+			margin-left: 17px;
+		}
+		li:before {
+			content: '';
+			width: 4px;
+			height: 4px;
+			background-color: #EC0000;
+			display: inline-block;
+			border-radius: 50%;
+			margin-right: 0.6em;
 		}
 		.active {
-			margin-left: 38px;
+			margin-left: 42px;
 		}
-
 	}
 }
