@@ -2,10 +2,10 @@ define(['app', 'services.Api'], function(app)
 {
   app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api', 
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
-    '$ionicLoading','upyun',
+    '$ionicLoading','upyun', 'Modal',
     function($scope, $stateParams, UI, Api, 
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup,
-      $ionicLoading,upyun) {
+      $ionicLoading,upyun,Modal) {
 
       //
       $scope.$on("$ionicView.afterEnter", function() {
@@ -200,7 +200,27 @@ define(['app', 'services.Api'], function(app)
         });//End of then function
       });
 
-      
+      $scope.startGame = function(){
+        Modal.okCancelModal('templates/modal-HowToScreen.html', {
+          animation:'fade-in'
+        }, {
+          init: function(scope){
+            scope.modalStep = 'trySnapshot'
+            scope.nextStepFunction = {
+              trySnapshot: function(){scope.modalStep = 'task'},
+              task: function(){
+                console.debug(11111);
+                scope.modalStep = 'playGame';
+                $scope.playGame();
+              }
+            }
+            scope.next = function(){
+              console.debug(scope.modalStep);
+              scope.nextStepFunction[scope.modalStep]();
+            }
+          }
+        })
+      }
       
 
       $scope.playGame = function(){

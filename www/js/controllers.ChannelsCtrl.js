@@ -5,29 +5,6 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB,$ionicPopup) {
 
-      $timeout(function() {
-        Modal.okCancelModal('templates/modal-HowToScreen.html', {
-          animation:'fade-in'
-        }, {
-          init: function(scope){
-            scope.modalStep = 'trySnapshot'
-            scope.nextStepFunction = {
-              trySnapshot: function(){scope.modalStep = 'task'},
-              task: function(){
-                console.debug(11111);
-                scope.modalStep = 'playGame';
-                // playGame();
-              },
-              // startGame: function(){}//playGame
-            }
-            scope.next = function(){
-              console.debug(scope.modalStep);
-              scope.nextStepFunction[scope.modalStep]();
-            }
-          }
-        })
-      },600)
-
       $scope.filterValid = function(value){
         // console.debug(value);
         return value['@game'];

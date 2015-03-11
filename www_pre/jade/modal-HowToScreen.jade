@@ -8,8 +8,8 @@ ion-modal-view#RunGame.modalBlack
       img2x(src2x='/img/iphone6',ext='png')
     .padding.text-center(ng-switch-when="task")
       p 选择任务
-    //- .padding.text-center(ng-switch-when="startGame")
-    //-   p 开始游戏
+    .padding.text-center(ng-switch-when="playGame")
+      p 开始游戏
   .dots.posa
     img2x(src2x='/img/Dots',ext='png')
   .plant(ng-class="{posa:modalStep === 'trySnapshot',posb:modalStep === 'task',posc:modalStep === 'playGame'}")
