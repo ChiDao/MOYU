@@ -1,16 +1,17 @@
-ion-view#Chat(view-title='讨论' on-touch="onTouch()")
+ion-view#Chat(view-title='{{::clip.content}}' on-touch="onTouch()")
 	ion-nav-buttons(side="right")
 		button.button.icon.ion-ios-paw.button-clear(ng-if="hasFollowedPost",on-tap="action()")
 	a(ng-if="getNewComments" ng-click="goNewComments()" style="position:absolute;top:450px;left:200px;z-index:2;background-color:pink")
 		span
 			| 收到新消息
 	ion-content(han-header='true',padding='true', start-y='120', on-scroll='doScroll()')
+		img(ng-src="{{clip['img']['294@2x']}}" style="padding-bottom:20px")
 		ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
 		.chat-top
 		ol.messages
 			li(ng-repeat='comment in comments', class="{{comment.isOwned?'m-right':''}}", id="{{comment._id}}")
 				.avatar-frame
-					img.avatar(preload-image default-image="img/loading.png" src='{{comment.userLogo}}')
+					img.avatar(preload-image default-image="img/loading.png" ng-src='{{comment.userLogo}}')
 				.content
 					h5.text-overflow {{comment.userName}}
 					p(on-hold="onHold($index)") {{comment.content}}
