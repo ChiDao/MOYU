@@ -216,6 +216,7 @@ define(['app', 'services.Api'], function(app)
               },
               task: function(){
                 $scope.selectedTask = scope.formData.selectedTask;
+                console.debug(scope.formData.selectedTask);
                 scope.modalStep = 'playGame';
                 $scope.playGame();
               }
