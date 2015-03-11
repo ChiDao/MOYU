@@ -434,6 +434,12 @@ ion-tabs.tabs-color-active-positive .tab-item {
 #RunGame {
 
 	.device {
+		left: 50%;
+		top: 50%;
+		width: 320px;
+		height: 600px;
+		margin-left: -160px;
+		margin-top: -300px;
 		.screen {
 			left: 50%;
 			top: 50%;
@@ -442,7 +448,7 @@ ion-tabs.tabs-color-active-positive .tab-item {
 			z-index: 30;
 		}
 		.text {
-			top: 36px;
+			top: 46px;
 			left: 0;
 			width: 100%;
 			line-height: 8px;
@@ -453,6 +459,95 @@ ion-tabs.tabs-color-active-positive .tab-item {
 			margin-left: -160px;
 			margin-top: -190px;
 			z-index: 10;
+		}
+
+		.key-power {
+			left: 178px;
+			top: 120px;
+		}
+		.key-home {
+			width: 160px;
+			left: 50%;
+			margin-left: -80px;
+			top: 460px;
+			z-index: 50;
+		}
+	}
+
+	.device[device="ipodtouch"] {
+		.key-power {
+			left: 178px;
+			top: 120px;
+		}
+		.key-home {
+			left: 50%;
+			top: 460px;
+		}
+	}
+
+	.device[device="iphone4"] {
+		.key-power {
+			left: 182px;
+			top: 114px;
+		}
+		.key-home {
+			left: 50%;
+			top: 466px;
+		}
+	}
+
+	.device[device="iphone5"] {
+		.key-power {
+			left: 178px;
+			top: 124px;
+		}
+		.key-home {
+			left: 50%;
+			top: 460px;
+		}
+	}
+
+	.device[device="iphone5c"] {
+		.key-power {
+			left: 180px;
+			top: 120px;
+		}
+		.key-home {
+			left: 50%;
+			top: 460px;
+		}
+	}
+
+	.device[device="iphone5s"] {
+		.key-power {
+			left: 178px;
+			top: 124px;
+		}
+		.key-home {
+			left: 50%;
+			top: 464px;
+		}
+	}
+
+	.device[device="iphone6"] {
+		.key-power {
+			left: 238px;
+			top: 210px;
+		}
+		.key-home {
+			left: 50%;
+			top: 464px;
+		}
+	}
+
+	.device[device="iphone6p"] {
+		.key-power {
+			left: 244px;
+			top: 202px;
+		}
+		.key-home {
+			left: 50%;
+			top: 478px;
 		}
 	}
 

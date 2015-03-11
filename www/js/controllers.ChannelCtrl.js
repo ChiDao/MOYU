@@ -197,8 +197,8 @@ define(['app', 'services.Api'], function(app)
         }, {
           init: function(scope){
 
-            var deviceInformation = ionic.Platform.device();
-            scope.deviceImage = 'iphone5s';
+            var deviceInformation = ionic.Platform.device().model;
+            scope.deviceImage = 'iphone4';
 
             switch(deviceInformation) {
               case 'iPod1,1':
