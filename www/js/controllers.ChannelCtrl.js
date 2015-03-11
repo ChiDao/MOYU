@@ -196,7 +196,14 @@ define(['app', 'services.Api'], function(app)
           animation:'fade-in'
         }, {
           init: function(scope){
-            scope.modalStep = 'trySnapshot'
+            scope.modalStep = 'trySnapshot';
+            // var shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
+            // if (shownHowToSnapshot === null){
+            //   scope.modalStep = 'trySnapshot';
+            //   localStorage.setItem('shownHowToSnapshot', true);
+            // } else {
+            //   scope.modalStep = 'task'
+            // }
             scope.nextStepFunction = {
               trySnapshot: function(){
                 scope.modalStep = 'task'
