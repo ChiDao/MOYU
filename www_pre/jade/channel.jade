@@ -8,7 +8,7 @@ ion-view#Channel(view-title='{{channel.name}}')
       .list(ng-repeat="clip in clips")
         .item.item-image
           a(on-tap="Api.jumpTo(clip._self, 'channels')")
-            img(preload-image default-image="img/loading.png" src="{{clip.img['294@2x']}}")
+            img(preload-image default-image="img/loading.png" ng-src="{{clip.img['294@2x']}}")
         .item.item-text-wrap.item-padding
           .row
             .browse.col-90.font-9
