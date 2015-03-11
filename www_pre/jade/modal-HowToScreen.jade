@@ -8,16 +8,18 @@ ion-modal-view#RunGame.modalBlack
       img2x(src2x='/img/iphone6',ext='png')
     .padding.text-center(ng-switch-when="task")
       p 选择任务
-    .padding.text-center(ng-switch-when="startGame")
-      p 开始游戏
+    //- .padding.text-center(ng-switch-when="startGame")
+    //-   p 开始游戏
   .dots.posa
     img2x(src2x='/img/Dots',ext='png')
-  .plant.posa
+  .plant(ng-class="{posa:modalStep === 'trySnapshot',posb:modalStep === 'task',posc:modalStep === 'playGame'}")
     img2x(src2x='/img/Plane',ext='png')
   .progress.posa
     ul
-      li 跳转游戏
-      li 选择任务
-      li.active 如何截图
-  .play-game
-    a.button-play.l1(on-tap="next()") 继续
+      li(ng-class="{active:modalStep === 'playGame'}") 跳转游戏
+      li(ng-class="{active:modalStep === 'task'}") 选择任务
+      li(ng-class="{active:modalStep === 'trySnapshot'}") 如何截图
+  .play-game(ng-switch="modalStep")
+    a.button-play.l1(on-tap="next()")(ng-switch-when="trySnapshot") 继续
+    a.button-play(on-tap="next()")(ng-switch-when="task")
+      <small>运行</small><br>游戏
