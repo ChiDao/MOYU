@@ -2,3 +2,24 @@
 	animate
 	動效處理
 */
+
+.fade-in {
+	opacity: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+
+.fade-in.ng-enter, .fade-in > .ng-enter {
+  -webkit-transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 600ms;
+  transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 600ms;
+}
+
+.fade-in.ng-enter-active, .fade-in > .ng-enter-active {
+	opacity: 1;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.fade-in > .ng-leave {
+  -webkit-transition: all ease-in-out 250ms;
+  transition: all ease-in-out 250ms;
+}

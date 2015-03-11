@@ -11161,7 +11161,26 @@ ion-tabs.tabs-color-active-positive .tab-item {
 
 .modalBlack {
   background: none;
-  background-color: rgba(0, 0, 0, 0.8); }
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff; }
+
+#RunGame .dots {
+  top: 0;
+  left: 18px; }
+#RunGame .RedPoint {
+  width: 5px;
+  height: 5px;
+  display: block; }
+#RunGame .plant {
+  left: 4px;
+  bottom: 10px; }
+#RunGame .progress {
+  bottom: 10px; }
+  #RunGame .progress li {
+    height: 32px;
+    margin-left: 26px; }
+  #RunGame .progress .active {
+    margin-left: 38px; }
 
 /*
 	screen
@@ -11174,3 +11193,20 @@ ion-tabs.tabs-color-active-positive .tab-item {
 	animate
 	動效處理
 */
+.fade-in {
+  opacity: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+
+.fade-in.ng-enter, .fade-in > .ng-enter {
+  -webkit-transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 600ms;
+  transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 600ms; }
+
+.fade-in.ng-enter-active, .fade-in > .ng-enter-active {
+  opacity: 1;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+
+.fade-in > .ng-leave {
+  -webkit-transition: all ease-in-out 250ms;
+  transition: all ease-in-out 250ms; }
