@@ -8,6 +8,8 @@ ion-modal-view#RunGame.modalBlack
       img2x(src2x='/img/iphone6',ext='png')
     .padding.text-center(ng-switch-when="task")
       p 选择任务
+      p(ng-repeat='task in tasks')
+        | {{task.name}}
     .padding.text-center(ng-switch-when="playGame")
       p 开始游戏
   .dots.posa

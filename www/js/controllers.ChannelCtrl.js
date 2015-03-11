@@ -77,16 +77,7 @@ define(['app', 'services.Api'], function(app)
                 $scope.hasMore = bindStruct.moreData.length;
               })
             };
-          })
-          // $scope.getClips = function(){
-          //   return $scope.channel.getClips($scope, 'clips').then(function(){
-          //     console.debug($scope.clips);
-          //   });
-          // };
-          // $scope.getClips();
-
-          // pull refresh
-          
+          })//End of bindStruct.init()
 
           $scope.newClip = function(openGameTime,orientation){
             Api.postModal($scope.channel.addClip, {}, {
@@ -177,7 +168,7 @@ define(['app', 'services.Api'], function(app)
                 // $scope.doRefresh();
                 scope.hideModal();
               }
-            })
+            })//End of postModal
             //上传事件终结，清楚缓存
             localStorage.removeItem('playGameId');
             localStorage.removeItem('playGameDt');
@@ -207,7 +198,14 @@ define(['app', 'services.Api'], function(app)
           init: function(scope){
             scope.modalStep = 'trySnapshot'
             scope.nextStepFunction = {
-              trySnapshot: function(){scope.modalStep = 'task'},
+              trySnapshot: function(){
+                scope.modalStep = 'task'
+                Api.getData($scope.channel.tasks, scope, 'tasks', {
+                  last:true
+                }).then(function(defer, tasks){
+                  console.debug(tasks)
+                })
+              },
               task: function(){
                 console.debug(11111);
                 scope.modalStep = 'playGame';
@@ -220,7 +218,7 @@ define(['app', 'services.Api'], function(app)
             }
           }
         })
-      }
+      }//End of startGame
       
 
       $scope.playGame = function(){
@@ -296,7 +294,7 @@ define(['app', 'services.Api'], function(app)
             window.open(_.result(_.find($scope.channel.clientsData,{'platform': 'ios'}), 'url') + '://');
           }          
         });        
-      }
+      }//End of playGame
     }
   ]);
 });
