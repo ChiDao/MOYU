@@ -1,5 +1,9 @@
 ion-view#Chats(view-title='讨论')
   ion-content(on-infinite-scroll="loadMore")
     ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
-    ng-include(src="'templates/chat-tempSrc.html'")
+    div(ng-switch="subscribes.length")
+      div(ng-switch-default)
+        ng-include(src="'templates/chat-tempSrc.html'")
+      div(ng-switch-when="0")
+        | 亲，你还没有关注内容哦
     ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore()", distance="10%")

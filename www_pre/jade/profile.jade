@@ -11,7 +11,11 @@ ion-view.full-card(view-title='个人')
           span 发表：{{userData['@clips']['@count']}}
         p
           span 关注：{{userData['@interests']['@count']}}
-    ng-include(src="'templates/profile-tempSrc.html'")
+    div(ng-switch="clips.length")
+      div(ng-switch-default)
+        ng-include(src="'templates/profile-tempSrc.html'")
+      div(ng-switch-when="0")
+        | 亲，你还没有发表内容，要加油哦
     ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore", distance="10%")
     //- .list.card(ng-repeat='clip in clips')
     //-   .item.item-divider
