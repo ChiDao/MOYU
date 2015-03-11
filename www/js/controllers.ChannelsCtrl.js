@@ -8,7 +8,19 @@ define(['app', 'services.Api','services.Modal'], function(app)
       $timeout(function() {
         Modal.okCancelModal('templates/modal-HowToScreen.html', {
           animation:'fade-in'
-        }, {})
+        }, {
+          init: function(scope){
+            scope.modalStep = 'trySnapshot'
+            scope.nextStepFunction = {
+              trySnapshot: function(){scope.modalStep = 'task'},
+              task: function(){scope.modalStep = 'startGame'},
+              startGame: function(){}//playGame
+            }
+            scope.next = function(){
+              scope.nextStepFunction[scope.modalStep]();
+            }
+          }
+        })
       },600)
 
       $scope.filterValid = function(value){

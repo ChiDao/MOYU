@@ -1,10 +1,15 @@
 ion-modal-view#RunGame.modalBlack
   p.text-right
     button.color-bule.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()') 关闭
-  .padding.text-center
-    p 如何在你的设备上截图
-    p 请按下电源键和HOME键完成截图练习
-    img2x(src2x='/img/iphone6',ext='png')
+  div(ng-switch="modalStep")
+    .padding.text-center(ng-switch-when="trySnapshot")
+      p 如何在你的设备上截图
+      p 请按下电源键和HOME键完成截图练习
+      img2x(src2x='/img/iphone6',ext='png')
+    .padding.text-center(ng-switch-when="task")
+      p 选择任务
+    .padding.text-center(ng-switch-when="startGame")
+      p 开始游戏
   .dots.posa
     img2x(src2x='/img/Dots',ext='png')
   .plant.posa
@@ -15,4 +20,4 @@ ion-modal-view#RunGame.modalBlack
       li 选择任务
       li.active 如何截图
   .play-game
-    a.button-play.l1(on-tap="playGame()") 继续
+    a.button-play.l1(on-tap="next()") 继续
