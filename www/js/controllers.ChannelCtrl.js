@@ -202,7 +202,7 @@ define(['app', 'services.Api'], function(app)
             
             var deviceInformation = ionic.Platform.device().model;
             if (deviceInformation == undefined) {
-              deviceInformation = 'iPhone7,2';
+              deviceInformation = 'iPhone6,2';
             }
 
             switch(deviceInformation) {
@@ -253,34 +253,21 @@ define(['app', 'services.Api'], function(app)
             } else {
               scope.modalStep = 'task'
             }
-            Api.getData($scope.channel.tasks, scope, 'tasks', {
-              last:true
-            }).then(function(defer, tasks){
-              scope.formData.selectedTask = tasks?tasks[0]._id:undefined;
-            })
             scope.formData = {selectedTask:undefined};
             scope.nextStepFunction = {
               trySnapshot: function(){
-
+                scope.modalStep = 'task';
                 if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
                   window.plugins.pushNotification.removeScreenShot();
                 }               
-                Api.getData($scope.channel.tasks, scope, 'tasks', {
-                  last:true
-                }).then(function(defer, tasks){
-                  scope.formData.selectedTask = tasks?tasks[0]._id:undefined;
-                })
-                scope.modalStep = 'task'
-
+                
               },
               task: function(){
                 $scope.selectedTask = scope.formData.selectedTask;
                 console.debug(scope.formData.selectedTask);
-                scope.modalStep = 'playGame';
-                $timeout(function(){
-                  // $scope.playGame();
-                  alert('跳轉了')
-                },1200)
+                scope.modalStep = 'readyGame';
+                // $scope.playGame();
+                scope.modalStep = 'start';
               }
             }
             scope.next = function(){
@@ -380,10 +367,6 @@ define(['app', 'services.Api'], function(app)
           }
         });
       }//End of playGame
-      /*
-        Debug:
-       */
-      $scope.startGame();
     }
   ]);
 });
