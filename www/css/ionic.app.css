@@ -10888,8 +10888,8 @@ ion-tabs.tabs-color-active-positive .tab-item {
   left: 50%;
   top: 478px; }
 #RunGame .dots {
-  top: 0;
-  left: 18px; }
+  left: 18px;
+  bottom: 0; }
 #RunGame .RedPoint {
   width: 5px;
   height: 5px;

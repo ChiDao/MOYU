@@ -198,7 +198,9 @@ define(['app', 'services.Api'], function(app)
           init: function(scope){
 
             var deviceInformation = ionic.Platform.device().model;
-            scope.deviceImage = 'iphone5s';
+            if (deviceInformation == undefined) {
+              deviceInformation = 'iPhone6,2';
+            }
 
             switch(deviceInformation) {
               case 'iPod1,1':
@@ -206,30 +208,37 @@ define(['app', 'services.Api'], function(app)
               case 'iPod3,1':
               case 'iPod4,1':
                 scope.deviceImage = 'ipodtouch';
+                scope.deviceAnimate = 'fadeInDown';
                 break;
               case 'iPhone3,1':
               case 'iPhone3,2':
               case 'iPhone3,3':
               case 'iPhone4,1':
                 scope.deviceImage = 'iphone4';
+                scope.deviceAnimate = 'fadeInDown';
                 break;
               case 'iPhone5,1':
               case 'iPhone5,2':
                 scope.deviceImage = 'iphone5';
+                scope.deviceAnimate = 'fadeInDown';
                 break;
               case 'iPhone5,3':
               case 'iPhone5,4':
                 scope.deviceImage = 'iphone5c';
+                scope.deviceAnimate = 'fadeInDown';
                 break;
               case 'iPhone6,1':
               case 'iPhone6,2':
                 scope.deviceImage = 'iphone5s';
+                scope.deviceAnimate = 'fadeInDown';
                 break;
               case 'iPhone7,1':
                 scope.deviceImage = 'iphone6p';
+                scope.deviceAnimate = 'fadeInRight';
                 break;
               case 'iPhone7,2':
                 scope.deviceImage = 'iphone6';
+                scope.deviceAnimate = 'fadeInRight';
                 break;
             }
 

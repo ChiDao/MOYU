@@ -7,10 +7,10 @@ ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{shownHowToSnapshot}}")
         .text.posa
           h5.color-w 如何在你的设备上截图
           p 请按下电源键和HOME键完成截图练习
-        img2x.screen.posa(src2x='/img/screen',ext='png')
-        img2x.phone.posa(src2x='/img/{{::deviceImage}}',ext='png')
-        p.posa.key-power.left.animated.flash.forever.slow 电源键
-        p.posa.key-home.top.animated.flash.forever.slow HOME
+        img2x.animated.fadeInDown.screen.posa(src2x='/img/screen',ext='png')
+        img2x.animated.fadeInDown.phone.posa(src2x='/img/{{::deviceImage}}',ext='png')
+        p.posa.key-power.left.animated.forever.slow(class="{{::deviceAnimate}}") 电源键
+        p.posa.key-home.top.animated.fadeInUp.forever.slow HOME
     .padding.text-center(ng-switch-when="task")
       h5.color-w 选择任务
       ion-radio(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{task.name}}
