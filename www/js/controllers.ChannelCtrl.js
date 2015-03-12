@@ -77,6 +77,12 @@ define(['app', 'services.Api'], function(app)
                 $scope.hasMore = bindStruct.moreData.length;
               })
             };
+
+            /*
+              Debug:
+             */
+            $scope.startGame();
+
           })//End of bindStruct.init()
 
           $scope.newClip = function(openGameTime,orientation){
