@@ -2,10 +2,10 @@ define(['app', 'services.Api'], function(app)
 {
   app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api',
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
-    '$ionicLoading','upyun', 'Modal',
+    '$ionicLoading','upyun', 'Modal','$ionicSlideBoxDelegate',
     function($scope, $stateParams, UI, Api,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup,
-      $ionicLoading,upyun,Modal) {
+      $ionicLoading,upyun,Modal,$ionicSlideBoxDelegate) {
 
       //
       $scope.$on("$ionicView.afterEnter", function() {
@@ -88,6 +88,12 @@ define(['app', 'services.Api'], function(app)
           $scope.newClip = function(openGameTime,orientation){
             Api.postModal($scope.channel.addClip, {}, {
               init: function(scope){
+                scope.imgs=[
+                  "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic.png",
+                  "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic2.png",
+                  "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic3.png",
+                  "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic4.png",
+                ]
                 // var
                 console.log("时间："+openGameTime);
                 console.log("方向："+orientation);
@@ -95,15 +101,27 @@ define(['app', 'services.Api'], function(app)
                 console.log(scope.imageURI);
                 scope.formData = {};
                 scope.getPicture = function(){
-                  navigator.camera.getScreenShot(onSuccess, onFail, {
+                  // navigator.camera.getScreenShot(onSuccess, onFail, {
+                  //   date: openGameTime,
+                  //   orientation:orientation
+                  // });
+
+                  // function onSuccess(imageURI) {
+                  //   var image = document.getElementById('newPostImage');
+                  //   image.src = imageURI;
+                  //   scope.imageURI = imageURI;
+                  //   console.log("成功截图");
+                  // }
+                  navigator.camera.getScreenShots(onSuccess, onFail, {
                     date: openGameTime,
                     orientation:orientation
                   });
-
-                  function onSuccess(imageURI) {
-                    var image = document.getElementById('newPostImage');
-                    image.src = imageURI;
-                    scope.imageURI = imageURI;
+                  function onSuccess(photos) {
+                    // var image = document.getElementById('newPostImage');
+                    for (var i in photos) {
+                      image.src = photos[i];
+                    }     
+                    scope.imageURI = photos[0];
                     console.log("成功截图");
                   }
 
@@ -127,6 +145,12 @@ define(['app', 'services.Api'], function(app)
                 // }
               },
               onOk: function(form, scope){
+                $timeout(function () {
+                  console.debug('currentIndex:'+$ionicSlideBoxDelegate.$getByHandle('my-handle').currentIndex());
+                  // console.log($ionicSlideBoxDelegate.$getByHandle('select-img').currentIndex());
+                },500)
+                console.debug('currentIndex:'+$ionicSlideBoxDelegate.$getByHandle('my-handle').currentIndex());
+                
                 return Thenjs(function(defer){
                   // console.log('正在开始上传...');
                   // upyun.upload('newPostForm',scope.imageURI, function(err, response, image){
@@ -142,32 +166,32 @@ define(['app', 'services.Api'], function(app)
                   //   }
                   //   scope.$apply();
                   // });
-                  var win = function (r) {
-                      console.log("Code = " + r.responseCode);
-                      console.log("Response = " + r.response);
-                      console.log("Sent = " + r.bytesSent);
-                      var returnJson = JSON.parse(r.response);
-                      scope.formData.img = returnJson;
-                      defer(undefined);
-                  };
+                  // var win = function (r) {
+                  //     console.log("Code = " + r.responseCode);
+                  //     console.log("Response = " + r.response);
+                  //     console.log("Sent = " + r.bytesSent);
+                  //     var returnJson = JSON.parse(r.response);
+                  //     scope.formData.img = returnJson;
+                      // defer(undefined);
+                  // };
 
-                  var fail = function (error) {
-                      alert("An error has occurred: Code = " + JSON.stringify(error));
-                      console.log("upload error source " + error.source);
-                      console.log("upload error target " + error.target);
-                      defer("Upload image error");
-                  };
+                  // var fail = function (error) {
+                  //     alert("An error has occurred: Code = " + JSON.stringify(error));
+                  //     console.log("upload error source " + error.source);
+                  //     console.log("upload error target " + error.target);
+                  //     defer("Upload image error");
+                  // };
 
-                  var options = new FileUploadOptions();
-                  options.fileKey = "file";
-                  options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
-                  console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
-                  options.mimeType = "image/jpeg";
-                  //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
-                  // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
+                  // var options = new FileUploadOptions();
+                  // options.fileKey = "file";
+                  // options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
+                  // console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
+                  // options.mimeType = "image/jpeg";
+                  // //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
+                  // // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
 
-                  var ft = new FileTransfer();
-                  ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
+                  // var ft = new FileTransfer();
+                  // ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
                 });
               },
               onSuccess: function(form, scope){

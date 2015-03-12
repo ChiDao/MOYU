@@ -225,7 +225,7 @@ static NSSet* org_apache_cordova_validArrowDirections;
     double startTime = ([[arguments objectAtIndex:0] doubleValue]) / 1000;
     bool orientation = [[arguments objectAtIndex:1] boolValue]; // default: false
     __block int count = 0;
-    NSMutableArray *photos = [[NSMutableArray alloc] init];
+    __block NSMutableArray *photos = [[NSMutableArray alloc] init];
     ALAssetsLibrary *library = [ALAssetsLibrary new];
     
     [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
@@ -265,8 +265,10 @@ static NSSet* org_apache_cordova_validArrowDirections;
             }
         }];
         
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:photos];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        if(group == nil) {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:photos];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
     } failureBlock:^(NSError *error) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[error localizedDescription]];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
