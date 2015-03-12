@@ -62,10 +62,17 @@ define([
 
       DB.init();
 
+      //alert:
       if (ionic.Platform.isWebView()) {
         console.log("》Machine");
-        window.alert = function (txt) {
-           navigator.notification.alert(txt, null, "Gamo", "关闭");
+        window.alert = function (txt, title, button) {
+          if (title == undefined) {
+            title = 'Gamo';
+          }
+          if (button == undefined) {
+            button = '关闭';
+          }
+          navigator.notification.alert(txt, null, title, button);
         }
       } else {
         console.log("》Chrome View");
