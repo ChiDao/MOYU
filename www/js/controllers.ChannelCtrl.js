@@ -250,6 +250,11 @@ define(['app', 'services.Api'], function(app)
             } else {
               scope.modalStep = 'task'
             }
+            Api.getData($scope.channel.tasks, scope, 'tasks', {
+              last:true
+            }).then(function(defer, tasks){
+              scope.formData.selectedTask = tasks?tasks[0]._id:undefined;
+            })
             scope.formData = {selectedTask:undefined};
             scope.nextStepFunction = {
               trySnapshot: function(){
