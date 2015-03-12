@@ -196,9 +196,6 @@ define(['app', 'services.Api'], function(app)
           animation:'fade-in'
         }, {
           init: function(scope){
-            if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
-              window.plugins.pushNotification.notifyScreenShot();
-            }
             
             var deviceInformation = ionic.Platform.device().model;
             if (deviceInformation == undefined) {
@@ -249,6 +246,9 @@ define(['app', 'services.Api'], function(app)
             scope.shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
             if (scope.shownHowToSnapshot === null){
               scope.modalStep = 'trySnapshot';
+              if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+                window.plugins.pushNotification.notifyScreenShot();
+              }
               localStorage.setItem('shownHowToSnapshot', true);
             } else {
               scope.modalStep = 'task'
