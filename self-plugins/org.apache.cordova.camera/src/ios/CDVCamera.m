@@ -264,13 +264,9 @@ static NSSet* org_apache_cordova_validArrowDirections;
                 }
             }
         }];
-        if (group == nil) {
-            CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no image selected"];
-            [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-        } else {
-            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:photos];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        }
+        
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:photos];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     } failureBlock:^(NSError *error) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[error localizedDescription]];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
