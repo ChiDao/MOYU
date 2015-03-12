@@ -174,6 +174,27 @@ if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8)
     
 }
 
+//注册监听截屏通知
+- (void)notifyScreenShot:(CDVInvokedUrlCommand*)command;
+{
+    self.callbackId = command.callbackId;
+    [[NSNotificationCenter defaultCenter] addObserver:self                                            selector:@selector(userDidTakeScreenshot:) name:UIApplicationUserDidTakeScreenshotNotification object:nil];
+}
+
+//监听到截屏
+- (void)userDidTakeScreenshot:(NSNotification *)notification
+{
+    NSLog(@"检测到截屏%@",notification);
+    UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"截图成功" message:@"继续下一步操作吧！" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alter show];
+}
+
+//移除监听截屏通知
+- (void)removeScreenShot:(CDVInvokedUrlCommand*)command;
+{
+    self.callbackId = command.callbackId;
+    [[NSNotificationCenter defaultCenter]  removeObserver:self name:UIApplicationUserDidTakeScreenshotNotification object:nil];
+}
 
 /*
 - (void)isEnabled:(NSMutableArray *)arguments withDict:(NSMutableDictionary *)options {

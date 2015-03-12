@@ -82,7 +82,15 @@ PushNotification.prototype.checkEnabled = function(successCallback, errorCallbac
 PushNotification.prototype.toSetting = function() {
     cordova.exec(null, null, "PushPlugin", "toSetting", []);
 };
-
+//注册监听截屏
+PushNotification.prototype.notifyScreenShot = function() {
+    cordova.exec(null, null, "PushPlugin", "notifyScreenShot", []);
+}; 
+//移除监听截屏
+PushNotification.prototype.removeScreenShot = function() {
+    cordova.exec(null, null, "PushPlugin", "removeScreenShot", []);
+};              
+               
 
 //-------------------------------------------------------------------
 

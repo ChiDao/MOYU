@@ -196,7 +196,10 @@ define(['app', 'services.Api'], function(app)
           animation:'fade-in'
         }, {
           init: function(scope){
-
+            if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+              window.plugins.pushNotification.notifyScreenShot();
+            }
+            
             var deviceInformation = ionic.Platform.device().model;
             scope.deviceImage = 'iphone4';
 
@@ -245,7 +248,10 @@ define(['app', 'services.Api'], function(app)
             scope.formData = {selectedTask:undefined};
             scope.nextStepFunction = {
               trySnapshot: function(){
-                scope.modalStep = 'task'
+                scope.modalStep = 'task';
+                if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+                  window.plugins.pushNotification.removeScreenShot();
+                }               
                 Api.getData($scope.channel.tasks, scope, 'tasks', {
                   last:true
                 }).then(function(defer, tasks){
@@ -263,6 +269,20 @@ define(['app', 'services.Api'], function(app)
               console.debug(scope.modalStep);
               scope.nextStepFunction[scope.modalStep]();
             }
+          },
+          onClose:function(scope){
+            if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+              window.plugins.pushNotification.removeScreenShot();
+            }
+            console.log("关闭！");
+            scope.modal.hide();
+          },
+          onCancel:function(scope){
+            if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+              window.plugins.pushNotification.removeScreenShot();
+            }
+            console.log("取消！");
+            scope.modal.hide();
           }
         })
       }//End of startGame
