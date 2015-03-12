@@ -10525,12 +10525,12 @@ img[src=""], img[ng-src=""], img[src='Error.src'] {
   display: none; }
 
 /*
-	color
-	顏色設置
+  color
+  顏色設置
 */
 /*
-	app
-	程式樣式設定
+  app
+  程式樣式設定
 */
 .bar-stable, ion-header-bar {
   background-color: #eff5fa !important; }
@@ -10608,8 +10608,8 @@ ion-tabs.tabs-color-active-positive .tab-item {
   color: #919191; }
 
 /*
-	class
-	組件
+  class
+  組件
  */
 .color-Minor {
   color: #919191 !important; }
@@ -10665,7 +10665,7 @@ ion-tabs.tabs-color-active-positive .tab-item {
   border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent; }
 
 /*
-	pop menu
+  pop menu
  */
 .popmenu {
   background-color: rgba(0, 0, 0, 0.7);
@@ -10698,8 +10698,8 @@ ion-tabs.tabs-color-active-positive .tab-item {
     float: right; }
 
 /*
-	Pages
-	頁面配置
+  Pages
+  頁面配置
 */
 .messages {
   margin: 0;
@@ -10801,20 +10801,17 @@ ion-tabs.tabs-color-active-positive .tab-item {
 #AddChannel a {
   height: 64px; }
 
-.talk-list .icon {
-  margin-right: 0.2em; }
 .talk-list .item {
-  border-color: #d8d8d8;
-  font-size: 12px;
-  line-height: 16px;
-  color: #000;
-  font-weight: 300;
-  color: #666;
-  height: 60px;
-  padding: 14px;
-  padding-left: 58px;
-  overflow: hidden; }
-  .talk-list .item img {
+  position: relative;
+  color: #666; }
+  .talk-list .item .talk-tip {
+    width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: -6px; }
+    .talk-list .item .talk-tip small {
+      font-size: 10px !important; }
+  .talk-list .item .game-logo {
     border-radius: 7px;
     height: 30px;
     width: 30px;
@@ -10822,13 +10819,23 @@ ion-tabs.tabs-color-active-positive .tab-item {
   .talk-list .item .item-note {
     position: absolute;
     top: 0;
-    right: 0; }
+    right: 0;
+    width: 70px;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000; }
     .talk-list .item .item-note img {
-      height: auto;
-      width: 70px;
-      clip: rect(0px, 70px, 70px, 0px);
-      box-shadow: none;
-      border-radius: 0; }
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 100%;
+      width: auto;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%); }
+    .talk-list .item .item-note img.portrait {
+      width: 100%;
+      height: auto; }
 
 #Channel .card, .full-card .card {
   margin: 10px 0 !important; }

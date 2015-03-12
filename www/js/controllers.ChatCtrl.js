@@ -30,11 +30,11 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
     function($scope, $state, $timeout, $ionicScrollDelegate,$ionicPopup,
       $stateParams, Auth, Api, ApiEvent,PushProcessingService, $ionicLoading,
       $location, $anchorScroll, focus) {
-      
+
       $scope.hasFollowedPost = true;
 
       //获取截屏话题信息
-      $scope.$on("$ionicView.afterEnter", function() { 
+      $scope.$on("$ionicView.afterEnter", function() {
         $ionicLoading.show();
         Api.getData(Api.getStateUrl(), $scope, 'clip', {
           itearator: {
@@ -57,7 +57,15 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           })();
 
           $scope.toggleSubscribe = function(){
-            
+
+            /*
+              跳過驗證
+             */
+            Api.putData($scope.clip.subscribe, {}).then(function(){
+              $scope.checkHasFollowedPost();
+            });
+            return;
+
             var checkPush =  PushProcessingService.checkResult();
             if(checkPush == "No"){
               Auth.disallow();
@@ -105,7 +113,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           $scope.formData = {content:''};
           $scope.send = function(keyCode){
             focus('focusMe')
-            if($scope.formData.content != '' && $scope.formData.content != undefined){          
+            if($scope.formData.content != '' && $scope.formData.content != undefined){
               $scope.clip.doPostComment($scope.formData)
               .then(function(defer, response){
                 $ionicScrollDelegate.scrollBottom();
@@ -158,7 +166,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
                     :'img/ionic.png';
                 }
               }
-              
+
             }
           });
 
@@ -222,17 +230,17 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           .fin(function(defer){
             $ionicLoading.hide();
           })
-          
+
         }, function(defer, error){
           console.debug(error);
           $ionicLoading.hide();
-        })       
+        })
       })
 
       $scope.onHold= function(index){
         $scope.currentChatIndex = index;
       }
-      
+
       $scope.copy= function(text){
         if (ionic.Platform.isWebView() && cordova.plugins.clipboard){
           cordova.plugins.clipboard.copy(text);
@@ -260,10 +268,10 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
                 console.log("退出讨论"+$scope.subscribe.edit);
                 Api.deleteData($scope.subscribe.edit);
                 $scope.checkHasFollowedPost();
-              })             
+              })
             }else if(buttonIndex == 2){
               console.log("举报"+$scope.clip.report);
-              Api.putData($scope.clip.report,{});             
+              Api.putData($scope.clip.report,{});
             }
         };
         window.plugins.actionsheet.show(options, callback);
