@@ -1,4 +1,4 @@
-ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{shownHowToSnapshot}}")
+ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{::shownHowToSnapshot}}")
   p.text-right
     button.close.color-bule.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()') 关闭
   div(ng-switch="modalStep")
@@ -11,11 +11,11 @@ ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{shownHowToSnapshot}}")
         img2x.animated.fadeInDown.phone.posa(src2x='img/{{::deviceImage}}',ext='png')
         p.posa.key-power.left.animated.forever.slow(class="{{::deviceAnimate}}") 电源键
         p.posa.key-home.top.animated.fadeInUp.forever.slow HOME
-    .padding.text-center
+    .padding.text-center(ng-switch-when="task")
       h5.color-w 选择任务
       //- ion-radio(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{task.name}}
-      ul.popmenu(ng-switch-when="task")
-        li(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{task.name}}
+      ul.popmenu
+        li(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{::task.name}}
     .padding.text-center(ng-switch-when="playGame")
       h5.color-w 开始游戏
   .dots.posa

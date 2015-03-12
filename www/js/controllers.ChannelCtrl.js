@@ -202,7 +202,7 @@ define(['app', 'services.Api'], function(app)
             
             var deviceInformation = ionic.Platform.device().model;
             if (deviceInformation == undefined) {
-              deviceInformation = 'iPhone6,2';
+              deviceInformation = 'iPhone7,2';
             }
 
             switch(deviceInformation) {
@@ -278,7 +278,8 @@ define(['app', 'services.Api'], function(app)
                 console.debug(scope.formData.selectedTask);
                 scope.modalStep = 'playGame';
                 $timeout(function(){
-                  $scope.playGame();
+                  // $scope.playGame();
+                  alert('跳轉了')
                 },1200)
               }
             }
@@ -379,6 +380,10 @@ define(['app', 'services.Api'], function(app)
           }
         });
       }//End of playGame
+      /*
+        Debug:
+       */
+      $scope.startGame();
     }
   ]);
 });
