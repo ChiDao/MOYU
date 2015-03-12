@@ -1,27 +1,27 @@
 ion-view#Chat(view-title='{{::clip.content}}' on-touch="onTouch()")
-	ion-nav-buttons(side="right")
-		button.button.icon.ion-ios-paw.button-clear(ng-if="hasFollowedPost",on-tap="action()")
-	a(ng-if="getNewComments" ng-click="goNewComments()" style="position:absolute;top:450px;left:200px;z-index:2;background-color:pink")
-		span
-			| 收到新消息
-	ion-content(han-header='true',padding='true', start-y='120', on-scroll='doScroll()')
-		img(ng-src="{{clip['img']['294@2x']}}" style="padding-bottom:20px")
-		ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
-		.chat-top
-		div(ng-switch="comments.length")
-			div(ng-switch-when="0")
-				p 
-					| 抢沙发啊
-			ol.messages(ng-switch-default)
-				li(ng-repeat='comment in comments', class="{{comment.isOwned?'m-right':''}}", id="{{comment._id}}")
-					.avatar-frame
-						img.avatar(preload-image default-image="img/loading.png" ng-src='{{comment.userLogo}}')
-					.content
-						h5.text-overflow {{comment.userName}}
-						p(on-hold="onHold($index)") {{comment.content}}
-							span(ng-if="currentChatIndex==$index" on-touch="copy(comment.content)" style="position:absolute;top:-5px;left: 10px;z-index:2;background-color:grey") 复制
-	ion-footer-bar
-		button.button.button-block.button-positive(ng-if="!hasFollowedPost" on-tap="toggleSubscribe()") 加入讨论
-		div.row(ng-if="hasFollowedPost")
-			textarea.col-80(ng-model="formData.content",required,ng-keydown="enter($event);",focus-on='focusMe')
-			button.button-clear.col-20(on-tap="send()") 发送
+  ion-nav-buttons(side="right")
+    button.button.icon.ion-ios-paw.button-clear(ng-if="hasFollowedPost",on-tap="action()")
+  a(ng-if="getNewComments" ng-click="goNewComments()" style="position:absolute;top:450px;left:200px;z-index:2;background-color:pink")
+    span
+      | 收到新消息
+  ion-content(han-header='true',padding='true', start-y='120', on-scroll='doScroll()')
+    img(ng-src="{{clip['img']['294@2x']}}" style="padding-bottom:20px")
+    ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
+    .chat-top
+    div(ng-switch="comments.length")
+      div(ng-switch-when="0")
+        p
+          | 抢沙发啊
+      ol.messages(ng-switch-default)
+        li(ng-repeat='comment in comments', class="{{comment.isOwned?'m-right':''}}", id="{{comment._id}}")
+          .avatar-frame
+            img.avatar(preload-image default-image="img/loading.png" ng-src='{{comment.userLogo}}')
+          .content
+            h5.text-overflow {{comment.userName}}
+            p(on-hold="onHold($index)") {{comment.content}}
+              span(ng-if="currentChatIndex==$index" on-touch="copy(comment.content)" style="position:absolute;top:-5px;left: 10px;z-index:2;background-color:grey") 复制
+  ion-footer-bar
+    button.button.button-block.button-positive(ng-if="!hasFollowedPost" on-tap="toggleSubscribe()") 加入讨论
+    div.row(ng-if="hasFollowedPost")
+      textarea.col-80(ng-model="formData.content",required,ng-keydown="enter($event);",focus-on='focusMe')
+      button.button-clear.col-20(on-tap="send()") 发送
