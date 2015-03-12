@@ -7,8 +7,8 @@ ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{shownHowToSnapshot}}")
         .text.posa
           h5.color-w 如何在你的设备上截图
           p 请按下电源键和HOME键完成截图练习
-        img2x.animated.fadeInDown.screen.posa(src2x='/img/screen',ext='png')
-        img2x.animated.fadeInDown.phone.posa(src2x='/img/{{::deviceImage}}',ext='png')
+        img2x.animated.fadeInDown.screen.posa(src2x='img/screen',ext='png')
+        img2x.animated.fadeInDown.phone.posa(src2x='img/{{::deviceImage}}',ext='png')
         p.posa.key-power.left.animated.forever.slow(class="{{::deviceAnimate}}") 电源键
         p.posa.key-home.top.animated.fadeInUp.forever.slow HOME
     .padding.text-center
@@ -19,9 +19,9 @@ ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{shownHowToSnapshot}}")
     .padding.text-center(ng-switch-when="readyGame")
       h5.color-w 开始游戏
   .dots.posa
-    img2x(src2x='/img/Dots',ext='png')
-  .posa.animated(ng-class="{plantA:modalStep === 'trySnapshot',plantB:modalStep === 'task','plantC fadeOutUpBig':modalStep === 'readyGame'}")
-    img2x(src2x='/img/Plane',ext='png')
+    img2x(src2x='img/Dots',ext='png')
+  .posa.animated(ng-class="{plantA:modalStep === 'trySnapshot',plantB:modalStep === 'task',plantC fadeOutUpBig:modalStep === 'readyGame'}")
+    img2x(src2x='img/Plane',ext='png')
   .progress.posa
     ul
       li(ng-class="{active:modalStep === 'readyGame'}") 跳转游戏
