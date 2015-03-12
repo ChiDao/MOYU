@@ -1,8 +1,8 @@
 define(['app', 'services.Api'], function(app)
 {
   app.controller('ChatsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'UI', 'Api', 'Restangular',
-    'Auth', 'Api', 'ApiEvent', '$http', '$timeout', '$ionicLoading', 
-    function($scope, $rootScope, $state, $stateParams, UI, Api, Restangular, 
+    'Auth', 'Api', 'ApiEvent', '$http', '$timeout', '$ionicLoading',
+    function($scope, $rootScope, $state, $stateParams, UI, Api, Restangular,
       Auth, Api, ApiEvent, $http, $timeout, $ionicLoading) {
 
       $scope.subscribes = Array(10);
@@ -100,6 +100,7 @@ define(['app', 'services.Api'], function(app)
       $scope.bindSubscribes.setDBTable('chats', '_id').fin(function(){
         $ionicLoading.show();
         $scope.bindSubscribes.init().then(function(defer, data){
+          console.log("subscribes: ");
           console.debug($scope['subscribes']);
           if (data.status === 404){
             $scope.subscribes.length = 0;
@@ -138,7 +139,7 @@ define(['app', 'services.Api'], function(app)
           $ionicLoading.hide();
         });
       })
-      
+
 
       $scope.hasMore = $scope.bindSubscribes.hasMore;
       $scope.loadMore = function() {

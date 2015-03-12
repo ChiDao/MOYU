@@ -1,0 +1,44 @@
+ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{::shownHowToSnapshot}}")
+  p.text-right
+    button.close.color-bule.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()') 关闭
+  div(ng-switch="modalStep")
+    .padding.text-center(ng-switch-when="trySnapshot")
+      .device(device='{{::deviceImage}}').posa
+        .text.posa
+          h5.color-w 如何在你的设备上截图
+          p 请按下电源键和HOME键完成截图练习
+        img2x.animated.fadeInDown.screen.posa(src2x='img/screen',ext='png')
+        img2x.animated.fadeInDown.phone.posa(src2x='img/{{::deviceImage}}',ext='png')
+        p.posa.key-power.left.animated.forever.slow(class="{{::deviceAnimate}}") 电源键
+        p.posa.key-home.top.animated.fadeInUp.forever.slow HOME
+    .padding.text-center(ng-switch-when="task")
+      h5.color-w #选择任务
+      .triangle.margin-0-auto
+      ul.popmenu.text-left
+        a.active
+          li
+            | 激活項目
+            span (30min)
+        a(ng-repeat='task in tasks', ng-model="formData.selectedTask", ng-value="task._id")
+          li
+            | {{::task.name}}
+            span  ( {{::task.minute}} 分钟)
+        //- a.activated
+        //-   li
+        //-     | 點擊
+        //-     span (30min)
+    .padding.text-center(ng-switch-when="playGame")
+      h5.color-w 开始游戏
+  .dots.posa
+    img2x(src2x='img/Dots',ext='png')
+  .posa.animated(ng-class="{plantA:modalStep === 'trySnapshot',plantB:modalStep === 'task','plantC fadeOutUpBig slow':modalStep === 'playGame'}")
+    img2x(src2x='img/Plane',ext='png')
+  .progress.posa
+    ul
+      li(ng-class="{active:modalStep === 'playGame'}") 跳转游戏
+      li(ng-class="{active:modalStep === 'task'}") 选择任务
+      li.hide-in-snapshot(ng-class="{active:modalStep === 'trySnapshot'}") 如何截图
+  .play-game(ng-switch="modalStep")
+    a.button-play.l1(on-tap="next()",ng-switch-when="trySnapshot") 继续
+    a.button-play.l1(on-tap="next()",ng-switch-when="task") 运行
+    a.button-play.l1(ng-switch-when="start") 启动中

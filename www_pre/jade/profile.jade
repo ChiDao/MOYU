@@ -11,7 +11,7 @@ ion-view.full-card(view-title='个人')
           span 发表：{{userData['@clips']['@count']}}
         p
           span 关注：{{userData['@interests']['@count']}}
-    div(ng-switch="clips.length")
+    div(ng-switch="clips?1:0")
       div(ng-switch-default)
         ng-include(src="'templates/profile-tempSrc.html'")
       div(ng-switch-when="0")

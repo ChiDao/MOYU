@@ -172,7 +172,7 @@ define(['app', 'services.Api'], function(app)
               },
               onSuccess: function(form, scope){
                 // $scope.doRefresh();
-                scope.hideModal();  
+                scope.hideModal();
               }
             })//End of postModal
             //上传事件终结，清楚缓存
@@ -202,7 +202,7 @@ define(['app', 'services.Api'], function(app)
           animation:'fade-in'
         }, {
           init: function(scope){
-            
+
             var deviceInformation = ionic.Platform.device().model;
             if (deviceInformation == undefined) {
               deviceInformation = 'iPhone6,2';
@@ -265,15 +265,16 @@ define(['app', 'services.Api'], function(app)
                 scope.modalStep = 'task';
                 if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
                   window.plugins.pushNotification.removeScreenShot();
-                }               
-                
+                }
+
               },
               task: function(){
                 $scope.selectedTask = scope.formData.selectedTask;
                 console.debug(scope.formData.selectedTask);
-                scope.modalStep = 'readyGame';
-                // $scope.playGame();
-                scope.modalStep = 'start';
+                scope.modalStep = 'playGame';
+                $timeout(function(){
+                  $scope.playGame();
+                },800)
               }
             }
             scope.next = function(){
