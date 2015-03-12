@@ -263,9 +263,10 @@ define(['app', 'services.Api'], function(app)
               task: function(){
                 $scope.selectedTask = scope.formData.selectedTask;
                 console.debug(scope.formData.selectedTask);
-                scope.modalStep = 'readyGame';
-                // $scope.playGame();
-                scope.modalStep = 'start';
+                scope.modalStep = 'playGame';
+                $timeout(function(){
+                  $scope.playGame();
+                },1200)
               }
             }
             scope.next = function(){
