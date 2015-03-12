@@ -25,7 +25,7 @@ define(['app', 'services.Api'], function(app)
           callback: {
             type: 'callback',
             callback: function(subcribe){
-              // console.debug(subcribe);
+              
               return Thenjs(function(defer){
 
                 //注册comet事件，只在本页时进行刷新
@@ -42,25 +42,29 @@ define(['app', 'services.Api'], function(app)
                   });
                   hasRegisterSubscribe[subcribe['@clip']._id] = true;
                 }
-
                 // console.debug("getData 20",subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']);
-                if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
-                  var comments = subcribe['@clip']['@comments']['slice'];
-                  var tmpLastComment = comments[comments.length - 1];
-                  console.debug(tmpLastComment);
-                  subcribe['@clip']['lastCommentData'] = tmpLastComment;
-                  async.parallel([
-                    function(callback){
+                
+                async.parallel([
+                  function(callback){
+                    if (subcribe['@clip'] && subcribe['@clip'].game){
                       Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
-                        // console.debug("getData 21");
+                        console.debug(subcribe['@clip'].game, subcribe['@clip'].gameData);
                         console.debug(subcribe['@clip'].lastCommentUserData)
                         callback(undefined);
                       }, function(){
                         // console.debug("getData 22");
                         callback("Get game data error");
                       });
-                    },
-                    function(callback){
+                    } else {
+                      callback(undefined);
+                    }
+                  },
+                  function(callback){
+                    if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
+                      var comments = subcribe['@clip']['@comments']['slice'];
+                      var tmpLastComment = comments[comments.length - 1];
+                      console.debug(tmpLastComment);
+                      subcribe['@clip']['lastCommentData'] = tmpLastComment;
                       Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData', {
                         itearator:{
                           profileData:{
@@ -80,18 +84,18 @@ define(['app', 'services.Api'], function(app)
                         // console.debug("getData 23");
                         callback("Get user data error");
                       });
+                    }else{
+                      // console.debug("getData 24");
+                      callback(undefined);
                     }
-                  ], function(error){
-                    if (error){
-                      defer(error);
-                      return;
-                    }
+                  }
+                ], function(error){
+                  if (error){
+                    defer(error);
+                  } else {
                     defer(undefined);
-                  })
-                }else{
-                  // console.debug("getData 24");
-                  defer(undefined);
-                }
+                  }
+                })//End of parallel
               });//End of Thenjs
             }
           }

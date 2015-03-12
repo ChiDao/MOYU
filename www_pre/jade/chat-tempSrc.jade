@@ -1,6 +1,6 @@
 ion-list.talk-list
   .item.item-avatar(
-    collection-repeat='subscribe in subscribes | filter: filterValid track by $index',
+    collection-repeat='subscribe in subscribes | filter: filterValid',
     type='item-text-wrap',
     on-tap="Api.jumpTo(subscribe.clip, chats)",
     collection-item-width="'100%'",
