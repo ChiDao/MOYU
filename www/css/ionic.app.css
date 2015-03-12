@@ -10416,6 +10416,9 @@ h5 {
 .font-9 {
   font-size: 9px !important; }
 
+.text-left {
+  text-align: left; }
+
 .text-right {
   text-align: right; }
 
@@ -10614,6 +10617,20 @@ ion-tabs.tabs-color-active-positive .tab-item {
 .color-Text {
   color: #404040 !important; }
 
+.button-title {
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background-color: #000;
+  color: #3c4042;
+  display: inline-block;
+  text-align: center;
+  line-height: 20px;
+  font-size: 16px;
+  border: none;
+  min-height: 22px;
+  color: #FFF !important;
+  border-radius: 6px; }
+
 .button-tag:before {
   font-size: 12px !important;
   line-height: 20px !important; }
@@ -10639,6 +10656,46 @@ ion-tabs.tabs-color-active-positive .tab-item {
 
 .item-padding:first-child {
   margin-top: 0; }
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 8.6px 10px 8.6px;
+  border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent; }
+
+/*
+	pop menu
+ */
+.popmenu {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 6px;
+  width: 260px;
+  margin: 0 auto;
+  padding: 2px; }
+  .popmenu a {
+    display: block;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+  .popmenu li {
+    margin: 0px;
+    padding: 8px 15px;
+    font-size: 16px;
+    line-height: 2em;
+    clear: both; }
+  .popmenu .active li, .popmenu .activated li {
+    margin: 4px;
+    padding: 4px 11px;
+    background-color: #EC4046;
+    border-radius: 6px !important; }
+  .popmenu .activated li {
+    background-color: #800d11; }
+  .popmenu a:last-child {
+    border-bottom: none !important; }
+    .popmenu a:last-child li {
+      border-radius: 0 0 6px 6px; }
+  .popmenu li span {
+    font-size: 11px;
+    float: right; }
 
 /*
 	Pages
