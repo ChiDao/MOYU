@@ -433,6 +433,10 @@ ion-tabs.tabs-color-active-positive .tab-item {
 
 #RunGame {
 
+	.close {
+		z-index: 500;
+	}
+
 	.device {
 		left: 50%;
 		top: 50%;

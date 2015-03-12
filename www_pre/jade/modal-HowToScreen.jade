@@ -1,6 +1,6 @@
 ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{shownHowToSnapshot}}")
   p.text-right
-    button.color-bule.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()') 关闭
+    button.close.color-bule.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()') 关闭
   div(ng-switch="modalStep")
     .padding.text-center(ng-switch-when="trySnapshot")
       .device(device='{{::deviceImage}}').posa
