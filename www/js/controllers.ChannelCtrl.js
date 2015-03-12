@@ -153,20 +153,20 @@ define(['app', 'services.Api'], function(app)
                   };
 
                   var options = new FileUploadOptions();
-                  // options.fileKey = "file";
-                  // options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
-                  // console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
-                  // options.mimeType = "image/jpeg";
+                  options.fileKey = "file";
+                  options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
+                  console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
+                  options.mimeType = "image/jpeg";
                   //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
-                  options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
+                  // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
 
                   var ft = new FileTransfer();
-                  ft.upload(scope.imageURI, encodeURI("http://v0.api.upyun.com/upyun-form"), win, fail, options);
+                  ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
                 });
               },
               onSuccess: function(form, scope){
                 // $scope.doRefresh();
-                scope.hideModal();
+                scope.hideModal();  
               }
             })//End of postModal
             //上传事件终结，清楚缓存
@@ -246,7 +246,6 @@ define(['app', 'services.Api'], function(app)
             }
 
             scope.modalStep = 'trySnapshot';
-            scope.shownHowToSnapshot = "null"
             scope.shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
             if (scope.shownHowToSnapshot === null){
               scope.modalStep = 'trySnapshot';
@@ -257,7 +256,7 @@ define(['app', 'services.Api'], function(app)
             scope.formData = {selectedTask:undefined};
             scope.nextStepFunction = {
               trySnapshot: function(){
-                scope.modalStep = 'task';
+
                 if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
                   window.plugins.pushNotification.removeScreenShot();
                 }               
@@ -266,6 +265,8 @@ define(['app', 'services.Api'], function(app)
                 }).then(function(defer, tasks){
                   scope.formData.selectedTask = tasks?tasks[0]._id:undefined;
                 })
+                scope.modalStep = 'task'
+
               },
               task: function(){
                 $scope.selectedTask = scope.formData.selectedTask;
@@ -372,7 +373,6 @@ define(['app', 'services.Api'], function(app)
           }
         });
       }//End of playGame
-      $scope.startGame();
     }
   ]);
 });

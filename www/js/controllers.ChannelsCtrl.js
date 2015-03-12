@@ -16,7 +16,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
       }
 
       $scope.bindInit = function(){
-        $scope.channels = new Array(10);
+        $scope.channels = [0,1,2,3,4,5,6,7,8,9];
         var bindChannels = Api.bindList('/recent-played-games/' + Auth.currentUser().userData._id + '?_start=0', $scope, 'channels', {
           reverse: true,
           itearator: {
