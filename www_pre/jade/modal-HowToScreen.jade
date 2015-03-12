@@ -16,15 +16,15 @@ ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{shownHowToSnapshot}}")
       //- ion-radio(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{task.name}}
       ul.popmenu(ng-switch-when="task")
         li(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{task.name}}
-    .padding.text-center(ng-switch-when="readyGame")
+    .padding.text-center(ng-switch-when="playGame")
       h5.color-w 开始游戏
   .dots.posa
     img2x(src2x='img/Dots',ext='png')
-  .posa.animated(ng-class="{plantA:modalStep === 'trySnapshot',plantB:modalStep === 'task',plantC fadeOutUpBig:modalStep === 'readyGame'}")
+  .posa.animated(ng-class="{plantA:modalStep === 'trySnapshot',plantB:modalStep === 'task','plantC fadeOutUpBig slow':modalStep === 'playGame'}")
     img2x(src2x='img/Plane',ext='png')
   .progress.posa
     ul
-      li(ng-class="{active:modalStep === 'readyGame'}") 跳转游戏
+      li(ng-class="{active:modalStep === 'playGame'}") 跳转游戏
       li(ng-class="{active:modalStep === 'task'}") 选择任务
       li.hide-in-snapshot(ng-class="{active:modalStep === 'trySnapshot'}") 如何截图
   .play-game(ng-switch="modalStep")

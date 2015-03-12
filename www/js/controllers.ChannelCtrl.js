@@ -253,6 +253,11 @@ define(['app', 'services.Api'], function(app)
             } else {
               scope.modalStep = 'task'
             }
+            Api.getData($scope.channel.tasks, scope, 'tasks', {
+              last:true
+            }).then(function(defer, tasks){
+              scope.formData.selectedTask = tasks?tasks[0]._id:undefined;
+            })
             scope.formData = {selectedTask:undefined};
             scope.nextStepFunction = {
               trySnapshot: function(){
@@ -271,9 +276,10 @@ define(['app', 'services.Api'], function(app)
               task: function(){
                 $scope.selectedTask = scope.formData.selectedTask;
                 console.debug(scope.formData.selectedTask);
-                scope.modalStep = 'readyGame';
-                // $scope.playGame();
-                scope.modalStep = 'start';
+                scope.modalStep = 'playGame';
+                $timeout(function(){
+                  $scope.playGame();
+                },1200)
               }
             }
             scope.next = function(){
