@@ -10702,7 +10702,7 @@ ion-tabs.tabs-color-active-positive .tab-item {
   頁面配置
 */
 .messages {
-  margin: 0;
+  margin: 0 16px;
   padding: 0;
   list-style-type: none; }
   .messages p img {
@@ -10758,7 +10758,7 @@ ion-tabs.tabs-color-active-positive .tab-item {
     width: 100%; }
   .messages .m-right .content p {
     background: #eff5fa;
-    color: #fff;
+    color: #333;
     float: right; }
   .messages .m-right .avatar-frame {
     float: right;
@@ -10768,6 +10768,9 @@ ion-tabs.tabs-color-active-positive .tab-item {
   width: 100%; }
 #Chat .chat-images img {
   width: 100%; }
+#Chat .top-image {
+  width: 100%;
+  padding-bottom: 2em; }
 
 #Channels ion-list .item:first-child {
   background-color: #FAFCFE !important; }

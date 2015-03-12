@@ -10,7 +10,7 @@ ion-list.talk-list
     img.game-logo(ng-if='subscribe["@clip"].gameData.logo' preload-image default-image="img/loading.png" ng-src='{{subscribe["@clip"].gameData.logo?subscribe["@clip"].gameData.logo:""}}')
     .talk-tip
       i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
-      | {{subscribe["@clip"].content}}
+      b {{subscribe["@clip"].content}}
       br
       span {{subscribe['@clip'].lastCommentData.content}}
       br
