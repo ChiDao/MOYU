@@ -10812,6 +10812,8 @@ ion-tabs.tabs-color-active-positive .tab-item {
   background-color: rgba(0, 0, 0, 0.8);
   color: #fff; }
 
+#RunGame .close {
+  z-index: 500; }
 #RunGame .device {
   left: 50%;
   top: 50%;
@@ -10888,8 +10890,8 @@ ion-tabs.tabs-color-active-positive .tab-item {
   left: 50%;
   top: 478px; }
 #RunGame .dots {
-  top: 0;
-  left: 18px; }
+  left: 18px;
+  bottom: 0; }
 #RunGame .RedPoint {
   width: 5px;
   height: 5px;
@@ -10929,7 +10931,7 @@ ion-tabs.tabs-color-active-positive .tab-item {
   bottom: 14px; }
 #RunGame[state="try-snapshot-true"] .plantC {
   left: 4px;
-  bottom: 48px; }
+  bottom: 78px; }
 
 /*
 	screen
