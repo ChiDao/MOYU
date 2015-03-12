@@ -81,7 +81,7 @@ define(['app', 'services.Api'], function(app)
             /*
               Debug:
              */
-            $scope.startGame();
+            // $scope.startGame();
 
           })//End of bindStruct.init()
 
@@ -248,6 +248,7 @@ define(['app', 'services.Api'], function(app)
                 break;
             }
 
+            //判断是否显示截屏教程
             scope.modalStep = 'trySnapshot';
             scope.shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
             if (scope.shownHowToSnapshot === null){
@@ -259,7 +260,13 @@ define(['app', 'services.Api'], function(app)
             } else {
               scope.modalStep = 'task'
             }
-            scope.formData = {selectedTask:undefined};
+            //获取任务
+            Api.getData($scope.channel.tasks, scope, 'tasks', {
+              last:true
+            }).then(function(defer, tasks){
+              scope.tasks.unshift({_id:'haveAPlay', name:'随便玩玩', minute: 30})
+            })
+            //开始游戏按钮
             scope.nextStepFunction = {
               trySnapshot: function(){
                 scope.modalStep = 'task';
@@ -269,7 +276,6 @@ define(['app', 'services.Api'], function(app)
                 
               },
               task: function(){
-                $scope.selectedTask = scope.formData.selectedTask;
                 console.debug(scope.formData.selectedTask);
                 scope.modalStep = 'readyGame';
                 // $scope.playGame();
@@ -279,6 +285,13 @@ define(['app', 'services.Api'], function(app)
             scope.next = function(){
               console.debug(scope.modalStep);
               scope.nextStepFunction[scope.modalStep]();
+            }
+            //选择任务
+            scope.currentTaskIndex = 0;
+            scope.selectTask = function(index){
+              scope.currentTaskIndex = index;
+              $scope.selectedTask = scope.currentTaskIndex?scope.tasks[index]:undefined;
+              console.debug($scope.selectedTask);
             }
           },
           onClose:function(scope){
