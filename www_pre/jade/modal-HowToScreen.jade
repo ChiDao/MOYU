@@ -11,22 +11,23 @@ ion-modal-view#RunGame.modalBlack(state="try-snapshot-{{shownHowToSnapshot}}")
         img2x.animated.fadeInDown.phone.posa(src2x='/img/{{::deviceImage}}',ext='png')
         p.posa.key-power.left.animated.forever.slow(class="{{::deviceAnimate}}") 电源键
         p.posa.key-home.top.animated.fadeInUp.forever.slow HOME
-    .padding.text-center(ng-switch-when="task")
+    .padding.text-center
       h5.color-w 选择任务
-      ion-radio(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{task.name}}
-      p
-    .padding.text-center(ng-switch-when="playGame")
+      //- ion-radio(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{task.name}}
+      ul.popmenu(ng-switch-when="task")
+        li(ng-repeat='task in tasks' ng-model="formData.selectedTask" ng-value="task._id") {{task.name}}
+    .padding.text-center(ng-switch-when="readyGame")
       h5.color-w 开始游戏
   .dots.posa
     img2x(src2x='/img/Dots',ext='png')
-  .posa(ng-class="{plantA:modalStep === 'trySnapshot',plantB:modalStep === 'task',plantC:modalStep === 'playGame'}")
+  .posa.animated(ng-class="{plantA:modalStep === 'trySnapshot',plantB:modalStep === 'task','plantC fadeOutUpBig':modalStep === 'readyGame'}")
     img2x(src2x='/img/Plane',ext='png')
   .progress.posa
     ul
-      li(ng-class="{active:modalStep === 'playGame'}") 跳转游戏
+      li(ng-class="{active:modalStep === 'readyGame'}") 跳转游戏
       li(ng-class="{active:modalStep === 'task'}") 选择任务
       li.hide-in-snapshot(ng-class="{active:modalStep === 'trySnapshot'}") 如何截图
   .play-game(ng-switch="modalStep")
     a.button-play.l1(on-tap="next()")(ng-switch-when="trySnapshot") 继续
     a.button-play.l1(on-tap="next()")(ng-switch-when="task") 运行
-    a.button-play.l1(ng-switch-when="playGame") 启动中
+    a.button-play.l1(ng-switch-when="start") 启动中

@@ -244,13 +244,13 @@ define(['app', 'services.Api'], function(app)
 
             scope.modalStep = 'trySnapshot';
             scope.shownHowToSnapshot = "null"
-            // scope.shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
-            // if (scope.shownHowToSnapshot === null){
-            //   scope.modalStep = 'trySnapshot';
-            //   localStorage.setItem('shownHowToSnapshot', true);
-            // } else {
-            //   scope.modalStep = 'task'
-            // }
+            scope.shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
+            if (scope.shownHowToSnapshot === null){
+              scope.modalStep = 'trySnapshot';
+              localStorage.setItem('shownHowToSnapshot', true);
+            } else {
+              scope.modalStep = 'task'
+            }
             scope.formData = {selectedTask:undefined};
             scope.nextStepFunction = {
               trySnapshot: function(){
@@ -264,8 +264,9 @@ define(['app', 'services.Api'], function(app)
               task: function(){
                 $scope.selectedTask = scope.formData.selectedTask;
                 console.debug(scope.formData.selectedTask);
-                scope.modalStep = 'playGame';
-                $scope.playGame();
+                scope.modalStep = 'readyGame';
+                // $scope.playGame();
+                scope.modalStep = 'start';
               }
             }
             scope.next = function(){
