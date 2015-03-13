@@ -22,7 +22,7 @@ var pluginlist = [
     "com.phonegap.plugins.PushPlugin",
     "nl.x-services.plugins.actionsheet",
     "com.verso.cordova.clipboard",
-    "org.apache.cordova.dialogs"
+    "org.apache.cordova.dialogs",
     "com.brodysoft.sqlitePlugin",
 ];
 

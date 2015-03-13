@@ -22,7 +22,6 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "com.ionic.keyboard",
     "org.apache.cordova.file",
     "self-plugins/org.apache.cordova.camera",
     "https://github.com/ohh2ahh/AppAvailability.git",
@@ -32,14 +31,15 @@
     "self-plugins/pushPluginEx",
     "self-plugins/nl.x-services.plugins.actionsheet",
     "https://github.com/brodysoft/Cordova-SQLitePlugin",
+    "https://github.com/brodysoft/Cordova-SQLitePlugin",
+    "https://github.com/VersoSolutions/CordovaClipboard",
     "org.apache.cordova.console",
     "org.apache.cordova.statusbar",
     "org.apache.cordova.splashscreen",
+    "com.ionic.keyboard",
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
-    "org.apache.cordova.dialogs",
-    "https://github.com/brodysoft/Cordova-SQLitePlugin",
-    "https://github.com/VersoSolutions/CordovaClipboard"
+    "org.apache.cordova.dialogs"
   ]
 }
