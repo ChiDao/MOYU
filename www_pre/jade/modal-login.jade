@@ -10,7 +10,7 @@ ion-modal-view#Passcode.Pages
           span.input-label 验证码
           input(name='password',placeholder="请输入手机收到的验证码",type='number',pattern="[0-9]*", ng-keyup="resetcommitFormError($event)",ng-model='formData.password',ng-minlength='4', ng-maxlength='4', required)
 
-        label.item(ng-messages='signUpForm.password.$error', ng-messages-include='templates/form-errors.html')
+        label.item(ng-messages='signUpForm.password.$error')
             p.message.form-error(ng-message='required') 请输入手机收到的验证码
             p.message.form-error(ng-message='number') 4 位验证码均为数字
             p.message.form-error(ng-message='minlength') 最少 4 位验证码

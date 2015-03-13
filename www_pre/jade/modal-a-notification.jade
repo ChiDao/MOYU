@@ -10,7 +10,7 @@ ion-modal-view#AllowNoti.Pages
           span.input-label 电子邮件
           input(name='email', type='email', placeholder="请输入你的电子邮件地址", ng-model='formData.email', required)
 
-        label.item(ng-messages='signUpForm.email.$error', ng-messages-include='templates/form-errors.html')
+        label.item(ng-messages='signUpForm.email.$error')
           p.message.form-error(ng-message='email') {{'email_form'|translate}}
 
       .padding

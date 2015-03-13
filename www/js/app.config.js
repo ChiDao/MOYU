@@ -113,6 +113,7 @@ define(['app', 'restangular'], function(app){
           prev: ["prev", "_prev=<% metaParam %>"]
         },
         apisSetting: [
+          ['object', 'start', [[],{}]],
           ['object', 'about', [[],{}]],
           //Entity
           ['object', 'user', [['userId'],{}]],

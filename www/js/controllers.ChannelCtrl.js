@@ -1,9 +1,9 @@
 define(['app', 'services.Api'], function(app)
 {
-  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api',
+  app.controller('ChannelCtrl', ['$rootScope', '$scope', '$stateParams', 'UI', 'Api',
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
     '$ionicLoading','upyun', 'Modal','$ionicSlideBoxDelegate',
-    function($scope, $stateParams, UI, Api,
+    function($rootScope, $scope, $stateParams, UI, Api,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup,
       $ionicLoading,upyun,Modal,$ionicSlideBoxDelegate) {
 
@@ -285,7 +285,7 @@ define(['app', 'services.Api'], function(app)
               scope.modalStep = 'task'
             }
             //获取任务
-            Api.getData('/about', scope, 'about').then(function(defer, about){
+            Api.getData($rootScope.start.about, scope, 'about').then(function(defer, about){
               Api.getData($scope.channel.tasks, scope, 'tasks', {
                 last:true,
                 itearator: {
