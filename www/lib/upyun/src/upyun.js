@@ -79,48 +79,86 @@
     data.append('policy', policy);
     data.append('signature', self.configs.signature || window.md5(policy + '&' + self.configs.form_api_secret));
 
-    // Open a request
-    req.open('POST', apiendpoint, true);
+    var win = function (r) {
 
-    // Error event
-    req.addEventListener('error', function(err) {
-      return callback(err);
-    }, false);
-    console.log(data);
-    // When server response
-    req.addEventListener('load', function(result) {
-      if (NProgressExist) NProgress.done();
-      var statusCode = result.target.status;
-
-      // Try to parse JSON
-      if (statusCode !== 200)
-        return callback(new Error(result.target.status), result.target);
+      console.log("Code = " + r.responseCode);
+      console.log("Response = " + r.response);
+      console.log("Sent = " + r.bytesSent);
+      var returnJson = JSON.parse(r.response);
+      console.log(returnJson);
 
       try {
-        var image = JSON.parse(this.responseText);
+        var image = JSON.parse(r.response);
         image.absUrl = imageHost + image.url;
         image.absUri = image.absUrl;
-        return callback(null, result.target, image);
+        console.log(image.absUri);
+        callback(null, r.response, image);
       } catch (err) {
-        return callback(err);
+        callback(err);
       }
-    }, false);
+      defer(undefined);
+    };
 
-    // Upload progress monitor
-    req.upload.addEventListener('progress', function(pe) {
-      if (!pe.lengthComputable) return;
-      if (!self.events.uploading || typeof(self.events.uploading) !== 'function')
-        return;
-      self.events.uploading(Math.round(pe.loaded / pe.total * 100));
-    });
+    var fail = function (error) {
+      alert("An error has occurred: Code = " + JSON.stringify(error));
+      console.log("upload error source " + error.source);
+      console.log("upload error target " + error.target);
+      callback(err);
+      defer("Upload image error");
+    };
 
-    console.log(data);
-    // Send data to server 
-    req.send(data);
+    var options = new FileUploadOptions();
+    options.fileKey = "file";
+    options.fileName = params.substr(params.lastIndexOf('/') + 1);
+    options.params = {};
+    options.params.policy = policy;
+    options.params.signature = self.configs.signature || window.md5(policy + '&' + self.configs.form_api_secret);
+    // options.mimeType = "image/jpeg";
+    //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
+    // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
+
+    var ft = new FileTransfer();
+    ft.upload(params, apiendpoint, win, fail, options);
+    // Open a request
+    // req.open('POST', apiendpoint, true);
+
+    // Error event
+    // req.addEventListener('error', function(err) {
+    //   return callback(err);
+    // }, false);
+    // console.log(data);
+    // // When server response
+    // req.addEventListener('load', function(result) {
+    //   if (NProgressExist) NProgress.done();
+    //   var statusCode = result.target.status;
+
+    //   // Try to parse JSON
+    //   if (statusCode !== 200)
+    //     return callback(new Error(result.target.status), result.target);
+
+    //   try {
+    //     var image = JSON.parse(this.responseText);
+    //     image.absUrl = imageHost + image.url;
+    //     image.absUri = image.absUrl;
+    //     return callback(null, result.target, image);
+    //   } catch (err) {
+    //     return callback(err);
+    //   }
+    // }, false);
+
+    // // Upload progress monitor
+    // req.upload.addEventListener('progress', function(pe) {
+    //   if (!pe.lengthComputable) return;
+    //   if (!self.events.uploading || typeof(self.events.uploading) !== 'function')
+    //     return;
+    //   self.events.uploading(Math.round(pe.loaded / pe.total * 100));
+    // });
+
+    // console.log(data);
+    // // Send data to server 
+    // req.send(data);
 
     // UI trigger
-    if (NProgressExist) 
-      NProgress.start();
   };
 
   function UpyunProvider(defautConfigs) {
