@@ -256,7 +256,6 @@ static NSSet* org_apache_cordova_validArrowDirections;
                         if ([imageData writeToFile:filePath options:NSAtomicWrite error:&err]) {
                             // [[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString]
                             [photos addObject:filePath];
-                            *stop = YES;
                         } else {
                             NSLog(@"Failed to delete: %@ (error: %@)", filePath, err);
                         }
