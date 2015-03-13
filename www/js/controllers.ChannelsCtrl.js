@@ -78,10 +78,27 @@ define(['app', 'services.Api','services.Modal'], function(app)
         },3000)
 
       }
-      if (Auth.isLoggedIn()){
-        $scope.bindInit();
-      }
 
+      $scope.unLoginInit = function(){
+        $scope.channels = [0,1,2,3,4,5,6,7,8,9];
+        // var bindChannels = 
+        Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), $scope, 'channels', {
+          itearator: {
+            gameData: {
+              type: 'getData',
+              attr: 'game',
+            }
+          }
+        })
+      }
+      if (Auth.isLoggedIn()){
+        $scope.isLoggedIn = true;
+        $scope.bindInit();
+      }else{
+        $scope.isLoggedIn = false;
+        $scope.unLoginInit();
+        // addChannelModal()
+      }
 
 
       function getGame(scope){
@@ -238,9 +255,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
       $scope.addChannel = function(){
         addChannelModal()
       }
-      if (!Auth.isLoggedIn()){
-        addChannelModal()
-      }
+
     }
   ]);
 

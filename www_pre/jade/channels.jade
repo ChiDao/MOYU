@@ -2,8 +2,8 @@ ion-view#Channels(view-title='游戏')
   ion-nav-buttons(side="right")
     button.button.button-clear(on-tap="addChannel()") 添加
   ion-content
-    ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
-    ion-list
+    ion-refresher(pulling-text=' ', on-refresh='doRefresh()',ng-if="isLoggedIn")
+    ion-list(ng-if="isLoggedIn")
       a.item.item-avatar(ng-repeat='channel in channels | filter: filterValid', type='item-text-wrap', on-tap="Api.jumpTo(channel.game)")
         img(preload-image default-image="img/loading.png" ng-src="{{channel['@game'].logo?channel['@game'].logo:''}}")
         | {{channel['@game'].name}}
@@ -11,5 +11,10 @@ ion-view#Channels(view-title='游戏')
           | <hide ng-if="channel.lastClip._modified">你的瞬間：</hide> {{channel.lastClip._modified | timeBefore}}
           b(ng-if="channel.unread"){{channel.unread?channel.unread:''}}
     ion-infinite-scroll(on-infinite="loadMore()", ng-if="hasMore", distance="10%")
+    //没登录
+    ion-list(ng-if="!isLoggedIn")
+      a.item.item-avatar(ng-repeat='channel in channels', type='item-text-wrap', on-tap="Api.jumpTo(channel.game)")
+        img(preload-image default-image="img/loading.png" ng-src='{{channel.gameData.logo?channel.gameData.logo:""}}')
+        | {{channel.name}}
 
 //- span.item-note(ng-class='{first:$first,hide:$last}')
