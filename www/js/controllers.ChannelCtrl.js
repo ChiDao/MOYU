@@ -110,10 +110,6 @@ define(['app', 'services.Api'], function(app)
 
                     function onSuccess(photos) {
                       scope.imgs = photos
-                      // for (var i in photos) {
-                      //   image.src = photos[i];
-                      // }     
-                      // scope.imageURI = photos[0];
                       console.log("成功截图"+scope.imgs);
                     }
 
@@ -122,12 +118,12 @@ define(['app', 'services.Api'], function(app)
                     }
                   }
                     
-                  scope.imgs=[
-                    "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic.png",
-                    "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic2.png",
-                    "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic3.png",
-                    "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic4.png",
-                  ]
+                  // scope.imgs=[
+                  //   "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic.png",
+                  //   "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic2.png",
+                  //   "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic3.png",
+                  //   "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic4.png",
+                  // ]
                   scope.selectIndex = 0;
                   scope.slideHasChanged=function(index){
                       console.debug(1111);
@@ -155,25 +151,11 @@ define(['app', 'services.Api'], function(app)
                   console.log(scope.imageURI);
                   scope.formData = {};
                   
-                  // scope.yupload = function() {
-                  //    console.log('正在开始上传...');
-                  //   upyun.upload('uploadForm', function(err, response, image){
-                  //     if (err) return console.error(err);
-                  //     console.log(response);
-                  //     console.log(image);
-                  //     if (image.code === 200 && image.message === 'ok') {
-                  //                 scope.image = {};
-                  //                 scope.image.ready = true;
-                  //                 scope.image.url = image.absUrl;
-                  //               }
-                  //               // scope.$apply();
-                  //   });
-                  // }
                 },
                 onOk: function(form, scope){
                   return Thenjs(function(defer){
                     // console.log('正在开始上传...');
-                    // upyun.upload('newPostForm',scope.imageURI, function(err, response, image){
+                    // upyun.upload('newPostForm', function(err, response, image){
                     //   if (err) console.error(err);
                     //   console.log('返回信息：');
                     //   console.log(response);
@@ -186,32 +168,33 @@ define(['app', 'services.Api'], function(app)
                     //   }
                     //   scope.$apply();
                     // });
-                    var win = function (r) {
-                        console.log("Code = " + r.responseCode);
-                        console.log("Response = " + r.response);
-                        console.log("Sent = " + r.bytesSent);
-                        var returnJson = JSON.parse(r.response);
-                        scope.formData.img = returnJson;
-                        defer(undefined);
-                    };
+                  //转化上传
+                    // var win = function (r) {
+                    //     console.log("Code = " + r.responseCode);
+                    //     console.log("Response = " + r.response);
+                    //     console.log("Sent = " + r.bytesSent);
+                    //     var returnJson = JSON.parse(r.response);
+                    //     scope.formData.img = returnJson;
+                    //     defer(undefined);
+                    // };
 
-                    var fail = function (error) {
-                        alert("An error has occurred: Code = " + JSON.stringify(error));
-                        console.log("upload error source " + error.source);
-                        console.log("upload error target " + error.target);
-                        defer("Upload image error");
-                    };
+                    // var fail = function (error) {
+                    //     alert("An error has occurred: Code = " + JSON.stringify(error));
+                    //     console.log("upload error source " + error.source);
+                    //     console.log("upload error target " + error.target);
+                    //     defer("Upload image error");
+                    // };
 
-                    var options = new FileUploadOptions();
-                    options.fileKey = "file";
-                    options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
-                    console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
-                    options.mimeType = "image/jpeg";
-                    //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
-                    // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
+                    // var options = new FileUploadOptions();
+                    // options.fileKey = "file";
+                    // options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
+                    // console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
+                    // options.mimeType = "image/jpeg";
+                    // //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
+                    // // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
 
-                    var ft = new FileTransfer();
-                    ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
+                    // var ft = new FileTransfer();
+                    // ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
                   });
                 },
                 onSuccess: function(form, scope){

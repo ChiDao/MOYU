@@ -43,7 +43,7 @@ define([
     };
   });
 
-  starter.run(function($state, $ionicPlatform,PushProcessingService, DB) {
+  starter.run(function($rootScope, $state, $ionicPlatform,PushProcessingService, DB, Api) {
 
     PushProcessingService.checkinitialize();
 
@@ -61,6 +61,7 @@ define([
       // ionic.Platform.fullScreen();
 
       DB.init();
+      Api.getData('/start', $rootScope, 'start');
 
       //alert:
       if (ionic.Platform.isWebView()) {
