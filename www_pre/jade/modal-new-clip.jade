@@ -5,15 +5,14 @@ ion-modal-view#Newclip
         button.button-clear.button(on-tap='mustChoise?cancelModal():closeModal()') 取消
       h1.title 瞬間
       .buttons
-        button.color-bule.button-clear.button(type='submit') 發佈
+        button.color-bule.button-clear.button(type='submit') 发布
     ion-content
       .list
-        .item.item-input.item-stacked-label
-          span.input-label 描述
-          //- input(type="text" ng-model="formData.content" required)
-          textarea.hight(type="text" ng-model="formData.content"  placeholder='Comments')
         .item
           img#newPostImage(ng-src="{{imageURI}}",ng-click="getPicture()")
         .hide
           input(type="text" ng-model="imageURI" required ng-show="false")
-      input(type="file" name="file")
+        .item.item-input.item-stacked-label
+          //- span.input-label 描述
+          //- input(type="text" ng-model="formData.content" required)
+          textarea.hight(type="text" ng-model="formData.content" placeholder='想写什么呢？（可选）')

@@ -1,9 +1,9 @@
 define(['app', 'services.Api'], function(app)
 {
-  app.controller('ChannelCtrl', ['$rootScope', '$scope', '$stateParams', 'UI', 'Api',
+  app.controller('ChannelCtrl', ['$scope', '$stateParams', 'UI', 'Api',
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
     '$ionicLoading','upyun', 'Modal','$ionicSlideBoxDelegate',
-    function($rootScope, $scope, $stateParams, UI, Api,
+    function($scope, $stateParams, UI, Api,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup,
       $ionicLoading,upyun,Modal,$ionicSlideBoxDelegate) {
 
@@ -86,121 +86,130 @@ define(['app', 'services.Api'], function(app)
           })//End of bindStruct.init()
 
           $scope.newClip = function(openGameTime,orientation){
-            Api.postModal($scope.channel.addClip, {}, {
-              init: function(scope){
-                scope.imgs=[
-                  "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic.png",
-                  "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic2.png",
-                  "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic3.png",
-                  "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic4.png",
-                ]
-                // var
-                console.log("时间："+openGameTime);
-                console.log("方向："+orientation);
-                scope.imageURI = 'img/upload-photo.png';
-                console.log(scope.imageURI);
-                scope.formData = {};
-                scope.getPicture = function(){
-                  // navigator.camera.getScreenShot(onSuccess, onFail, {
-                  //   date: openGameTime,
-                  //   orientation:orientation
-                  // });
+            //选择图片
+            (function(newClipModal){
+              Modal.okCancelModal('templates/modal-select-img.html', {}, {
+                init: function(scope){
+                    // navigator.camera.getScreenShot(onSuccess, onFail, {
+                    //   date: openGameTime,
+                    //   orientation:orientation
+                    // });
 
-                  // function onSuccess(imageURI) {
-                  //   var image = document.getElementById('newPostImage');
-                  //   image.src = imageURI;
-                  //   scope.imageURI = imageURI;
-                  //   console.log("成功截图");
-                  // }
-                  navigator.camera.getScreenShots(onSuccess, onFail, {
-                    date: openGameTime,
-                    orientation:orientation
-                  });
-                  function onSuccess(photos) {
-                    // var image = document.getElementById('newPostImage');
-                    console.log(photos);
-                    for (var i in photos) {
-                      image.src = photos[i];
+                    // function onSuccess(imageURI) {
+                    //   var image = document.getElementById('newPostImage');
+                    //   image.src = imageURI;
+                    //   scope.imageURI = imageURI;
+                    //   console.log("成功截图");
+                    // }
+                  scope.imgs=[];
+                  if(navigator&&navigator.camera&&navigator.camera.getScreenShots){
+                    navigator.camera.getScreenShots(onSuccess, onFail, {
+                      date: openGameTime,
+                      orientation:orientation
+                    });
+
+                    function onSuccess(photos) {
+                      scope.imgs = photos
+                      console.log("成功截图"+scope.imgs);
                     }
-                    scope.imageURI = photos[0];
-                    console.log("成功截图");
-                  }
 
-                  function onFail(message) {
-                    alert('Failed because: ' + message);
+                    function onFail(message) {
+                      alert('Failed because: ' + message);
+                    }
                   }
+                    
+                  // scope.imgs=[
+                  //   "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic.png",
+                  //   "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic2.png",
+                  //   "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic3.png",
+                  //   "http://ionicframework.com.s3.amazonaws.com/demos/ionic-contrib-swipecards/pic4.png",
+                  // ]
+                  scope.selectIndex = 0;
+                  scope.slideHasChanged=function(index){
+                      console.debug(1111);
+                      scope.selectIndex = index;
+                  }
+                },
+                onOk: function(form,scope){
+                  console.log(scope.imgs);
+                  if(scope.imgs != ''){
+                    var selectImg = scope.imgs[scope.selectIndex];
+                    newClipModal(selectImg);                    
+                  }
+                  scope.hideModal();               
+                },               
+              })
+            })
+            (function(imgUrl){
+              Api.postModal($scope.channel.addClip, {}, {
+                init: function(scope){   
+                  console.log(scope.selectImg);             
+                  // var
+                  console.log("时间："+openGameTime);
+                  console.log("方向："+orientation);
+                  scope.imageURI = imgUrl;
+                  console.log(scope.imageURI);
+                  scope.formData = {};
+                  
+                },
+                onOk: function(form, scope){  
+                  console.log(111111);                
+                  return Thenjs(function(defer){
+                    console.debug(111111); 
+                    console.log('正在开始上传...');
+                    upyun.upload('newPostForm', function(err, response, image){
+                      if (err) console.error(err);
+                      console.log('返回信息：');
+                      console.log(response);
+                      console.log('图片信息：');
+                      console.log(image);
+                      if (image.code === 200 && image.message === 'ok') {
+                        scope.imageURI = image.absUrl;
+                        scope.formData.img = image.absUrl;
+                        defer(undefined);
+                      }
+                      scope.$apply();
+                    });
+                    
+                    // var win = function (r) {
+                    //     console.log("Code = " + r.responseCode);
+                    //     console.log("Response = " + r.response);
+                    //     console.log("Sent = " + r.bytesSent);
+                    //     var returnJson = JSON.parse(r.response);
+                    //     scope.formData.img = returnJson;
+                        // defer(undefined);
+                    // };
+
+                    // var fail = function (error) {
+                    //     alert("An error has occurred: Code = " + JSON.stringify(error));
+                    //     console.log("upload error source " + error.source);
+                    //     console.log("upload error target " + error.target);
+                    //     defer("Upload image error");
+                    // };
+
+                    // var options = new FileUploadOptions();
+                    // options.fileKey = "file";
+                    // options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
+                    // console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
+                    // options.mimeType = "image/jpeg";
+                    // //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
+                    // // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
+
+                    // var ft = new FileTransfer();
+                    // ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
+                  });
+                },
+                onSuccess: function(form, scope){
+                  // $scope.doRefresh();
+                  scope.hideModal();
                 }
-                // scope.yupload = function() {
-                //    console.log('正在开始上传...');
-                //   upyun.upload('uploadForm', function(err, response, image){
-                //     if (err) return console.error(err);
-                //     console.log(response);
-                //     console.log(image);
-                //     if (image.code === 200 && image.message === 'ok') {
-                //                 scope.image = {};
-                //                 scope.image.ready = true;
-                //                 scope.image.url = image.absUrl;
-                //               }
-                //               // scope.$apply();
-                //   });
-                // }
-              },
-              onOk: function(form, scope){  
-                console.log(111111);                
-                return Thenjs(function(defer){
-                  console.debug(111111); 
-                  console.log('正在开始上传...');
-                  upyun.upload('newPostForm', function(err, response, image){
-                    if (err) console.error(err);
-                    console.log('返回信息：');
-                    console.log(response);
-                    console.log('图片信息：');
-                    console.log(image);
-                    if (image.code === 200 && image.message === 'ok') {
-                      scope.imageURI = image.absUrl;
-                      scope.formData.img = image.absUrl;
-                      defer(undefined);
-                    }
-                    scope.$apply();
-                  });
-                  // var win = function (r) {
-                  //     console.log("Code = " + r.responseCode);
-                  //     console.log("Response = " + r.response);
-                  //     console.log("Sent = " + r.bytesSent);
-                  //     var returnJson = JSON.parse(r.response);
-                  //     scope.formData.img = returnJson;
-                      // defer(undefined);
-                  // };
-
-                  // var fail = function (error) {
-                  //     alert("An error has occurred: Code = " + JSON.stringify(error));
-                  //     console.log("upload error source " + error.source);
-                  //     console.log("upload error target " + error.target);
-                  //     defer("Upload image error");
-                  // };
-
-                  // var options = new FileUploadOptions();
-                  // options.fileKey = "file";
-                  // options.fileName = scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1);
-                  // console.log("fileName:" + scope.imageURI.substr(scope.imageURI.lastIndexOf('/') + 1));
-                  // options.mimeType = "image/jpeg";
-                  // //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
-                  // // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
-
-                  // var ft = new FileTransfer();
-                  // ft.upload(scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
-                });
-              },
-              onSuccess: function(form, scope){
-                // $scope.doRefresh();
-                scope.hideModal();
-              }
-            })//End of postModal
-            //上传事件终结，清楚缓存
-            localStorage.removeItem('playGameId');
-            localStorage.removeItem('playGameDt');
-            localStorage.removeItem('playGameTm');
-            console.log('localStorage' + localStorage.removeItem('playGameTm'));
+              })//End of postModal
+              //上传事件终结，清除缓存
+              localStorage.removeItem('playGameId');
+              localStorage.removeItem('playGameDt');
+              localStorage.removeItem('playGameTm');
+              console.log('localStorage' + localStorage.removeItem('playGameTm'));
+            })           
           };//End of new clip
           $scope.newClip();
 
@@ -283,38 +292,11 @@ define(['app', 'services.Api'], function(app)
               scope.modalStep = 'task'
             }
             //获取任务
-            Api.getData($rootScope.start.about, scope, 'about').then(function(defer, about){
-              Api.getData($scope.channel.tasks, scope, 'tasks', {
-                last:true,
-                itearator: {
-                  minute: {
-                    type: 'transfer',
-                    transfer: function(attr){
-                      return attr?attr:about.defaultTaskInterval;
-                    },
-                    attr: 'minute'
-                  }
-                }
-              }).then(function(defer, tasks){
-                scope.tasks.unshift({name:about.defaultTask, minute: about.defaultTaskInterval});
-                defer(undefined);
-              }, function(defer, error){
-                if (error.status === 404){
-                  scope.tasks = [{name:about.defaultTask, minute: about.defaultTaskInterval}];
-                  defer(undefined);
-                }
-                defer(error);
-              }).then(function(){
-                //选择任务
-                scope.selectTask = function(index){
-                  scope.currentTaskIndex = index;
-                  $scope.selectedTask = scope.tasks[index];
-                  console.debug($scope.selectedTask);
-                };
-                scope.selectTask(0);
-              })
+            Api.getData($scope.channel.tasks, scope, 'tasks', {
+              last:true
+            }).then(function(defer, tasks){
+              scope.tasks.unshift({_id:'haveAPlay', name:'随便玩玩', minute: 30})
             })
-            
             //开始游戏按钮
             scope.nextStepFunction = {
               trySnapshot: function(){
@@ -335,7 +317,13 @@ define(['app', 'services.Api'], function(app)
               console.debug(scope.modalStep);
               scope.nextStepFunction[scope.modalStep]();
             }
-
+            //选择任务
+            scope.currentTaskIndex = 0;
+            scope.selectTask = function(index){
+              scope.currentTaskIndex = index;
+              $scope.selectedTask = scope.currentTaskIndex?scope.tasks[index]:undefined;
+              console.debug($scope.selectedTask);
+            }
           },
           onClose:function(scope){
             if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
