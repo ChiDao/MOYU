@@ -136,8 +136,8 @@ define(['app', 'services.Api'], function(app)
                     var selectImg = scope.imgs[scope.selectIndex];
                     newClipModal(selectImg);                    
                   }
-                    scope.hideModal();               
-                }
+                  scope.hideModal();               
+                },               
               })
             })
             (function(imgUrl){
@@ -152,30 +152,32 @@ define(['app', 'services.Api'], function(app)
                   scope.formData = {};
                   
                 },
-                onOk: function(form, scope){
+                onOk: function(form, scope){  
+                  console.log(111111);                
                   return Thenjs(function(defer){
-                    // console.log('正在开始上传...');
-                    // upyun.upload('newPostForm', function(err, response, image){
-                    //   if (err) console.error(err);
-                    //   console.log('返回信息：');
-                    //   console.log(response);
-                    //   console.log('图片信息：');
-                    //   console.log(image);
-                    //   if (image.code === 200 && image.message === 'ok') {
-                    //     scope.imageURI = image.absUrl;
-                    //     scope.formData.img = image.absUrl;
-                    //     defer(undefined);
-                    //   }
-                    //   scope.$apply();
-                    // });
-                  //转化上传
+                    console.debug(111111); 
+                    console.log('正在开始上传...');
+                    upyun.upload('newPostForm', function(err, response, image){
+                      if (err) console.error(err);
+                      console.log('返回信息：');
+                      console.log(response);
+                      console.log('图片信息：');
+                      console.log(image);
+                      if (image.code === 200 && image.message === 'ok') {
+                        scope.imageURI = image.absUrl;
+                        scope.formData.img = image.absUrl;
+                        defer(undefined);
+                      }
+                      scope.$apply();
+                    });
+                    
                     // var win = function (r) {
                     //     console.log("Code = " + r.responseCode);
                     //     console.log("Response = " + r.response);
                     //     console.log("Sent = " + r.bytesSent);
                     //     var returnJson = JSON.parse(r.response);
                     //     scope.formData.img = returnJson;
-                    //     defer(undefined);
+                        // defer(undefined);
                     // };
 
                     // var fail = function (error) {
@@ -209,6 +211,7 @@ define(['app', 'services.Api'], function(app)
               console.log('localStorage' + localStorage.removeItem('playGameTm'));
             })           
           };//End of new clip
+          $scope.newClip();
 
           //如果上传事件未结束，则打开clip模态框
           if (localStorage.getItem('playGameTm') !== null){

@@ -40,7 +40,7 @@
     return this;
   };
 
-  Upyun.prototype.upload = function(params, file,callback) {
+  Upyun.prototype.upload = function(params,callback) {
     // Check dependencies when `upload` method are trigged.
     if (!window.JSON) 
       throw new Error('JSON is required.');
@@ -74,8 +74,6 @@
     // File object will be parse as `params`
     if (!uploadByForm) 
       data.append('file', params);
-
-    data.append('file', file);
 
     // Append `policy` and create `signature`
     data.append('policy', policy);
