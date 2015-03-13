@@ -118,9 +118,10 @@ define(['app', 'services.Api'], function(app)
                   });
                   function onSuccess(photos) {
                     // var image = document.getElementById('newPostImage');
+                    console.log(photos);
                     for (var i in photos) {
                       image.src = photos[i];
-                    }     
+                    }
                     scope.imageURI = photos[0];
                     console.log("成功截图");
                   }
