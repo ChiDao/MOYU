@@ -131,7 +131,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
                   }
                 );
               }else{
-                // deferred.resolve("Yes");
+                deferred.resolve("Yes");
               }
               return deferred.promise;
             }
