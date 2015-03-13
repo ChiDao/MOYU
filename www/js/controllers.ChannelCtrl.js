@@ -148,16 +148,15 @@ define(['app', 'services.Api'], function(app)
                   console.log("时间："+openGameTime);
                   console.log("方向："+orientation);
                   scope.imageURI = imgUrl;
-                  console.log(scope.imageURI);
+                  console.log('scope.imageURI', scope.imageURI);
                   scope.formData = {};
                   
                 },
-                onOk: function(form, scope){  
-                  console.log(111111);                
+                onOk: function(form, scope){                 
                   return Thenjs(function(defer){
                     console.debug(111111); 
                     console.log('正在开始上传...');
-                    upyun.upload('newPostForm', function(err, response, image){
+                    upyun.upload(scope.imageURI, function(err, response, image){
                       if (err) console.error(err);
                       console.log('返回信息：');
                       console.log(response);
