@@ -11,8 +11,9 @@ ion-modal-view#Newclip
         .item.item-input.item-stacked-label
           span.input-label 描述
           //- input(type="text" ng-model="formData.content" required)
-          textarea.hight(type="text" ng-model="formData.content" required placeholder='Comments')
+          textarea.hight(type="text" ng-model="formData.content"  placeholder='Comments')
         .item
           img#newPostImage(ng-src="{{imageURI}}",ng-click="getPicture()")
         .hide
           input(type="text" ng-model="imageURI" required ng-show="false")
+      input(type="file" name="file")

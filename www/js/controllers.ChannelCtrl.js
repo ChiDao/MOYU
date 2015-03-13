@@ -144,28 +144,24 @@ define(['app', 'services.Api'], function(app)
                 //   });
                 // }
               },
-              onOk: function(form, scope){
-                $timeout(function () {
-                  console.debug('currentIndex:'+$ionicSlideBoxDelegate.$getByHandle('my-handle').currentIndex());
-                  // console.log($ionicSlideBoxDelegate.$getByHandle('select-img').currentIndex());
-                },500)
-                console.debug('currentIndex:'+$ionicSlideBoxDelegate.$getByHandle('my-handle').currentIndex());
-                
+              onOk: function(form, scope){  
+                console.log(111111);                
                 return Thenjs(function(defer){
-                  // console.log('正在开始上传...');
-                  // upyun.upload('newPostForm',scope.imageURI, function(err, response, image){
-                  //   if (err) console.error(err);
-                  //   console.log('返回信息：');
-                  //   console.log(response);
-                  //   console.log('图片信息：');
-                  //   console.log(image);
-                  //   if (image.code === 200 && image.message === 'ok') {
-                  //     scope.imageURI = image.absUrl;
-                  //     scope.formData.img = image.absUrl;
-                  //     defer(undefined);
-                  //   }
-                  //   scope.$apply();
-                  // });
+                  console.debug(111111); 
+                  console.log('正在开始上传...');
+                  upyun.upload('newPostForm', function(err, response, image){
+                    if (err) console.error(err);
+                    console.log('返回信息：');
+                    console.log(response);
+                    console.log('图片信息：');
+                    console.log(image);
+                    if (image.code === 200 && image.message === 'ok') {
+                      scope.imageURI = image.absUrl;
+                      scope.formData.img = image.absUrl;
+                      defer(undefined);
+                    }
+                    scope.$apply();
+                  });
                   // var win = function (r) {
                   //     console.log("Code = " + r.responseCode);
                   //     console.log("Response = " + r.response);
@@ -205,6 +201,7 @@ define(['app', 'services.Api'], function(app)
             localStorage.removeItem('playGameTm');
             console.log('localStorage' + localStorage.removeItem('playGameTm'));
           };//End of new clip
+          $scope.newClip();
 
           //如果上传事件未结束，则打开clip模态框
           if (localStorage.getItem('playGameTm') !== null){
