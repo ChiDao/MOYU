@@ -285,11 +285,30 @@ define(['app', 'services.Api'], function(app)
               scope.modalStep = 'task'
             }
             //获取任务
-            Api.getData($scope.channel.tasks, scope, 'tasks', {
-              last:true
-            }).then(function(defer, tasks){
-              scope.tasks.unshift({_id:'haveAPlay', name:'随便玩玩', minute: 30})
+            Api.getData('/about', scope, 'about').then(function(defer, about){
+              Api.getData($scope.channel.tasks, scope, 'tasks', {
+                last:true,
+                itearator: {
+                  minute: {
+                    type: 'transfer',
+                    transfer: function(attr){
+                      return attr?attr:about.defaultTaskInterval;
+                    },
+                    attr: 'minute'
+                  }
+                }
+              }).then(function(defer, tasks){
+                scope.tasks.unshift({name:about.defaultTask, minute: about.defaultTaskInterval});
+                //选择任务
+                scope.selectTask = function(index){
+                  scope.currentTaskIndex = index;
+                  $scope.selectedTask = scope.tasks[index];
+                  console.debug($scope.selectedTask);
+                };
+                scope.selectTask(0);
+              })
             })
+            
             //开始游戏按钮
             scope.nextStepFunction = {
               trySnapshot: function(){
@@ -310,13 +329,7 @@ define(['app', 'services.Api'], function(app)
               console.debug(scope.modalStep);
               scope.nextStepFunction[scope.modalStep]();
             }
-            //选择任务
-            scope.currentTaskIndex = 0;
-            scope.selectTask = function(index){
-              scope.currentTaskIndex = index;
-              $scope.selectedTask = scope.currentTaskIndex?scope.tasks[index]:undefined;
-              console.debug($scope.selectedTask);
-            }
+
           },
           onClose:function(scope){
             if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
