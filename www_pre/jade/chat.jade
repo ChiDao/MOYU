@@ -1,6 +1,6 @@
 ion-view#Chat(view-title='{{::clip.content}}' on-touch="onTouch()")
   ion-nav-buttons(side="right")
-    button.button.icon.ion-ios-paw.button-clear(ng-if="hasFollowedPost",on-tap="action()")
+    button.button.button-clear(ng-if="hasFollowedPost",on-tap="action()") 更多
   a(ng-if="getNewComments" ng-click="goNewComments()" style="position:absolute;top:450px;left:200px;z-index:2;background-color:pink")
     span
       | 收到新消息
