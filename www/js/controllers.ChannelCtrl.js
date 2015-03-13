@@ -299,6 +299,14 @@ define(['app', 'services.Api'], function(app)
                 }
               }).then(function(defer, tasks){
                 scope.tasks.unshift({name:about.defaultTask, minute: about.defaultTaskInterval});
+                defer(undefined);
+              }, function(defer, error){
+                if (error.status === 404){
+                  scope.tasks = [{name:about.defaultTask, minute: about.defaultTaskInterval}];
+                  defer(undefined);
+                }
+                defer(error);
+              }).then(function(){
                 //选择任务
                 scope.selectTask = function(index){
                   scope.currentTaskIndex = index;
