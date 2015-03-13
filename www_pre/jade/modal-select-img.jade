@@ -1,11 +1,11 @@
-ion-modal-view#Newclip
+ion-modal-view#Newclip  
+  ion-header-bar.bar
+    .buttons
+      button.button-clear.button(on-tap='mustChoise?cancelModal():closeModal()') 取消
+    h1.title 瞬間
+    .buttons
+      button.color-bule.button-clear.button(on-tap='ok()') 下一步
   form(name="newPostForm", novalidate="", ng-submit='ok(newPostForm)')
-    ion-header-bar.bar
-      .buttons
-        button.button-clear.button(on-tap='mustChoise?cancelModal():closeModal()') 取消
-      h1.title 瞬間
-      .buttons
-        button.color-bule.button-clear.button(type='submit') 下一步
     ion-content
       ion-slide-box(show-pager="false" on-slide-changed="slideHasChanged($index)" does-continue='true')
         ion-slide(ng-repeat="img in imgs" style="height=100%,width=100%")

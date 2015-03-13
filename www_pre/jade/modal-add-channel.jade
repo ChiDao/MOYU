@@ -8,9 +8,10 @@ ion-modal-view#AddChannel.Pages
       a.item.item-avatar(on-tap="followGame(channel)",ng-repeat='channel in channels', type='item-text-wrap')
         img(preload-image default-image="img/loading.png" ng-src='{{channel.gameData.logo?channel.gameData.logo:""}}')
         | {{channel.gameData.name}}
-        span.item-note(ng-show="channel.followed == 'No'")
-          | 关注
-        span.item-note(ng-show="channel.followed == 'Yes'",style="color:grey")
+        //- span.item-note(ng-show="channel.followed == 'No'")
+        //-   | 关注
+        ion-spinner(icon="ios" ng-show="channel.installed == 'checking'" style="float:right")
+        span.item-note(ng-if="channel.followed == 'Yes'&& channel.installed != 'checking'",style="color:grey")
           | 已关注
-        //- span.item-note(ng-show="channel.installed == 'No'")
-        //-   | 下载
+        span.item-note(ng-if="channel.installed == 'No'")
+          //- | 下载
