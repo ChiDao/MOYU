@@ -1,8 +1,8 @@
 define(['app', 'services.Api'], function(app)
 {
   app.controller('TabsCtrl', ['$scope', '$state', '$timeout', 'ApiEvent', 'Auth', 'Api',
-    function($scope, $state, $timeout, ApiEvent, Auth, Api) {
-
+    function($scope, $state, $timeout, ApiEvent, Auth, Api) { 
+        
     	//处理新增评论事件
     	var checkedNewEvent = function(){
 	    	ApiEvent.checkedNewEvent().then(function(defer, hasNewEvent){
@@ -21,7 +21,11 @@ define(['app', 'services.Api'], function(app)
 
         $scope.Api = Api;
         $scope.homeData = function(){
+          if(!Auth.isLoggedIn()){
+            Auth.login();
+          }else{
             return Auth.currentUser().userData.homeData;
+          }            
         };
     	
     	$scope.hideTabs = function(){
