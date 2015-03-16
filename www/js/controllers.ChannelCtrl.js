@@ -20,19 +20,6 @@ define(['app', 'services.Api'], function(app)
                 last: true
               }
             },
-            installed: {
-              type: 'transfer',
-              attr: 'installed',
-              transfer: function(){
-                if (typeof(appAvailability) !== 'undefined'){
-                  appAvailability.check(
-                    $scope.channel.clientsData[0].url + "://", 
-                    function() {  return true;},
-                    function() {  return false;}
-                  );
-                }else{  return true;}
-              }
-            },
             getClips: {
               type: 'function',
               attr: 'clips',
@@ -48,8 +35,20 @@ define(['app', 'services.Api'], function(app)
             }
           }
         }).then(function(defer){
+          if (typeof(appAvailability) !== 'undefined'){
+            appAvailability.check(
+              $scope.channel.clientsData[0].url + "://", 
+              function() {  
+                $scope.channel.installed = true;
+              },
+              function() {  
+                $scope.channel.installed = false;
+              }
+            );
+          }else{  
+            $scope.channel.installed = true;
+          }
           console.debug('$scope.channel:', $scope.channel);
-          console.debug('$scope.clients:', $scope.channel.clientsData[0].url);
           // get clips
           var bindStruct = Api.bindList($scope.channel.clips, $scope, 'clips', {
             last: true,
@@ -178,13 +177,13 @@ define(['app', 'services.Api'], function(app)
                   // $scope.doRefresh();
                   scope.hideModal();
                 }
-              })//End of postModal
-              //上传事件终结，清除缓存
-              localStorage.removeItem('playGameId');
-              localStorage.removeItem('playGameDt');
-              localStorage.removeItem('playGameTm');
-              console.log('localStorage' + localStorage.removeItem('playGameTm'));
-            })           
+              })//End of postModal              
+            })
+            //上传事件终结，清除缓存
+            localStorage.removeItem('playGameId');
+            localStorage.removeItem('playGameDt');
+            localStorage.removeItem('playGameTm');
+            console.log('localStorage' + localStorage.removeItem('playGameTm'));           
           };//End of new clip
           // $scope.newClip();
 
