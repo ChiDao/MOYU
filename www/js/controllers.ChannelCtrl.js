@@ -400,7 +400,7 @@ define(['app', 'services.Api'], function(app)
           }
           window.plugin.notification.local.add({
             id:      id,
-            title:   '是否已捕捉到#'+taskName+'的截屏',
+            title:   '是否已捕捉到#'+taskName+'的截屏?',
             message: '点击返回Gamo!',
             repeat:  'secondly',
             date:    backDate
