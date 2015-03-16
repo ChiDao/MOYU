@@ -45,6 +45,14 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
           });
         },
         login: function(success){ 
+          (function(logining){
+            Modal.okCancelModal('templates/modal-welcome.html', {}, {
+              onOk: function(form,scope){
+                scope.hideModal();
+                logining();
+              }
+            })
+          })
           //填写邮箱signup对话框
           (function(preRegistModal){
             Api.postModal('/signup', {}, {
