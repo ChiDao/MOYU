@@ -45,30 +45,28 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
           });
         },
         login: function(success){ 
-          (function(logining){
+          //填写邮箱signup对话框
+          (function(preRegistModal){
             Modal.okCancelModal('templates/modal-welcome.html', {}, {
               onOk: function(form,scope){
                 scope.hideModal();
-                logining();
+                Api.postModal('/signup', {}, {
+                  onOk: function(form, signupScope){
+                      return Thenjs(function(defer){
+                        signupScope.formData.tel = signupScope.formData.tel.toString();
+                        defer(undefined);
+                      });
+                  },
+                  onSuccess: function(form, signupScope){
+                    console.debug(signupScope.formData.tel);
+                    signupScope.hideModal();
+                    preRegistModal(signupScope.formData.tel);
+                  }
+                });
               }
             })
-          })
-          //填写邮箱signup对话框
-          ((function(preRegistModal){
-            Api.postModal('/signup', {}, {
-              onOk: function(form, signupScope){
-                  return Thenjs(function(defer){
-                    signupScope.formData.tel = signupScope.formData.tel.toString();
-                    defer(undefined);
-                  });
-              },
-              onSuccess: function(form, signupScope){
-                console.debug(signupScope.formData.tel);
-                signupScope.hideModal();
-                preRegistModal(signupScope.formData.tel);
-              }
-            });
-          })
+            
+          }
           //填写验证码pre-register对话框
           ((function(allowNotification){
             return function(tel){
