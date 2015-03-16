@@ -57,14 +57,17 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
           })();
 
           $scope.toggleSubscribe = function(){
-
+            if(!Auth.isLoggedIn()){
+              Auth.login();
+              return;
+            }
             /*
               跳過驗證
              */
-            Api.putData($scope.clip.subscribe, {}).then(function(){
-              $scope.checkHasFollowedPost();
-            });
-            return;
+            // Api.putData($scope.clip.subscribe, {}).then(function(){
+            //   $scope.checkHasFollowedPost();
+            // });
+            // return;
 
             var checkPush =  PushProcessingService.checkResult();
             if(checkPush == "No"){
