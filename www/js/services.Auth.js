@@ -54,7 +54,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
             })
           })
           //填写邮箱signup对话框
-          (function(preRegistModal){
+          ((function(preRegistModal){
             Api.postModal('/signup', {}, {
               onOk: function(form, signupScope){
                   return Thenjs(function(defer){
@@ -151,7 +151,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
               }
             });//End of okCancelModal
           })
-          ));//End of pass function as param
+          )));//End of pass function as param
         },
         isLoggedIn: function(){
           return currentUser.role == userRoles.user;
