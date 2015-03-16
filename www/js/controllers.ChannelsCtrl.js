@@ -107,10 +107,10 @@ define(['app', 'services.Api','services.Modal'], function(app)
           scope.channels = [0,1,2,3,4,5,6,7,8,9];
           Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels',{
             itearator: {
-              gameData: {
-                type: 'getData',
-                attr: 'game',
-              },
+              // gameData: {
+              //   type: 'getData',
+              //   attr: 'game',
+              // },
               installed: {
                 type: 'const',
                 attr: 'installed',
