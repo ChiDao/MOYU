@@ -328,6 +328,7 @@ define(['app', 'services.Api'], function(app)
                     scope.modalStep = 'playGame';
                     $timeout(function(){
                       $scope.playGame();
+                      scope.modal.hide();
                     },800)
                   }
                 }
@@ -366,8 +367,9 @@ define(['app', 'services.Api'], function(app)
 
         var now                  = new Date().getTime();
         var duration = $scope.selectedTask.minute;
+        var taskName = $scope.selectedTask.name;
         console.log("任务时间:"+duration);
-        console.log("任务名称:"+$scope.selectedTask.name);
+        console.log("任务名称:"+taskName);
         var backDate = new Date(now + duration *60000);
 
         console.log("现在"+new Date(now)+"离开"+backDate);
@@ -398,8 +400,8 @@ define(['app', 'services.Api'], function(app)
           }
           window.plugin.notification.local.add({
             id:      id,
-            title:   'Reminder',
-            message: 'Dont forget to buy some flowers.',
+            title:   '是否已捕捉到#'+taskName+'的截屏',
+            message: '点击返回Gamo!',
             repeat:  'secondly',
             date:    backDate
           });
