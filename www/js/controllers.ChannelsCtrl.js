@@ -5,6 +5,14 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB,$ionicPopup) {
 
+      $scope.$on('log-in', function(event,data) {
+        console.log("iflogin:"+data);
+        if(data){
+          $scope.isLoggedIn = true;
+          $scope.bindInit();
+        }
+      });
+
       $scope.filterValid = function(value){
         // console.debug(value);
         return value['@game'];
