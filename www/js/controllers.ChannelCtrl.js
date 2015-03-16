@@ -24,15 +24,13 @@ define(['app', 'services.Api'], function(app)
               type: 'transfer',
               attr: 'installed',
               transfer: function(){
-                 appAvailability.check(
-                  channel.url + "://", // URI Scheme
-                  function() {  // Success callback
-                    return true;
-                  },
-                  function() {  // Error callback
-                    return false;
-                  }
-                );
+                if (typeof(appAvailability) !== 'undefined'){
+                  appAvailability.check(
+                    $scope.channel.clientsData[0].url + "://", 
+                    function() {  return true;},
+                    function() {  return false;}
+                  );
+                }else{  return true;}
               }
             },
             getClips: {
@@ -209,139 +207,153 @@ define(['app', 'services.Api'], function(app)
         if(!Auth.isLoggedIn()){
           Auth.login();
         }else{
-          Modal.okCancelModal('templates/modal-HowToScreen.html', {
-            animation:'fade-in'
-          }, {
-            init: function(scope){
-
-              var deviceInformation = ionic.Platform.device().model;
-              if (deviceInformation == undefined) {
-                deviceInformation = 'iPhone6,2';
-              }
-
-              switch(deviceInformation) {
-                case 'iPod1,1':
-                case 'iPod2,1':
-                case 'iPod3,1':
-                case 'iPod4,1':
-                  scope.deviceImage = 'ipodtouch';
-                  scope.deviceAnimate = 'fadeInDown';
-                  break;
-                case 'iPhone3,1':
-                case 'iPhone3,2':
-                case 'iPhone3,3':
-                case 'iPhone4,1':
-                  scope.deviceImage = 'iphone4';
-                  scope.deviceAnimate = 'fadeInDown';
-                  break;
-                case 'iPhone5,1':
-                case 'iPhone5,2':
-                  scope.deviceImage = 'iphone5';
-                  scope.deviceAnimate = 'fadeInDown';
-                  break;
-                case 'iPhone5,3':
-                case 'iPhone5,4':
-                  scope.deviceImage = 'iphone5c';
-                  scope.deviceAnimate = 'fadeInDown';
-                  break;
-                case 'iPhone6,1':
-                case 'iPhone6,2':
-                  scope.deviceImage = 'iphone5s';
-                  scope.deviceAnimate = 'fadeInDown';
-                  break;
-                case 'iPhone7,1':
-                  scope.deviceImage = 'iphone6p';
-                  scope.deviceAnimate = 'fadeInRight';
-                  break;
-                case 'iPhone7,2':
-                  scope.deviceImage = 'iphone6';
-                  scope.deviceAnimate = 'fadeInRight';
-                  break;
-              }
-
-              //判断是否显示截屏教程
-              scope.modalStep = 'trySnapshot';
-              scope.shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
-              if (scope.shownHowToSnapshot === null){
-                scope.modalStep = 'trySnapshot';
-                if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
-                  localStorage.setItem('shownHowToSnapshot', true);
-                  window.plugins.pushNotification.notifyScreenShot();
-                }               
+          if(!$scope.channel.installed){
+            var confirmPopup = $ionicPopup.confirm({
+              title: '亲，偷偷告诉你哦',
+              template: '您还没有安装<b style="color:red">'+ $scope.channel.name +'</b>哦！马上前往App Store安装?'
+            });
+            confirmPopup.then(function(res) {
+              if(res) {
+                window.open($scope.channel.clientsData[0].store, '_system');
               } else {
-                scope.modalStep = 'task'
+                console.log('download cancel');
               }
-              //获取任务
-              Api.getData($rootScope.start.about, scope, 'about').then(function(defer, about){
-                Api.getData($scope.channel.tasks, scope, 'tasks', {
-                  last:true,
-                  itearator: {
-                    minute: {
-                      type: 'transfer',
-                      transfer: function(attr){
-                        return attr?attr:about.defaultTaskInterval;
-                      },
-                      attr: 'minute'
-                    }
-                  }
-                }).then(function(defer, tasks){
-                  scope.tasks.unshift({name:about.defaultTask, minute: about.defaultTaskInterval});
-                  defer(undefined);
-                }, function(defer, error){
-                  if (error.status === 404){
-                    scope.tasks = [{name:about.defaultTask, minute: about.defaultTaskInterval}];
-                    defer(undefined);
-                  }
-                  defer(error);
-                }).then(function(){
-                  //选择任务
-                  scope.selectTask = function(index){
-                    scope.currentTaskIndex = index;
-                    $scope.selectedTask = scope.tasks[index];
-                    console.debug($scope.selectedTask);
-                  };
-                  scope.selectTask(0);
-                })
-              })
-              
-              //开始游戏按钮
-              scope.nextStepFunction = {
-                trySnapshot: function(){
-                  scope.modalStep = 'task';
-                  if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
-                    window.plugins.pushNotification.removeScreenShot();
-                  }
+            });
+          }else{
+            Modal.okCancelModal('templates/modal-HowToScreen.html', {
+              animation:'fade-in'
+            }, {
+              init: function(scope){
 
-                },
-                task: function(){
-                  scope.modalStep = 'playGame';
-                  $timeout(function(){
-                    $scope.playGame();
-                  },800)
+                var deviceInformation = ionic.Platform.device().model;
+                if (deviceInformation == undefined) {
+                  deviceInformation = 'iPhone6,2';
                 }
-              }
-              scope.next = function(){
-                console.debug(scope.modalStep);
-                scope.nextStepFunction[scope.modalStep]();
-              }
 
-            },
-            onClose:function(scope){
-              if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
-                window.plugins.pushNotification.removeScreenShot();
+                switch(deviceInformation) {
+                  case 'iPod1,1':
+                  case 'iPod2,1':
+                  case 'iPod3,1':
+                  case 'iPod4,1':
+                    scope.deviceImage = 'ipodtouch';
+                    scope.deviceAnimate = 'fadeInDown';
+                    break;
+                  case 'iPhone3,1':
+                  case 'iPhone3,2':
+                  case 'iPhone3,3':
+                  case 'iPhone4,1':
+                    scope.deviceImage = 'iphone4';
+                    scope.deviceAnimate = 'fadeInDown';
+                    break;
+                  case 'iPhone5,1':
+                  case 'iPhone5,2':
+                    scope.deviceImage = 'iphone5';
+                    scope.deviceAnimate = 'fadeInDown';
+                    break;
+                  case 'iPhone5,3':
+                  case 'iPhone5,4':
+                    scope.deviceImage = 'iphone5c';
+                    scope.deviceAnimate = 'fadeInDown';
+                    break;
+                  case 'iPhone6,1':
+                  case 'iPhone6,2':
+                    scope.deviceImage = 'iphone5s';
+                    scope.deviceAnimate = 'fadeInDown';
+                    break;
+                  case 'iPhone7,1':
+                    scope.deviceImage = 'iphone6p';
+                    scope.deviceAnimate = 'fadeInRight';
+                    break;
+                  case 'iPhone7,2':
+                    scope.deviceImage = 'iphone6';
+                    scope.deviceAnimate = 'fadeInRight';
+                    break;
+                }
+
+                //判断是否显示截屏教程
+                scope.modalStep = 'trySnapshot';
+                scope.shownHowToSnapshot = localStorage.getItem('shownHowToSnapshot');
+                if (scope.shownHowToSnapshot === null){
+                  scope.modalStep = 'trySnapshot';
+                  if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+                    localStorage.setItem('shownHowToSnapshot', true);
+                    window.plugins.pushNotification.notifyScreenShot();
+                  }               
+                } else {
+                  scope.modalStep = 'task'
+                }
+                //获取任务
+                Api.getData($rootScope.start.about, scope, 'about').then(function(defer, about){
+                  Api.getData($scope.channel.tasks, scope, 'tasks', {
+                    last:true,
+                    itearator: {
+                      minute: {
+                        type: 'transfer',
+                        transfer: function(attr){
+                          return attr?attr:about.defaultTaskInterval;
+                        },
+                        attr: 'minute'
+                      }
+                    }
+                  }).then(function(defer, tasks){
+                    scope.tasks.unshift({name:about.defaultTask, minute: about.defaultTaskInterval});
+                    defer(undefined);
+                  }, function(defer, error){
+                    if (error.status === 404){
+                      scope.tasks = [{name:about.defaultTask, minute: about.defaultTaskInterval}];
+                      defer(undefined);
+                    }
+                    defer(error);
+                  }).then(function(){
+                    //选择任务
+                    scope.selectTask = function(index){
+                      scope.currentTaskIndex = index;
+                      $scope.selectedTask = scope.tasks[index];
+                      console.debug($scope.selectedTask);
+                    };
+                    scope.selectTask(0);
+                  })
+                })
+                
+                //开始游戏按钮
+                scope.nextStepFunction = {
+                  trySnapshot: function(){
+                    scope.modalStep = 'task';
+                    if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+                      window.plugins.pushNotification.removeScreenShot();
+                    }
+
+                  },
+                  task: function(){
+                    scope.modalStep = 'playGame';
+                    $timeout(function(){
+                      $scope.playGame();
+                    },800)
+                  }
+                }
+                scope.next = function(){
+                  console.debug(scope.modalStep);
+                  scope.nextStepFunction[scope.modalStep]();
+                }
+
+              },
+              onClose:function(scope){
+                if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+                  window.plugins.pushNotification.removeScreenShot();
+                }
+                console.log("关闭！");
+                scope.modal.hide();
+              },
+              onCancel:function(scope){
+                if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
+                  window.plugins.pushNotification.removeScreenShot();
+                }
+                console.log("取消！");
+                scope.modal.hide();
               }
-              console.log("关闭！");
-              scope.modal.hide();
-            },
-            onCancel:function(scope){
-              if (window.plugin && window.plugin.notification && window.plugins.pushNotification){
-                window.plugins.pushNotification.removeScreenShot();
-              }
-              console.log("取消！");
-              scope.modal.hide();
-            }
-          })
-        }//End of else      
+            })//End of Modal
+          }//End of installed          
+        }//End of login      
       }//End of startGame
 
 

@@ -208,7 +208,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
               if (channle.installed == "No"){
                 var confirmPopup = $ionicPopup.confirm({
                   title: '下载游戏',
-                  template: '您没有'+channle.gameData.name+'，是否前往App Store安装?'
+                  template: '您没有安装<b style="color:red">'+channle.gameData.name+'</b>，是否前往App Store安装?'
                  });
                 confirmPopup.then(function(res) {
                   if(res) {
