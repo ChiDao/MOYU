@@ -160,21 +160,26 @@ define(['app', 'services.Api'], function(app)
                     console.log('正在开始上传...');
                     upyun.upload(scope.imageURI, function(err, response, image){
                       if (err) console.error(err);
-                      console.log('返回信息：');
-                      console.log(response);
-                      console.log('图片信息：');
-                      console.log(image);
                       if (image.code === 200 && image.message === 'ok') {
                         scope.imageURI = image.absUrl;
-                        scope.formData.img = image.absUrl;
+                        scope.formData.img = image;
+                        console.log("图片信息："+scope.formData.img)
                         defer(undefined);
                       }
                       scope.$apply();
-                    });
+                    });                    
                   });
                 },
-                onSuccess: function(form, scope){
-                  // $scope.doRefresh();
+                onSuccess: function(form, scope,data){
+                  console.log("成功返回数据"+JSON.stringify(data));
+                  if ($scope.selectedTask._id != undefined){
+                    var taskData = {'task':'/task/' + $scope.selectedTask._id};
+                    // console.log("任务"+ JSON.stringify(taskData));
+                    Api.putData("http://42.120.45.236:8485/clip-by-id/"+data._id, taskData).then(function(){
+                      console.log("OK～～");                  
+                    })
+                  }                 
+                  $scope.doRefresh();
                   scope.hideModal();
                 }
               })//End of postModal              

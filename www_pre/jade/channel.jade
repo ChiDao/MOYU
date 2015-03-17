@@ -1,14 +1,14 @@
 ion-view#Channel(view-title='{{channel.name}}')
   ion-nav-buttons(side="right")
     //- button.button.button-clear(ng-click="newClip()")
-      //- img2x(src2x="img/icon-NewScreen",ext="png")
+    //-   img2x(src2x="img/icon-NewScreen",ext="png")
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
       .list(ng-repeat="clip in clips")
         .item.item-image
           a(on-tap="Api.jumpTo(clip._self, 'channels')")
-            img(preload-image default-image="img/loading.png" ng-src="{{clip.img['294@2x']}}")
+            img(preload-image default-image="img/loading.png" ng-src="{{clip.img.absUrl}}")
         .item.item-text-wrap.item-padding
           .row
             .browse.col-90.font-9
