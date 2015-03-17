@@ -3,14 +3,14 @@ ion-view.full-card(view-title='个人')
     a.button.button-clear(href='#/tab/profile-feels') 设置
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
-    .list.card
+    .list
       a.item.item-avatar
         img(ng-src='{{imageURI}}')
-        h2 {{userData.email}}
-        p
-          span 发表：{{userData['@clips']?userData['@clips']['@count']:0}}
-        p
-          span 关注：{{userData['@interests']['@count']}}
+        h2 用户名：{{userData.email}}
+      a.item(href='#')
+        | 发表：{{userData['@clips']?userData['@clips']['@count']:0}}
+      a.item(href='#')
+        | 关注：{{userData['@interests']['@count']}}
     div(ng-switch="clips.length === 0?0:1")
       div(ng-switch-default)
         ng-include(src="'templates/profile-tempSrc.html'")
@@ -24,3 +24,7 @@ ion-view.full-card(view-title='个人')
     //-   .item.item-body
     //-     a(ng-click="Api.jumpTo(clip._self, 'profile')")
     //-       img.full-image(src="{{clip.img}}")
+    //- p
+    //-   span 发表：{{userData['@clips']?userData['@clips']['@count']:0}}
+    //- p
+    //-   span 关注：{{userData['@interests']['@count']}}
