@@ -23,15 +23,18 @@ define(['app', 'restangular'], function(app){
 
   app.config(function(RestangularProvider, ApiProvider,upyunProvider) {
 
-    // upyunProvider.config({
-    //   form_api_secret: 'yMbT3X62MsoLeFiVqbPPRzY9qrM=',
-    //   bucket: 'together'
-    // });
-
     upyunProvider.config({
-      form_api_secret: 'IRoTyNc75husfQD24cq0bNmRSDI=',
-      bucket: 'upyun-form'
+      form_api_secret: 'yMbT3X62MsoLeFiVqbPPRzY9qrM=',
+      bucket: 'together',
+      params:{
+        'notify-url': 'http://42.120.45.236:8485/upyun'
+      },
     });
+
+    // upyunProvider.config({
+    //   form_api_secret: 'IRoTyNc75husfQD24cq0bNmRSDI=',
+    //   bucket: 'upyun-form'
+    // });
 
     RestangularProvider.setDefaultHeaders({
         'Content-Type': 'application/json',

@@ -113,6 +113,7 @@
     options.params = {};
     options.params.policy = policy;
     options.params.signature = self.configs.signature || window.md5(policy + '&' + self.configs.form_api_secret);
+    options.params['notify-url'] = 'http://42.120.45.236:8485/upyun';
     // options.mimeType = "image/jpeg";
     //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
     // options.Authorization="Basic IRoTyNc75husfQD24cq0bNmRSDI=";
