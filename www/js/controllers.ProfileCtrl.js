@@ -1,7 +1,7 @@
 define(['app', 'services.Api', 'services.Auth'], function(app)
 {
-  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api', '$ionicLoading',
-    function($scope, $stateParams, UI, Auth, Api, $ionicLoading) {
+  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api', '$ionicLoading', 'apImageHelper',
+    function($scope, $stateParams, UI, Auth, Api, $ionicLoading, apImageHelper) {
       $scope.Auth = Auth;
       $scope.userData = Auth.currentUser().userData;
       console.debug($scope.userData);
@@ -111,6 +111,28 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
             }
         };
         window.plugins.actionsheet.show(options, callback);
+      }
+      $scope.canvas = {
+        src: null,
+        image: null,
+        frame: null,
+        scale: null,
+        offset: null
+      }; 
+      $scope.zoomIn = function() {
+        $scope.canvas.scale *= 1.2;
+      }
+      $scope.zoomOut = function() {
+        $scope.canvas.scale /= 1.2;
+      }
+      $scope.crop = function() {
+        var maxSize = {
+          width: 1500,
+          height: 1500
+        };
+
+        var canvasData = apImageHelper.cropImage($scope.canvas.image, $scope.canvas.frame, maxSize);
+        $scope.imageURI = canvasData.dataURI;
       }
       $scope.save = function(){
         Thenjs(function(defer){

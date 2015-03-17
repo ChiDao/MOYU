@@ -23,6 +23,7 @@ define([
     'pascalprecht.translate',
     'angular-preload-image',
     'upyun',
+    'ap.canvas.ext',
     ]);
 
   /*
