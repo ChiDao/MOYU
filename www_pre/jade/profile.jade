@@ -8,9 +8,9 @@ ion-view.full-card(view-title='个人')
         img(ng-src='{{imageURI}}')
         h2 {{userData.email}}
         p
-          span 发表：{{userData['@clips']['@count']}}
+          span 发表：{{userData['@clips']?userData['@clips']['@count']:0}}
         p
-          span 关注：{{userData['@interests']['@count']}} {{clips.length}}
+          span 关注：{{userData['@interests']['@count']}}
     div(ng-switch="clips.length === 0?0:1")
       div(ng-switch-default)
         ng-include(src="'templates/profile-tempSrc.html'")
