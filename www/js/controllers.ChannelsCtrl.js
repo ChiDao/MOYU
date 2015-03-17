@@ -5,7 +5,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB,$ionicPopup) {
 
-      Auth.login();
+      // Auth.login();
 
       $scope.$on('log-in', function(event,data) {
         console.log("iflogin:"+data);
