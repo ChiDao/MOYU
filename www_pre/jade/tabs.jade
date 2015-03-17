@@ -1,6 +1,6 @@
 ion-tabs.tabs-icon-top.tabs-color-active-positive(ng-class="{'tabs-item-hide':hideTabs()}")
   // Dashboard Tab
-  ion-tab.icon-fix(title='游戏', icon-off='g-icon-budicon-19', icon-on='g-icon-budicon-19', ng-click="Api.jumpTo(homeData().games)")
+  ion-tab.icon-fix(title='游戏', icon-off='g-icon-budicon-19', icon-on='g-icon-budicon-19', ng-click="Api.jumpTo(homeData('game').games)")
     ion-nav-view(name='tab-channels')
   // Chats Tab
   ion-tab.has-badge(title='讨论', badge='badgeContent', badge-style='badge-assertive', icon-off='g-icon-budicon-24', icon-on='g-icon-budicon-24', ng-click="Api.jumpTo(homeData().subscriptions)")

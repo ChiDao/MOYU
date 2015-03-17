@@ -6,8 +6,8 @@ ion-modal-view#AddChannel.Pages
   ion-content
     ion-list
       a.item.item-avatar(on-tap="followGame(channel)",ng-repeat='channel in channels', type='item-text-wrap')
-        img(preload-image default-image="img/loading.png" ng-src='{{channel.gameData.logo?channel.gameData.logo:""}}')
-        | {{channel.gameData.name}}
+        img(preload-image default-image="img/loading.png" ng-src='{{channel["@game"].logo?channel["@game"].logo:""}}')
+        | {{channel.name}}
         //- span.item-note(ng-show="channel.followed == 'No'")
         //-   | 关注
         ion-spinner(icon="ios" ng-show="channel.installed == 'checking'" style="float:right")

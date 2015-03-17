@@ -5,6 +5,14 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB,$ionicPopup) {
 
+      $scope.$on('log-in', function(event,data) {
+        console.log("iflogin:"+data);
+        if(data){
+          $scope.isLoggedIn = true;
+          $scope.bindInit();
+        }
+      });
+
       $scope.filterValid = function(value){
         // console.debug(value);
         return value['@game'];
@@ -107,10 +115,10 @@ define(['app', 'services.Api','services.Modal'], function(app)
           scope.channels = [0,1,2,3,4,5,6,7,8,9];
           Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), scope, 'channels',{
             itearator: {
-              gameData: {
-                type: 'getData',
-                attr: 'game',
-              },
+              // gameData: {
+              //   type: 'getData',
+              //   attr: 'game',
+              // },
               installed: {
                 type: 'const',
                 attr: 'installed',
@@ -208,7 +216,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
               if (channle.installed == "No"){
                 var confirmPopup = $ionicPopup.confirm({
                   title: '下载游戏',
-                  template: '您没有'+channle.gameData.name+'，是否前往App Store安装?'
+                  template: '您没有安装<b style="color:red">'+channle.gameData.name+'</b>，是否前往App Store安装?'
                  });
                 confirmPopup.then(function(res) {
                   if(res) {
