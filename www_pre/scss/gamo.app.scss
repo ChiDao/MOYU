@@ -703,3 +703,20 @@ $pop-border:        1px solid rgba(255,255,255,0.1);
     bottom: 78px;
   }
 }
+
+
+#Welcome {
+  @include at2x('img/welcome-background');
+  .image {
+    margin-top: 40%;
+  }
+  button {
+    color: #404040;
+  }
+  .bar-footer {
+    button {
+      color: #000;
+    }
+    background: none;
+  }
+}

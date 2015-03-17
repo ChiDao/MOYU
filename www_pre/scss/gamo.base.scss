@@ -106,6 +106,14 @@ input::-webkit-input-placeholder {
 	text-overflow: ellipsis;
 }
 
+@mixin vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 /*
 	組件
 */
@@ -249,6 +257,11 @@ h5 {
 	@include page-padding();
 }
 
+
+.vertical-align {
+	@include vertical-align();
+}
+
 .block-empty {
 	display: block;
 	height: 1em;
@@ -334,6 +347,15 @@ h5 {
 	}
 }
 
+.bar-button {
+	button {
+		width: 50%;
+	}
+	button:first-child {
+		border-right: 1px solid rgba(255,255,255,0.35);
+	}
+}
+
 ion-list {
 	.item {
 		min-height: 64px !important;
@@ -342,4 +364,8 @@ ion-list {
 
 img[src=""], img[ng-src=""],img[src='Error.src'] {
    display: none;
+}
+
+.close {
+	font-size: $f-small;
 }

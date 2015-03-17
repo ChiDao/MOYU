@@ -1,6 +1,8 @@
-ion-modal-view#Welcome.modalBlack
+ion-modal-view#Welcome
   p.text-right
-    button.close.color-bule.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()') 关闭
-  div
+    button.close.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()') 跳过
+  .vertical-align.image.text-center
+    img2x(src2x="img/gamo",ext="png")
+  .bar.bar-footer.bar-button
     button.button.button-clear(on-tap='ok()') 注册
     button.button.button-clear(on-tap='ok()') 登录

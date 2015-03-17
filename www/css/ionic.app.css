@@ -10452,6 +10452,13 @@ h5 {
 .page-padding {
   padding: 0 16px; }
 
+.vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%); }
+
 .block-empty {
   display: block;
   height: 1em;
@@ -10518,11 +10525,19 @@ h5 {
   .right-buttons .button-image img {
     width: 100%; }
 
+.bar-button button {
+  width: 50%; }
+.bar-button button:first-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.35); }
+
 ion-list .item {
   min-height: 64px !important; }
 
 img[src=""], img[ng-src=""], img[src='Error.src'] {
   display: none; }
+
+.close {
+  font-size: 11px; }
 
 /*
   color
@@ -10999,6 +11014,19 @@ ion-tabs.tabs-color-active-positive .tab-item {
 #RunGame[state="try-snapshot-true"] .plantC {
   left: 4px;
   bottom: 78px; }
+
+#Welcome {
+  background-image: url("../img/welcome-background.png") !important;
+  background-image: -webkit-image-set(url("../img/welcome-background.png") 1x, url("../img/welcome-background@2x.png") 2x) !important;
+  background-image: image-set(url("../img/welcome-background.png") 1x, url("../img/welcome-background@2x.png") 2x) !important; }
+  #Welcome .image {
+    margin-top: 40%; }
+  #Welcome button {
+    color: #404040; }
+  #Welcome .bar-footer {
+    background: none; }
+    #Welcome .bar-footer button {
+      color: #000; }
 
 /*
 	screen

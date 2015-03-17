@@ -5,6 +5,8 @@ define(['app', 'services.Api','services.Modal'], function(app)
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB,$ionicPopup) {
 
+      Auth.login();
+
       $scope.$on('log-in', function(event,data) {
         console.log("iflogin:"+data);
         if(data){
@@ -89,7 +91,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
 
       $scope.unLoginInit = function(){
         $scope.channels = [0,1,2,3,4,5,6,7,8,9];
-        // var bindChannels = 
+        // var bindChannels =
         Api.getData('/clients-by-platform/ios?_last' + '&r=' + Math.random(), $scope, 'channels', {
           itearator: {
             gameData: {
