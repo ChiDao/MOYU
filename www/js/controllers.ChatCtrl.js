@@ -181,12 +181,14 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
             //下拉刷新
             $scope.pullRefresh = function(){
-              var tmpHash = $scope.comments[0]._id;
+              var tmpHash = $scope.comments[0]?$scope.comments[0]._id:undefined;
               $scope.bindComments.moreGetData().then(function(defer){
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.bindComments.moreUpdateData();
-                $location.hash(tmpHash);
-                $ionicScrollDelegate.anchorScroll();
+                if (tmpHash){
+                  $location.hash(tmpHash);
+                  $ionicScrollDelegate.anchorScroll();
+                }
                 defer(undefined);
               }, function(defer, error){
                 $scope.$broadcast('scroll.refreshComplete');

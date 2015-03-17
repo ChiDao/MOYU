@@ -505,25 +505,27 @@ define(['app', 'services.Modal', 'services.DB'], function(app)
           bindStruct.moreUpdateData = function(){
             if (!_.isArray(bindStruct.newMoreData) && bindStruct.newMoreData.status != 404) defer(bindStruct.newMoreData);
             var targetStruct = bindStruct.scope[bindStruct.scopeDataField];
-            console.debug('get more data', bindStruct.moreAttr, targetStruct.meta[bindStruct.moreAttr]);
-            var listItem;
-            //更新数据
-            if (bindStruct.moreDirection === 'top'){
-              console.debug('tmpHash',1,options.reserve,bindStruct.moreAttr)
-              while(listItem = bindStruct.moreData.pop()){
-                targetStruct.unshift(listItem);
+            if (targetStruct.length){
+              console.debug('get more data', bindStruct.moreAttr, targetStruct.meta[bindStruct.moreAttr]);
+              var listItem;
+              //更新数据
+              if (bindStruct.moreDirection === 'top'){
+                console.debug('tmpHash',1,options.reserve,bindStruct.moreAttr)
+                while(listItem = bindStruct.moreData.pop()){
+                  targetStruct.unshift(listItem);
+                }
+              } else {
+                console.debug('tmpHash',2, options.reserve,bindStruct.moreAttr)
+                while(listItem = bindStruct.moreData.shift()){
+                  targetStruct.push(listItem);
+                }
               }
-            } else {
-              console.debug('tmpHash',2, options.reserve,bindStruct.moreAttr)
-              while(listItem = bindStruct.moreData.shift()){
-                targetStruct.push(listItem);
+              if (_.isArray(bindStruct.newMoreData)){
+                _.forEach(bindStruct.newMoreData, function(listItem){
+                  bindStruct.moreData.push(listItem);
+                })
+                targetStruct.meta[bindStruct.moreAttr] = bindStruct.newMoreData.meta[bindStruct.moreAttr];
               }
-            }
-            if (_.isArray(bindStruct.newMoreData)){
-              _.forEach(bindStruct.newMoreData, function(listItem){
-                bindStruct.moreData.push(listItem);
-              })
-              targetStruct.meta[bindStruct.moreAttr] = bindStruct.newMoreData.meta[bindStruct.moreAttr];
             }
           }
 
