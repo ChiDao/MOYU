@@ -342,6 +342,9 @@ define(['app', 'services.Modal', 'services.DB'], function(app)
                   defer(undefined, response.data);
                 }
               }, function(error){
+                if (error.status === 404){
+                  scope[scopeDataField] = [];
+                }
                 defer(error);
               });
             }
