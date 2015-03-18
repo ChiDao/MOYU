@@ -1,7 +1,7 @@
 ion-view#Chats(view-title='讨论')
   ion-content(on-infinite-scroll="loadMore")
     ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
-    div(ng-switch="subscribes?1:0")
+    div(ng-switch="subscribes.length === 0?0:1")
       div(ng-switch-default)
         ng-include(src="'templates/chat-tempSrc.html'")
       div(ng-switch-when="0")

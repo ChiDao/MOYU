@@ -3,6 +3,7 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
   app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api', '$ionicLoading', 'apImageHelper',
     function($scope, $stateParams, UI, Auth, Api, $ionicLoading, apImageHelper) {
       $scope.Auth = Auth;
+      Auth.updateUser();
       $scope.userData = Auth.currentUser().userData;
       console.debug($scope.userData);
       //setting only for ios8
