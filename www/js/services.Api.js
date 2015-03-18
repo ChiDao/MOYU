@@ -428,7 +428,11 @@ define(['app', 'services.Modal', 'services.DB'], function(app)
                 else defer(error);
               })
             }, function(defer, error){
-              if (error.status === 404) defer(undefined, error);
+              if (error.status === 404){
+                if (bindStruct.dbTable && bindStruct.idCol) DB.flatSave(bindStruct.dbTable, bindStruct.idCol, []);
+                scope[scopeDataField] = [];
+                defer(undefined, error);
+              }
               else defer(error);
             });
           };
@@ -476,7 +480,11 @@ define(['app', 'services.Modal', 'services.DB'], function(app)
                 else defer(error);
               })
             }, function(defer, error){
-              if (error.status === 404) defer(undefined, error);
+              if (error.status === 404) {
+                if (bindStruct.dbTable && bindStruct.idCol) DB.flatSave(bindStruct.dbTable, bindStruct.idCol, []);
+                bindStruct.scope[bindStruct.scopeDataField] = [];
+                defer(undefined, error);
+              }
               else {
                 console.debug('fresh data error', scope[scopeDataField]);
                 defer(error);

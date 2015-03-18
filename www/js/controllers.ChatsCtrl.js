@@ -113,6 +113,7 @@ define(['app', 'services.Api'], function(app)
           $scope.$on("$ionicView.afterEnter", function() {
             $ionicLoading.show();
             $scope.bindSubscribes.refresh().fin(function(){
+              console.debug($scope['subscribes']);
               $ionicLoading.hide();
             });
           });
@@ -140,6 +141,7 @@ define(['app', 'services.Api'], function(app)
         }, function(defer, error){
           defer(error);
         }).fin(function(){
+          console.debug($scope['subscribes']);
           $ionicLoading.hide();
         });
       })

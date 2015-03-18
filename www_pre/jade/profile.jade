@@ -10,7 +10,7 @@ ion-view.full-card(view-title='个人')
       a.item(href='#')
         | 发表：{{userData['@clips']?userData['@clips']['@count']:0}}
       a.item(href='#')
-        | 关注：{{userData['@interests']['@count']}}
+        | 关注：{{userData['@interests']?userData['@interests']['@count']:0}}
     div(ng-switch="clips.length === 0?0:1")
       div(ng-switch-default)
         ng-include(src="'templates/profile-tempSrc.html'")
