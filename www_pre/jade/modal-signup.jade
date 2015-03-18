@@ -17,7 +17,7 @@ ion-modal-view#Signup.Pages
           p.message.form-error(ng-message='maxlength') 手机号码最多11位
 
       .padding
-        button.button.button-block.button-positive.activated(type='submit') 下一步
+        button.button.button-block.button-positive.activated(type='submit' ng-class="{'disabled':disable}") {{txt}}
 
 //- ion-modal-view#Signup.Pages
 //-   ion-header-bar
