@@ -16,6 +16,6 @@ ion-list.talk-list
       br
       small {{subscribe['@clip'].lastCommentUserData.userName}} {{subscribe._modified | timeBefore}}
     span.item-note(ng-class='{first:$first}')
-      img(class="orientation-{{subscribe['@clip']['@game'].orientation}}" ng-if="subscribe['@clip'].img['100']" preload-image default-image="img/loading.png" ng-src="{{subscribe['@clip'].img['100']}}")
+      img(class="orientation-{{subscribe['@clip']['@game'].orientation}}" ng-if="subscribe['@clip'].img['absUrl']" preload-image default-image="img/loading.png" ng-src="{{subscribe['@clip'].img['absUrl']}}")
 
 //- subscribe

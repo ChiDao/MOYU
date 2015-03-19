@@ -8,7 +8,7 @@ ion-list.talk-list
     b {{clip.content}} <br>
     | {{clip._modified | date: 'yyyy-MM-dd'}}
     span.item-note(ng-class='{first:$first}')
-      img(preload-image default-image="img/loading.png" ng-src="{{clip.img['100']}}")
+      img(preload-image default-image="img/loading.png" ng-src="{{clip.img['absUrl']}}")
 
 //- subscribe
 //- .list.card(ng-repeat='clip in clips')
