@@ -32,14 +32,6 @@
     "self-plugins/nl.x-services.plugins.actionsheet",
     "https://github.com/brodysoft/Cordova-SQLitePlugin",
     "https://github.com/brodysoft/Cordova-SQLitePlugin",
-    "https://github.com/VersoSolutions/CordovaClipboard",
-    "org.apache.cordova.console",
-    "org.apache.cordova.statusbar",
-    "org.apache.cordova.splashscreen",
-    "com.ionic.keyboard",
-    "org.apache.cordova.file-transfer",
-    "org.apache.cordova.inappbrowser",
-    "technology.kulak.cordova.appopen",
-    "org.apache.cordova.dialogs"
+    "https://github.com/VersoSolutions/CordovaClipboard"
   ]
 }

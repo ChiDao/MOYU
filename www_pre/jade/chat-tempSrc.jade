@@ -7,7 +7,7 @@ ion-list.talk-list
     collection-item-height="64",
     ng-style="{left: 0,right: 0}"
     )
-    img.game-logo(ng-if='subscribe["@clip"].gameData.logo' preload-image default-image="img/loading.png" ng-src='{{subscribe["@clip"].gameData.logo?subscribe["@clip"].gameData.logo:""}}')
+    img.game-logo(ng-if='subscribe["@clip"]["@game"].logo' preload-image default-image="img/loading.png" ng-src='{{subscribe["@clip"]["@game"].logo?subscribe["@clip"]["@game"].logo:""}}')
     .talk-tip
       i.icon.ion-ios-circle-filled.color-r(ng-if="subscribe.unread")
       b {{subscribe["@clip"].content}}
@@ -16,6 +16,6 @@ ion-list.talk-list
       br
       small {{subscribe['@clip'].lastCommentUserData.userName}} {{subscribe._modified | timeBefore}}
     span.item-note(ng-class='{first:$first}')
-      img(class="orientation-{{subscribe['@clip'].gameData.orientation}}" ng-if="subscribe['@clip'].img['100']" preload-image default-image="img/loading.png" ng-src="{{subscribe['@clip'].img['100']}}")
+      img(class="orientation-{{subscribe['@clip']['@game'].orientation}}" ng-if="subscribe['@clip'].img['100']" preload-image default-image="img/loading.png" ng-src="{{subscribe['@clip'].img['100']}}")
 
 //- subscribe
