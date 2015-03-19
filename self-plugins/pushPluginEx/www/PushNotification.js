@@ -90,7 +90,11 @@ PushNotification.prototype.notifyScreenShot = function() {
 PushNotification.prototype.removeScreenShot = function() {
     cordova.exec(null, null, "PushPlugin", "removeScreenShot", []);
 };              
-               
+
+//open appstore in app  
+PushNotification.prototype.openAppStore = function(options) {
+   cordova.exec(null, null, "PushPlugin", "openAppStore", [options]);
+};            
 
 //-------------------------------------------------------------------
 

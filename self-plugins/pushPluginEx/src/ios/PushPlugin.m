@@ -196,6 +196,36 @@ if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8)
     [[NSNotificationCenter defaultCenter]  removeObserver:self name:UIApplicationUserDidTakeScreenshotNotification object:nil];
 }
 
+//打开appstore
+- (void)openAppStore:(CDVInvokedUrlCommand*)command;
+{
+    self.callbackId = command.callbackId;
+    
+    NSArray* arguments = command.arguments;
+    
+    NSMutableDictionary* options = [arguments objectAtIndex:0];
+    NSString* appId =[options objectForKey:@"appid"];
+     NSLog(@"id:%@",appId);
+    // Initialize Product View Controller
+    SKStoreProductViewController *storeProductViewController = [[SKStoreProductViewController alloc] init];
+    // Configure View Controller
+    [storeProductViewController setDelegate:self];
+    [storeProductViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier : appId}
+                                          completionBlock:^(BOOL result, NSError *error) {
+                                              if (error) {
+                                                  NSLog(@"Error %@ with User Info %@.", error, [error userInfo]);
+                                              } else {
+                                                  // Present Store Product View Controller
+                                                  [self.viewController presentViewController:storeProductViewController animated:YES completion:nil];
+                                              }     
+                                          }];
+}
+
+//关闭
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [self.viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 /*
 - (void)isEnabled:(NSMutableArray *)arguments withDict:(NSMutableDictionary *)options {
     UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
