@@ -51,11 +51,29 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
               onOk: function(form,scope){
                 scope.hideModal();
                 Api.postModal('/signup', {}, {
+                  init:function(signupScope){
+                    signupScope.disable = false;
+                    signupScope.txt = "下一步";
+                  },
                   onOk: function(form, signupScope){
-                      return Thenjs(function(defer){
-                        signupScope.formData.tel = signupScope.formData.tel.toString();
-                        defer(undefined);
-                      });
+                    signupScope.disable = true;
+                    signupScope.txt = 60;
+                    timedCount();
+                    function timedCount(){
+                      signupScope.txt = signupScope.txt -1;
+                      if (signupScope.txt > 0){
+                        $timeout(function(){
+                          timedCount();
+                        },1000);
+                      }else{
+                        signupScope.disable = false;
+                        signupScope.txt = "下一步";
+                      }               
+                    }
+                    return Thenjs(function(defer){
+                      signupScope.formData.tel = signupScope.formData.tel.toString();
+                      defer(undefined);
+                    });
                   },
                   onSuccess: function(form, signupScope){
                     console.debug(signupScope.formData.tel);
