@@ -5,7 +5,7 @@ ion-view#Chat(view-title='{{::clip.content}}' on-touch="onTouch()")
     span
       | 收到新消息
   ion-content(han-header='true', start-y='120', on-scroll='doScroll()')
-    img.top-image(ng-src="{{clip['img']['294@2x']}}")
+    img.top-image(ng-src="{{clip['img']['absUrl']}}")
     ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
     div(ng-switch="comments.length === 0?0:1")
       div(ng-switch-when="0")

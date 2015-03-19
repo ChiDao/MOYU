@@ -26,8 +26,9 @@
 #import <Foundation/Foundation.h>
 #import <Cordova/CDV.h>
 #import <Cordova/CDVPlugin.h>
+#import <StoreKit/StoreKit.h>
 
-@interface PushPlugin : CDVPlugin
+@interface PushPlugin : CDVPlugin <SKStoreProductViewControllerDelegate>
 {
     NSDictionary *notificationMessage;
     BOOL    isInline;

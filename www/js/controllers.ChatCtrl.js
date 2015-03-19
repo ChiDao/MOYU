@@ -212,11 +212,12 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
 
             //在讨论页面内，根据comet更新comment
             ApiEvent.registerByResource('clip', $stateParams.clipId, function(event){
-              console.debug($state.current.name === 'tab.chat' , $state.current.params.chatId == $stateParams.chatId);
-              if ($state.current.name === 'tab.chat' && $state.current.params.clipId == $stateParams.clipId){
+              console.debug(_.indexOf(['tab.chat','tab.channel-chat'], $state.current.name ) >= 0 , $state.current.params.chatId == $stateParams.chatId);
+              if (_.indexOf(['tab.chat','tab.channel-chat'], $state.current.name ) >= 0 && $state.current.params.clipId == $stateParams.clipId){
                 var currentPosition = $ionicScrollDelegate.getScrollPosition().top;
                 var scrollHeight = $ionicScrollDelegate.getScrollView().__maxScrollTop;
-                $scope.bindComments.newer().then(function(){
+                var updateFunction = $scope.clip.comments.length?$scope.bindComments.refresh:$scope.bindComments.newer;
+                updateFunction().then(function(){
                   $timeout(function(){
                     if (currentPosition == scrollHeight){
                       $ionicScrollDelegate.scrollBottom();

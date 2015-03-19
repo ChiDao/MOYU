@@ -44,58 +44,20 @@ define(['app', 'services.Api'], function(app)
                 }
                 // console.debug("getData 20",subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']);
                 
-                async.parallel([
-                  function(callback){
-                    if (subcribe['@clip'] && subcribe['@clip'].game){
-                      Api.getData(subcribe['@clip'].game, subcribe['@clip'], 'gameData').then(function(){
-                        console.debug(subcribe['@clip'].game, subcribe['@clip'].gameData);
-                        console.debug(subcribe['@clip'].lastCommentUserData)
-                        callback(undefined);
-                      }, function(){
-                        // console.debug("getData 22");
-                        callback("Get game data error");
-                      });
-                    } else {
-                      callback(undefined);
-                    }
-                  },
-                  function(callback){
-                    if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
-                      var comments = subcribe['@clip']['@comments']['slice'];
-                      var tmpLastComment = comments[comments.length - 1];
-                      console.debug(tmpLastComment);
-                      subcribe['@clip']['lastCommentData'] = tmpLastComment;
-                      Api.getData(tmpLastComment.user, subcribe['@clip'], 'lastCommentUserData', {
-                        itearator:{
-                          profileData:{
-                            type: 'getData',
-                            attr: 'profile',
-                            successIf404: true
-                          }
-                        }
-                      }).then(function(){
-                        console.debug(subcribe['@clip']['lastCommentUserData']['profileData']);
-                        subcribe['@clip']['lastCommentUserData'].userName =
-                          (subcribe['@clip']['lastCommentUserData']['profileData']?
-                          subcribe['@clip']['lastCommentUserData']['profileData'].nickname:
-                          subcribe['@clip']['lastCommentUserData'].tel);
-                        callback(undefined);
-                      }, function(innerDefer){
-                        // console.debug("getData 23");
-                        callback("Get user data error");
-                      });
-                    }else{
-                      // console.debug("getData 24");
-                      callback(undefined);
-                    }
-                  }
-                ], function(error){
-                  if (error){
-                    defer(error);
-                  } else {
-                    defer(undefined);
-                  }
-                })//End of parallel
+                if (subcribe['@clip'] && subcribe['@clip']['@comments'] && subcribe['@clip']['@comments']['slice']){
+                  var comments = subcribe['@clip']['@comments']['slice'];
+                  var tmpLastComment = comments[comments.length - 1];
+                  console.debug(tmpLastComment);
+                  subcribe['@clip']['lastCommentData'] = tmpLastComment;
+                  subcribe['@clip']['lastCommentUserData'] = tmpLastComment['@user'];
+                  subcribe['@clip']['lastCommentUserData'].userName =
+                    (subcribe['@clip']['lastCommentUserData']['@profile']?
+                    subcribe['@clip']['lastCommentUserData']['@profile'].nickname:
+                    subcribe['@clip']['lastCommentUserData'].tel);
+                  defer(undefined);
+                }else{
+                  defer(undefined);
+                }
               });//End of Thenjs
             }
           }
