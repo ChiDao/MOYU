@@ -216,7 +216,8 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
               if ($state.current.name === 'tab.chat' && $state.current.params.clipId == $stateParams.clipId){
                 var currentPosition = $ionicScrollDelegate.getScrollPosition().top;
                 var scrollHeight = $ionicScrollDelegate.getScrollView().__maxScrollTop;
-                $scope.bindComments.newer().then(function(){
+                var updateFunction = $scope.clip.comments.length?$scope.bindComments.refresh:$scope.bindComments.newer;
+                updateFunction().then(function(){
                   $timeout(function(){
                     if (currentPosition == scrollHeight){
                       $ionicScrollDelegate.scrollBottom();
