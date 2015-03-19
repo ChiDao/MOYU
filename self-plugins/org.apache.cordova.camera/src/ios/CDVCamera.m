@@ -164,6 +164,48 @@ static NSSet* org_apache_cordova_validArrowDirections;
     self.hasPendingOperation = NO;
 }
 
+- (void)takePhoto:(CDVInvokedUrlCommand*)command
+{
+    NSArray* arguments = command.arguments;
+    
+    double startTime = ([[arguments objectAtIndex:0] doubleValue]) / 1000;
+    bool orientation = [[arguments objectAtIndex:1] boolValue]; // default: false
+    
+    ALAssetsLibrary *library = [ALAssetsLibrary new];
+    
+    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
+            if (asset) {
+                ALAssetRepresentation *representation = [asset defaultRepresentation];
+                NSLog(@"Photo get");
+                        
+                UIImage *image = [UIImage imageWithCGImage:representation.fullResolutionImage
+                                                   scale:[representation scale]
+                                             orientation:(UIImageOrientation)[representation orientation]];
+                NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
+                NSString* docsPath = [NSTemporaryDirectory()stringByStandardizingPath];
+                NSError* err = nil;
+                NSString *filePath = [NSString stringWithFormat:@"%@/%@1.%@", docsPath, CDV_PHOTO_PREFIX, @"png"];
+                if ([imageData writeToFile:filePath options:NSAtomicWrite error:&err]) {
+                    // [[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString]
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:filePath];
+                    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                    *stop = YES;
+                } else {
+                    NSLog(@"Failed to delete: %@ (error: %@)", filePath, err);
+                }
+            }
+        }];
+        if (group == nil) {
+            CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no image selected"];
+            [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+        }
+    } failureBlock:^(NSError *error) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[error localizedDescription]];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
 - (void)takeScreenShot:(CDVInvokedUrlCommand*)command
 {
     NSArray* arguments = command.arguments;

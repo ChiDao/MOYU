@@ -74,6 +74,7 @@ typedef NSUInteger CDVMediaType;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong) NSData* data;
 
+- (void)takePhoto:(CDVInvokedUrlCommand*)command;
 - (void)takeScreenShot:(CDVInvokedUrlCommand*)command;
 - (void)takeScreenShots:(CDVInvokedUrlCommand*)command;
 /*
