@@ -201,7 +201,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
           currentUser.role = userRoles.public;
           localStorage.removeItem('user', null);
           $rootScope.$broadcast('logout');
-          success();
+          if(success)success();
         },
         accessLevels: accessLevels,
         userRoles: userRoles
