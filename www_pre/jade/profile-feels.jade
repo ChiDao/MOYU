@@ -11,4 +11,6 @@ ion-view.full-card(view-title='编辑')
         i.icon.ion-ios-arrow-right
 
     .padding
-      button.button.button-block.button-positive.activated(on-tap="Auth.login()") 登出
+      div(ng-switch="Auth.isLoggedIn()")
+        button.button.button-block.button-positive.activated(ng-switch-default="false" on-tap="Auth.login()") 登入
+        button.button.button-block.button-positive.activated(ng-switch-when="true" on-tap="Auth.logout()") 登出
