@@ -224,8 +224,7 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
                     } else {
                       $scope.getNewComments = true;
                     }
-                  }, 200),
-                  Api.getData($scope.clip.comments, $scope, 'tmpClip', {last:true});
+                  }, 200);
                 })
               }
             }, '1');

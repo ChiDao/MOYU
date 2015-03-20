@@ -80,7 +80,7 @@ define(['app'], function(app)
           })
       };
       // console.debug(Auth.currentUser().userData.homeData.upload);
-      // console.debug("Auth.isLoggedIn()", Auth.currentUser().userData.homeData.event);
+      console.debug("Auth.isLoggedIn()", Auth.isLoggedIn(), Auth.currentUser().userData.homeData.event);
       if (Auth.isLoggedIn()) request(Auth.currentUser().userData.homeData.event + '?_last', true);
 
       //路由改变，清楚绑定路由的注册
