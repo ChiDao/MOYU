@@ -111,6 +111,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
                     currentUser.userData = me;
                     //存储用户信息到localStorage
                     localStorage.setItem('user', JSON.stringify(me));
+                    $rootScope.$broadcast('login', me);
                     console.log(me);
                     
                     scope.closeModal();
@@ -199,6 +200,7 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
           currentUser.userName = '';
           currentUser.role = userRoles.public;
           localStorage.removeItem('user', null);
+          $rootScope.$broadcast('logout');
           success();
         },
         accessLevels: accessLevels,
