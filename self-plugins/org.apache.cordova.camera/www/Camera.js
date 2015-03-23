@@ -68,6 +68,19 @@ cameraExport.getPicture = function(successCallback, errorCallback, options) {
     //return new CameraPopoverHandle();
 };
 
+cameraExport.takePhoto = function(successCallback, errorCallback, options) {
+    argscheck.checkArgs('fFO', 'Camera.takePhoto', arguments);
+    options = options || {};
+    var getValue = argscheck.getValue;
+
+    var date = getValue(options.date, new Date());
+    var orientation = getValue(options.orientation, true); // true: 竖屏
+
+    var args = [date, orientation];
+
+    exec(successCallback, errorCallback, "Camera", "takePhoto", args);
+};
+
 cameraExport.getScreenShot = function(successCallback, errorCallback, options) {
     argscheck.checkArgs('fFO', 'Camera.getScreenShot', arguments);
     options = options || {};

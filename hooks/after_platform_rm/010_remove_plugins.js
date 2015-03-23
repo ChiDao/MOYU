@@ -23,6 +23,7 @@ var pluginlist = [
     "nl.x-services.plugins.actionsheet",
     "com.verso.cordova.clipboard",
     "org.apache.cordova.dialogs",
+    "org.devgeeks.Canvas2ImagePlugin",
     "com.brodysoft.sqlitePlugin",
 ];
 
