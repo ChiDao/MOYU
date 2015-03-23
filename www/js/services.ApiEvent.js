@@ -52,9 +52,17 @@ define(['app'], function(app)
         });
       }
 
+      var apiLink = undefined;
+      var isInit = true;
+
       //递归请求数据
-      var request = function(apiLink, isInit){
+      var request = function(){
           console.debug('ApiEvent running');
+          if (!apiLink){
+            $timeout(function(){
+              request();
+            },2000);
+          }
           // Api.getData(apiLink, tmp, 'events');
           Api.getData(apiLink, tmp, 'events', {random:true}).then(function(){
             // console.debug('ApiEvent return', tmp.events);
@@ -63,25 +71,43 @@ define(['app'], function(app)
                 if (!isInit){
                   runCallbacks(tmp.events);
                 }
-                var next = tmp.events.meta.next;
+                isInit = false;
+                apiLink = tmp.events.meta.next;
                 tmp.events = undefined;
-                request(next);
+                request();
               },1);
             }else{
+              isInit = false;
               $timeout(function(){
-                request(apiLink);
+                request();
               },1);
             }
           }, function(defer, error){
             console.debug(JSON.stringify(error));
             $timeout(function(){
-              request(apiLink);
+              request();
             },10000);
           })
       };
       // console.debug(Auth.currentUser().userData.homeData.upload);
-      // console.debug("Auth.isLoggedIn()", Auth.currentUser().userData.homeData.event);
-      if (Auth.isLoggedIn()) request(Auth.currentUser().userData.homeData.event + '?_last', true);
+      // console.debug("Auth.isLoggedIn()", Auth.isLoggedIn(), Auth.currentUser().userData.homeData.event);
+      if (Auth.isLoggedIn()){
+        apiLink = Auth.currentUser().userData.homeData.event + '?_last'
+        isInit = true;
+        request();
+      }
+      $rootScope.$on('login', function(e, userData){
+        var isRunning = apiLink?1:0;
+        apiLink = Auth.currentUser().userData.homeData.event + '?_last';
+        isInit = true;
+        if (!isRunning){
+          request();
+        }
+      })
+      $rootScope.$on('logout', function(e){
+        apiLink = undefined;
+        isInit = true;
+      })
 
       //路由改变，清楚绑定路由的注册
       $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
