@@ -27,19 +27,29 @@ define(['app'], function(app)
           }
           scope.closeModal = function(){
             console.debug('OkCancleModal closeModal');
+            if(_.isFunction(eventHandles.onfinish)){
+              eventHandles.onfinish(scope);
+            }
+
             if (_.isFunction(eventHandles.onClose)){
               eventHandles.onClose(scope);
             }else{
+
               modal.hide();
             }
+                       
           }
           scope.cancelModal = function(){
             console.debug('OkCancleModal cancelModal');
+            if(_.isFunction(eventHandles.onfinish)){
+              eventHandles.onfinish(scope);
+            }
+
             if (_.isFunction(eventHandles.onCancel)){
               eventHandles.onCancel(scope);
             }else{
               modal.hide();
-            }
+            } 
           }
           modal.show();
           defer(undefined, scope, modal);

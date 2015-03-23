@@ -44,14 +44,14 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
             }
           });
         },
-        login: function(success){ 
+        login: function(success,finish){ 
           //填写邮箱signup对话框
           (function(preRegistModal){
             Modal.okCancelModal('templates/modal-welcome.html', {}, {
               onOk: function(form,scope){
                 scope.hideModal();
                 Api.postModal('/signup', {}, {
-                  init:function(signupScope){
+                  init:function(signupScope){ 
                     signupScope.disable = false;
                     signupScope.txt = "下一步";
                   },
@@ -79,8 +79,20 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
                     console.debug(signupScope.formData.tel);
                     signupScope.hideModal();
                     preRegistModal(signupScope.formData.tel);
+                  },
+                  onfinish: function(scope){
+                  console.log("完成");
+                  if(finish != undefined){
+                    finish();
+                  } 
                   }
                 });
+              },
+              onfinish: function(scope){
+                console.log("完成");
+                if(finish != undefined){
+                  finish();
+                }               
               }
             })
             
@@ -142,6 +154,12 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
                   scope.commitFormError = true;
                   scope.commitFormErrorMsg = error.data.alertMsg;
                   console.log('login fail, get data: ' + JSON.stringify(error));
+                },
+                onfinish: function(scope){
+                  console.log("完成");
+                  if(finish != undefined){
+                    finish();
+                  }                   
                 }
               });//End of postModal
             };//End of function to be passed
@@ -236,21 +254,29 @@ define(['app', 'services.Modal', 'services.Api', 'services.Push'], function(app)
       $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
 
         console.log(toState.data.access);
-        if (!Auth.pageAuth(toState.data.access)) {
-          console.log('缺少权限访问' + toState.url);
-          Auth.login(function(){
-            console.log("登陆获得进入权限");
-          },function(){
-            //登陆失败
-          },function(){
-            //关闭登陆窗
-            //Todo: 跳转，但不记录本次state
-            // alert('跳回上一页');
-            // $state.go('app.playlists');
-          });
-        }else{
-          console.log('具有权限访问' + toState.url);        
+        console.log(JSON.stringify(toState));
+        console.log(Auth.pageAuth(toState.data.access));
+        if (toState.name === 'tab.chats' || toState.name === 'tab.profile'){
+          if (Auth.pageAuth(toState.data.access) != 2) {
+            console.log('缺少权限访问' + toState.url); 
+            Auth.login(function(){
+              console.log("登陆获得进入权限");
+            },function(){
+              console.log("缺少权限访问");
+              $state.go('tab.channels');
+              //登陆失败
+            },function(){
+              console.log('缺少权限访问' + toState.url);
+              //关闭登陆窗
+              //Todo: 跳转，但不记录本次state
+              // alert('跳回上一页');
+              // $state.go('app.playlists');              
+            });            
+          }else{
+            console.log('具有权限访问' + toState.url);        
+          }
         }
+        
       });
       $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
         toState.params = $stateParams;

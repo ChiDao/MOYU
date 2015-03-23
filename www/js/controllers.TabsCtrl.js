@@ -21,14 +21,14 @@ define(['app', 'services.Api'], function(app)
 
         $scope.Api = Api;
         $scope.homeData = function(tab){
-          if(!Auth.isLoggedIn()){
-            if (tab === "game") return;
-            Auth.login(function(){
-                $scope.$broadcast('log-in', true);
-            });
-          }else{
+          // if(!Auth.isLoggedIn()){
+          //   if (tab === "game") return;
+          //   Auth.login(function(){
+          //       $scope.$broadcast('log-in', true);
+          //   });
+          // }else{
             return Auth.currentUser().userData.homeData;
-          }            
+          // }            
         };
     	
     	$scope.hideTabs = function(){
