@@ -5,8 +5,8 @@ ion-view.full-card(view-title='个人')
     ion-refresher(pulling-text=' ', on-refresh='pullRefresh()')
     .list
       a.item.item-avatar
-        img(ng-src='{{imageURI}}')
-        h2 用户名：{{userData.email}}
+        img(ng-src='{{userData["@profile"].logo.absUrl}} ')
+        h2 用户名：{{userData['@profile'].nickname}} 
       a.item(href='#')
         | 发表：{{userData['@clips']?userData['@clips']['@count']:0}}
       a.item(href='#')

@@ -1,7 +1,7 @@
 define(['app', 'services.Api', 'services.Auth'], function(app)
 {
-  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api', '$ionicLoading', 'apImageHelper',
-    function($scope, $stateParams, UI, Auth, Api, $ionicLoading, apImageHelper) {
+  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api', '$ionicLoading', 'apImageHelper','Modal','upyun',
+    function($scope, $stateParams, UI, Auth, Api, $ionicLoading, apImageHelper,Modal,upyun) {
       $scope.Auth = Auth;
       Auth.updateUser();
       $scope.userData = Auth.currentUser().userData;
@@ -19,7 +19,7 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
         return Api.getData('/user-profile/' + $scope.userData._id, $scope, 'formData', {
         }).then(function(defer){
           // console.log("bbb"+JSON.stringify($scope.formData));
-          $scope.imageURI = $scope.formData.logo['100'];
+          $scope.imageURI = ($scope.formData.logo.absUrl || $scope.formData.logo['100']);
           defer(undefined);
           // console.debug($scope.clips);
         }, function(defer, error){
@@ -83,6 +83,11 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
 
       //编辑资料
       $scope.getPicture = function(){
+        // Modal.okCancelModal('templates/modal-profile-logo.html', {}, {
+        //   init:function(){
+
+        //   }
+        // })
         var options = {
             'buttonLabels': ['拍照', '从手机相册选择'],
             'androidEnableCancelButton' : true, // default false
@@ -104,8 +109,61 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
               });
             }
             function onSuccess(imageURI) {
-              $scope.imageURI = imageURI;
-            }
+              Modal.okCancelModal('templates/modal-profile-logo.html', {}, {
+                init: function(scope){
+                  scope.canvasId = 'canvas' + Math.random();
+                  scope.canvas = {
+                    src: imageURI,
+                    image: null,
+                    frame: null,
+                    scale: null,
+                    offset: null
+                  }
+                  scope.zoomIn = function() {
+                    scope.canvas.scale *= 1.2;
+                  }
+                  scope.zoomOut = function() {
+                    scope.canvas.scale /= 1.2;
+                  }
+                },
+                onOk: function(form, scope){
+                  Thenjs(function(defer){
+                    var maxSize = {
+                      width: 1500,
+                      height: 1500
+                    };
+
+                    var canvasData = apImageHelper.cropImage(scope.canvas.image, scope.canvas.frame, maxSize);
+                    // $scope.imageURI = canvasData.dataURI;
+                    defer(undefined);
+                  }).then(function(defer){
+                    var openGameTime = new Date().getTime();
+                    window.canvas2ImagePlugin.saveImageDataToLibrary(
+                      function(msg){
+                        console.log("下载成功"+msg);
+                        $scope.imageURI = 'img/upload-photo.png'; //图片重置
+                        navigator.camera.takePhoto(function(photo){
+                          $scope.imageURI = photo;
+                          console.log("成功截图"+$scope.imageURI); 
+                          scope.hideModal();
+                        }, 
+                        function  (message) {
+                          alert('Failed because: ' + message);
+                        }, 
+                        {
+                          date: openGameTime,
+                        });                                                                 
+                      },
+                      
+                      function(err){
+                        console.log("下载失败"+err);
+                      },
+                      document.getElementById(scope.canvasId)
+                    );
+                  })                 
+                }
+              })//End of Modal
+            }//End of onSuccess
 
             function onFail(message) {
               console.log('Failed because: ' + message);
@@ -113,59 +171,20 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
         };
         window.plugins.actionsheet.show(options, callback);
       }
-      $scope.canvas = {
-        src: null,
-        image: null,
-        frame: null,
-        scale: null,
-        offset: null
-      }; 
-      $scope.zoomIn = function() {
-        $scope.canvas.scale *= 1.2;
-      }
-      $scope.zoomOut = function() {
-        $scope.canvas.scale /= 1.2;
-      }
-      $scope.crop = function() {
-        var maxSize = {
-          width: 1500,
-          height: 1500
-        };
 
-        var canvasData = apImageHelper.cropImage($scope.canvas.image, $scope.canvas.frame, maxSize);
-        $scope.imageURI = canvasData.dataURI;
-      }
-      $scope.save = function(){
+      $scope.save = function(){ 
         Thenjs(function(defer){
-          if($scope.imageURI.substr(0,4) != 'http'){
-            var win = function (r) {
-                console.log("Code = " + r.responseCode);
-                console.log("Response = " + r.response);
-                console.log("Sent = " + r.bytesSent);
-                var returnJson = JSON.parse(r.response);
-                $scope.formData.logo = returnJson;
-                defer(undefined);
-            };
-
-            var fail = function (error) {
-                alert("An error has occurred: Code = " + JSON.stringify(error));
-                console.log("upload error source " + error.source);
-                console.log("upload error target " + error.target);
-                defer("Upload image error");
-            };
-
-            var options = new FileUploadOptions();
-            options.fileKey = "file";
-            options.fileName = $scope.imageURI.substr($scope.imageURI.lastIndexOf('/') + 1);
-            console.log("fileName:" + $scope.imageURI.substr($scope.imageURI.lastIndexOf('/') + 1));
-            options.mimeType = "image/jpeg";
-            //options.Authorization = "Basic emFra3poYW5nejgyMTE1MzY0"
-
-            var ft = new FileTransfer();
-            ft.upload($scope.imageURI, encodeURI(Auth.currentUser().userData.homeData.upload), win, fail, options);
-          }else{
-            defer(undefined);
-          }                  
+          upyun.upload($scope.imageURI, function(err, response, image){
+            if (err) console.error(err);
+            if (image.code === 200 && image.message === 'ok') {
+              $scope.imageURI = image.absUrl;
+              $scope.formData.logo = image;
+              // console.log("图片信息："+JSON.stringify(image));
+              defer(undefined);
+            }
+            $scope.$apply();
+          }); 
+                           
         }).then(function(defer){
           // console.log("aaa"+JSON.stringify($scope.formData));  
           Api.putData('/user-profile/' + $scope.userData._id, $scope.formData).then(function(defer, response){

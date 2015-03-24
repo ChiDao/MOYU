@@ -22,7 +22,7 @@ var pluginlist = [
     "self-plugins/pushPluginEx",
     "self-plugins/nl.x-services.plugins.actionsheet",
     "https://github.com/VersoSolutions/CordovaClipboard",
-    "https://github.com/devgeeks/Canvas2ImagePlugin.git",
+    "self-plugins/org.devgeeks.Canvas2ImagePlugin",
     // QOlI ADD:
     "org.apache.cordova.dialogs"
 ];

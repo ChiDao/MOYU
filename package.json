@@ -33,10 +33,7 @@
     "https://github.com/brodysoft/Cordova-SQLitePlugin",
     "https://github.com/brodysoft/Cordova-SQLitePlugin",
     "https://github.com/VersoSolutions/CordovaClipboard",
-<<<<<<< HEAD
     "https://github.com/devgeeks/Canvas2ImagePlugin.git",
-=======
->>>>>>> 0c3d6ad3deebe1e15c7bfd80c78a8cac2def20e9
     "org.apache.cordova.console",
     "org.apache.cordova.statusbar",
     "org.apache.cordova.splashscreen",
@@ -44,6 +41,7 @@
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
-    "org.apache.cordova.dialogs"
+    "org.apache.cordova.dialogs",
+    "self-plugins/org.devgeeks.Canvas2ImagePlugin"
   ]
 }

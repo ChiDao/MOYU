@@ -164,8 +164,8 @@ define(['app', 'services.Api', 'services.ApiEvent', 'services.Push'], function(a
                 type: 'transfer',
                 attr: '@user',
                 transfer: function(user){
-                  return (user['@profile'] && user['@profile'].logo && user['@profile'].logo['100'])
-                    ?user['@profile'].logo['100']
+                  return (user['@profile'] && user['@profile'].logo && user['@profile'].logo['100']||user['@profile'] && user['@profile'].logo && user['@profile'].logo.absUrl)
+                    ?(user['@profile'].logo['100'] || user['@profile'].logo.absUrl)
                     :'img/ionic.png';
                 }
               }
