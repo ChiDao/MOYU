@@ -44,6 +44,31 @@
 	
 }
 
+- (void)removeImgFromLibrary:(CDVInvokedUrlCommand*)command
+{
+    self.callbackId = command.callbackId;
+    NSURL *imgURL = [NSURL URLWithString:[command.arguments objectAtIndex:0]];
+    
+    ALAssetsLibrary* library = [[ALAssetsLibrary alloc]init];
+    
+    [library assetForURL:imgURL resultBlock:^(ALAsset *asset)
+     {
+         [asset setImageData:NULL metadata:NULL completionBlock:^(NSURL *assetURL, NSError *error)
+          {
+              if (error != NULL){
+                  NSLog(@"ERROR: %@",error);
+              }else{
+                  NSLog(@"删除成功!");
+              }
+          }];
+
+     } failureBlock:^(NSError *error)
+     {
+         NSLog(@"ERROR: %@",error);
+     }];
+
+}
+
 // - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 // {
 //     // Was there an error?

@@ -145,6 +145,7 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
                         navigator.camera.takePhoto(function(photo){
                           $scope.imageURI = photo;
                           console.log("成功截图"+$scope.imageURI); 
+                          window.canvas2ImagePlugin.removeImgFromLibrary(msg);
                           scope.hideModal();
                         }, 
                         function  (message) {

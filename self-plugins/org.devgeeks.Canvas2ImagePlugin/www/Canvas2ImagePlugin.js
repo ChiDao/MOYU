@@ -8,6 +8,9 @@
 //
 
   module.exports = {
+    removeImgFromLibrary:function(asseturl) {               
+        return cordova.exec(null, null, "Canvas2ImagePlugin","removeImgFromLibrary",[asseturl]);
+    },
     
     saveImageDataToLibrary:function(successCallback, failureCallback, canvasId) {
         // successCallback required
