@@ -124,6 +124,8 @@
 
 		<header-file src="src/ios/AppDelegate+notification.h" />
 		<header-file src="src/ios/PushPlugin.h" />
+        
+        <framework src="StoreKit.framework" />
 
 	</platform>
 
