@@ -96,7 +96,6 @@
       } catch (err) {
         callback(err);
       }
-      defer(undefined);
     };
 
     var fail = function (error) {
