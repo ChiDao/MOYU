@@ -24,6 +24,7 @@ define([
     'angular-preload-image',
     'upyun',
     'ap.canvas.ext',
+    'classy'
     ]);
 
   /*
