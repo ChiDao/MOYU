@@ -1,20 +1,18 @@
 define(['app', 'services.Api', 'services.Auth'], function(app)
 {
-  app.controller('ProfileCtrl', ['$scope', '$stateParams', 'UI', 'Auth', 'Api', '$ionicLoading', 'apImageHelper','Modal','upyun',
-    function($scope, $stateParams, UI, Auth, Api, $ionicLoading, apImageHelper,Modal,upyun) {
-      $scope.Auth = Auth;
-      Auth.updateUser();
-      $scope.userData = Auth.currentUser().userData;
-      console.debug($scope.userData);
+  app.controller('ProfileCtrl', ['$scope', '$rootScope', '$stateParams', 'UI', 'Auth', 'Api', '$ionicLoading', 'apImageHelper',
+    'Modal','upyun',
+    function($scope, $rootScope, $stateParams, UI, Auth, Api, $ionicLoading, apImageHelper,
+      Modal,upyun) {
+      
       //setting only for ios8
       $scope.setting = (ionic.Platform.device().platform=="iOS" && ionic.Platform.device().version.substr(0,1)>=8);
       $scope.toSet = function(){
         window.plugins.pushNotification.toSetting();
       }
 
+      $scope.Auth = Auth;
       //获取资料
-      $scope.imageURI = 'img/upload-photo.png';
-      $scope.formData = {logo:'',nickname:''};
       var getProfile = function(){
         return Api.getData('/user-profile/' + $scope.userData._id, $scope, 'formData', {
         }).then(function(defer){
@@ -30,6 +28,18 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
       
       var init;
       (init = function(){
+        $scope.clips = [];
+        $scope.imageURI = 'img/upload-photo.png';
+        $scope.formData = {logo:'',nickname:''};
+
+        if (Auth.isLoggedIn()){
+          Auth.updateUser();
+          $scope.userData = Auth.currentUser().userData;
+          console.debug($scope.userData);
+        } else {
+          return;
+        }
+
         var bindStruct = Api.bindList($scope.userData.clips, $scope, 'clips', {
           last:true,
           itearator: {
@@ -81,6 +91,15 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
           $ionicLoading.hide();
         })
       })();
+
+      $rootScope.$on('login', function(e, userData){
+        console.debug('login');
+        init();
+      })
+      $rootScope.$on('logout', function(e, userData){
+        console.debug('logout');
+        init();
+      })
       
       //编辑资料
       $scope.getPicture = function(){
