@@ -73,10 +73,12 @@ define(['app', 'services.Api','services.Modal'], function(app)
             };
 
             $scope.enterRefresh = function(){
-              $ionicLoading.show();
-              bindChannels.refresh().fin(function(){
-                $ionicLoading.hide();
-              });
+              if (Auth.isLoggedIn()){
+                $ionicLoading.show();
+                bindChannels.refresh().fin(function(){
+                  $ionicLoading.hide();
+                });
+              }
             }
 
             $scope.$on("$ionicView.afterEnter", $scope.enterRefresh);
@@ -120,6 +122,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
         init();
       })
       $rootScope.$on('logout', function(e){
+        console.debug('logout')
         init();
       })
 
