@@ -28,59 +28,60 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
         });
       };
       
-      var bindStruct = Api.bindList($scope.userData.clips, $scope, 'clips', {
-        last:true,
-        itearator: {
-          gameData: {
-            type: 'getData',
-            attr: 'game'
+      var init;
+      (init = function(){
+        var bindStruct = Api.bindList($scope.userData.clips, $scope, 'clips', {
+          last:true,
+          itearator: {
+            gameData: {
+              type: 'getData',
+              attr: 'game'
+            }
           }
-        }
-      });
+        });
 
-
-      $ionicLoading.show();
-      async.parallel([
-        function(callback){
-          getProfile().fin(function(defer){
-            callback(undefined);
-          })
-        },
-        function(callback){
-          bindStruct.init().then(function(defer){
-            // pull refresh
-            $scope.pullRefresh = function() {
-              bindStruct.refresh().then(function(defer){
-                $scope.$broadcast('scroll.refreshComplete');
-                $scope.hasMore = bindStruct.moreData.length;
-              }, function(defer){
-                $scope.$broadcast('scroll.refreshComplete');
-                $scope.hasMore = bindStruct.moreData.length;
-              })
-            };
-            $scope.loadMore = function() {
-              bindStruct.more().then(function(defer){
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-                $scope.hasMore = bindStruct.moreData.length;
-              }, function(defer){
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-                $scope.hasMore = bindStruct.moreData.length;
-              })
-            };
-            defer(undefined);
-          }, function(defer, error){
-            console.debug(error);
-            defer(error);
-          })
-          .fin(function(){
-            callback(undefined);
-          });
-        }
-      ], function(){
-        $ionicLoading.hide();
-      })
+        $ionicLoading.show();
+        async.parallel([
+          function(callback){
+            getProfile().fin(function(defer){
+              callback(undefined);
+            })
+          },
+          function(callback){
+            bindStruct.init().then(function(defer){
+              // pull refresh
+              $scope.pullRefresh = function() {
+                bindStruct.refresh().then(function(defer){
+                  $scope.$broadcast('scroll.refreshComplete');
+                  $scope.hasMore = bindStruct.moreData.length;
+                }, function(defer){
+                  $scope.$broadcast('scroll.refreshComplete');
+                  $scope.hasMore = bindStruct.moreData.length;
+                })
+              };
+              $scope.loadMore = function() {
+                bindStruct.more().then(function(defer){
+                  $scope.$broadcast('scroll.infiniteScrollComplete');
+                  $scope.hasMore = bindStruct.moreData.length;
+                }, function(defer){
+                  $scope.$broadcast('scroll.infiniteScrollComplete');
+                  $scope.hasMore = bindStruct.moreData.length;
+                })
+              };
+              defer(undefined);
+            }, function(defer, error){
+              console.debug(error);
+              defer(error);
+            })
+            .fin(function(){
+              callback(undefined);
+            });
+          }
+        ], function(){
+          $ionicLoading.hide();
+        })
+      })();
       
-
       //编辑资料
       $scope.getPicture = function(){
         // Modal.okCancelModal('templates/modal-profile-logo.html', {}, {
