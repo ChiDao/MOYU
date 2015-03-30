@@ -2,8 +2,10 @@ define(['app', 'services.Api','services.Modal'], function(app)
 {
   app.controller('ChannelsCtrl', ['$scope', '$state', '$stateParams', 'UI', 'Api', 'Auth', '$ionicLoading',
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$q', 'Modal', 'DB','$ionicPopup',
+    '$rootScope',
     function($scope, $state, $stateParams, UI, Api, Auth, $ionicLoading,
-      $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB,$ionicPopup) {
+      $ionicFrostedDelegate, $ionicScrollDelegate, $timeout, $q, Modal, DB,$ionicPopup,
+      $rootScope) {
 
       // Auth.login();
 
@@ -71,10 +73,12 @@ define(['app', 'services.Api','services.Modal'], function(app)
             };
 
             $scope.enterRefresh = function(){
-              $ionicLoading.show();
-              bindChannels.refresh().fin(function(){
-                $ionicLoading.hide();
-              });
+              if (Auth.isLoggedIn()){
+                $ionicLoading.show();
+                bindChannels.refresh().fin(function(){
+                  $ionicLoading.hide();
+                });
+              }
             }
 
             $scope.$on("$ionicView.afterEnter", $scope.enterRefresh);
@@ -99,16 +103,28 @@ define(['app', 'services.Api','services.Modal'], function(app)
               attr: 'game',
             }
           }
+        }).then(function(){
+          console.debug($scope.channels);
         })
       }
-      if (Auth.isLoggedIn()){
-        $scope.isLoggedIn = true;
-        $scope.bindInit();
-      }else{
-        $scope.isLoggedIn = false;
-        $scope.unLoginInit();
-        // addChannelModal()
+      var init = function(){
+        if (Auth.isLoggedIn()){
+          $scope.isLoggedIn = true;
+          $scope.bindInit();
+        }else{
+          $scope.isLoggedIn = false;
+          $scope.unLoginInit();
+          // addChannelModal()
+        }
       }
+      init();
+      $rootScope.$on('login', function(e, userData){
+        init();
+      })
+      $rootScope.$on('logout', function(e){
+        console.debug('logout')
+        init();
+      })
 
 
       function getGame(scope){

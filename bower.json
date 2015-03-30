@@ -16,6 +16,7 @@
     "angular-translate-storage-cookie": "~2.5.2",
     "angular-translate-storage-local": "~2.5.2",
     "angular-translate-handler-log": "~2.5.2",
-    "upyun": "~0.4.0"
+    "upyun": "~0.4.0",
+    "angular-classy": "~1.1.0"
   }
 }
