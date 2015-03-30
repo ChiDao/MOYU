@@ -134,14 +134,13 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
                     };
 
                     var canvasData = apImageHelper.cropImage(scope.canvas.image, scope.canvas.frame, maxSize);
-                    // $scope.imageURI = canvasData.dataURI;
-                    defer(undefined);
+                    defer(undefined);                    
                   }).then(function(defer){
                     var openGameTime = new Date().getTime();
                     window.canvas2ImagePlugin.saveImageDataToLibrary(
                       function(msg){
                         console.log("下载成功"+msg);
-                        $scope.imageURI = 'img/upload-photo.png'; //图片重置
+                        
                         navigator.camera.takePhoto(function(photo){
                           $scope.imageURI = photo;
                           console.log("成功截图"+$scope.imageURI); 
@@ -149,10 +148,11 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
                           scope.hideModal();
                         }, 
                         function  (message) {
+                          window.canvas2ImagePlugin.removeImgFromLibrary(msg);
                           alert('Failed because: ' + message);
                         }, 
                         {
-                          date: openGameTime,
+                          imgUrl: msg,
                         });                                                                 
                       },
                       
@@ -175,17 +175,20 @@ define(['app', 'services.Api', 'services.Auth'], function(app)
 
       $scope.save = function(){ 
         Thenjs(function(defer){
-          upyun.upload($scope.imageURI, function(err, response, image){
-            if (err) console.error(err);
-            if (image.code === 200 && image.message === 'ok') {
-              $scope.imageURI = image.absUrl;
-              $scope.formData.logo = image;
-              // console.log("图片信息："+JSON.stringify(image));
-              defer(undefined);
-            }
-            $scope.$apply();
-          }); 
-                           
+          if($scope.imageURI.substr(0,4) != 'http'){
+            upyun.upload($scope.imageURI, function(err, response, image){
+              if (err) console.error(err);
+              if (image.code === 200 && image.message === 'ok') {
+                $scope.imageURI = image.absUrl;
+                $scope.formData.logo = image;
+                // console.log("图片信息："+JSON.stringify(image));
+                defer(undefined);
+              }
+              $scope.$apply();
+            });
+          }else{
+            defer(undefined);
+          }                 
         }).then(function(defer){
           // console.log("aaa"+JSON.stringify($scope.formData));  
           Api.putData('/user-profile/' + $scope.userData._id, $scope.formData).then(function(defer, response){

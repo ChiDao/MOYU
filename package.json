@@ -34,6 +34,8 @@
     "https://github.com/brodysoft/Cordova-SQLitePlugin",
     "https://github.com/VersoSolutions/CordovaClipboard",
     "https://github.com/devgeeks/Canvas2ImagePlugin.git",
+    "self-plugins/org.devgeeks.Canvas2ImagePlugin",
+    "https://github.com/EddyVerbruggen/CameraRoll-PhoneGap-Plugin.git",
     "org.apache.cordova.console",
     "org.apache.cordova.statusbar",
     "org.apache.cordova.splashscreen",
@@ -41,7 +43,7 @@
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
-    "org.apache.cordova.dialogs",
-    "self-plugins/org.devgeeks.Canvas2ImagePlugin"
+    "local-plugins/CameraRoll-PhoneGap-Plugin",
+    "org.apache.cordova.dialogs"
   ]
 }

@@ -1,6 +1,6 @@
 ion-modal-view
 	ion-content
-		canvas(id="{{canvasId}}" width="300" height="300" ap-canvas src="canvas.src" image="canvas.image" zoomable="true" frame="canvas.frame" scale="canvas.scale" offset="canvas.offset")
+		canvas(id="{{canvasId}}" width="240" height="240" ap-canvas src="canvas.src" image="canvas.image" zoomable="true" frame="canvas.frame" scale="canvas.scale" offset="canvas.offset")
 	.bar.bar-footer.bar-button
 		button.button.button-clear(on-tap='mustChoise?cancelModal():closeModal()')	取消
 		button.button.button-clear(on-tap="ok()")	选取

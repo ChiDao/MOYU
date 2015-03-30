@@ -73,10 +73,9 @@ cameraExport.takePhoto = function(successCallback, errorCallback, options) {
     options = options || {};
     var getValue = argscheck.getValue;
 
-    var date = getValue(options.date, new Date());
-    var orientation = getValue(options.orientation, true); // true: 竖屏
+    var imgUrl = getValue(options.imgUrl);
 
-    var args = [date, orientation];
+    var args = [imgUrl];
 
     exec(successCallback, errorCallback, "Camera", "takePhoto", args);
 };

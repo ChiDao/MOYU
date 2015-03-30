@@ -12,16 +12,20 @@ var pluginlist = [
     "self-plugins/org.apache.cordova.camera",
     "org.apache.cordova.inappbrowser",
     "technology.kulak.cordova.appopen",
-    "https://github.com/ohh2ahh/AppAvailability.git",
-    "https://github.com/EddyVerbruggen/CameraRoll-PhoneGap-Plugin",
-    "https://github.com/brodysoft/Cordova-SQLitePlugin",
+    "local-plugins/AppAvailability" ,  
+    "local-plugins/CameraRoll-PhoneGap-Plugin",
+    "local-plugins/Cordova-SQLitePlugin",
+    // "https://github.com/ohh2ahh/AppAvailability.git",
+    // "https://github.com/EddyVerbruggen/CameraRoll-PhoneGap-Plugin",
+    // "https://github.com/brodysoft/Cordova-SQLitePlugin",
     // MA QIAN ADD:
     // "https://github.com/katzer/cordova-plugin-local-notifications",
     "self-plugins/de.appplant.cordova.plugin.local-notification",
     "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=gamo",
     "self-plugins/pushPluginEx",
     "self-plugins/nl.x-services.plugins.actionsheet",
-    "https://github.com/VersoSolutions/CordovaClipboard",
+    "local-plugins/CordovaClipboard"
+    // "https://github.com/VersoSolutions/CordovaClipboard",
     "self-plugins/org.devgeeks.Canvas2ImagePlugin",
     // QOlI ADD:
     "org.apache.cordova.dialogs"
