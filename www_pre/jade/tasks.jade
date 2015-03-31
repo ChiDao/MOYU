@@ -1,0 +1,7 @@
+ion-view#Channels(view-title='任务列表')
+  ion-content
+    ion-list
+      a.item(ng-repeat='task in tasks', on-tap="Api.jumpTo(task.clips)")
+        | {{task.name}}
+
+//- span.item-note(ng-class='{first:$first,hide:$last}')

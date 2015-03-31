@@ -2,10 +2,10 @@ define(['app', 'services.Api'], function(app)
 {
   app.controller('ChannelCtrl', ['$rootScope', '$scope', '$stateParams', 'UI', 'Api',
     '$ionicFrostedDelegate','$ionicScrollDelegate', '$timeout', '$ionicPopup',
-    '$ionicLoading','upyun', 'Modal','$ionicSlideBoxDelegate','Auth',
+    '$ionicLoading','upyun', 'Modal','$ionicSlideBoxDelegate','Auth','$state',
     function($rootScope, $scope, $stateParams, UI, Api,
       $ionicFrostedDelegate, $ionicScrollDelegate, $timeout,$ionicPopup,
-      $ionicLoading,upyun,Modal,$ionicSlideBoxDelegate,Auth) {
+      $ionicLoading,upyun,Modal,$ionicSlideBoxDelegate,Auth,$state) {
 
       //
       $scope.$on("$ionicView.afterEnter", function() {
@@ -97,6 +97,12 @@ define(['app', 'services.Api'], function(app)
             // $scope.startGame();
 
           })//End of bindStruct.init()
+          
+          $scope.taskList = function(gameId){
+            console.log(gameId);
+            // $state.go('tab.profile');
+            $state.go('tab.tasks',{gameId:gameId});
+          }
 
           $scope.newClip = function(openGameTime,orientation){
             //选择图片

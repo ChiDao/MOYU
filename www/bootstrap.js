@@ -33,6 +33,7 @@ require.config({
     'controllers.ChatCtrl': 'js/controllers.ChatCtrl',
     'controllers.DiscoverCtrl': 'js/controllers.DiscoverCtrl',
     'controllers.ProfileCtrl': 'js/controllers.ProfileCtrl',
+    'controllers.TasksCtrl':'js/controllers.TasksCtrl',
   },
   shim: {
     'corodva': {
@@ -54,6 +55,7 @@ require.config({
         'controllers.ChatCtrl',
         'controllers.DiscoverCtrl',
         'controllers.ProfileCtrl',
+        'controllers.TasksCtrl',
       ]
     },
   }

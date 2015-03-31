@@ -52,6 +52,8 @@ define(['app', 'services.Api'], function(app)
     				return true;
                 case 'tab.profile-chat':
                     return true;
+                case 'tab.tasks':
+                    return true;
     			default:
     				return false;
     		}

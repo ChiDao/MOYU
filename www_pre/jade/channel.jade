@@ -1,7 +1,7 @@
 ion-view#Channel(view-title='{{channel.name}}')
   ion-nav-buttons(side="right")
-    //- button.button.button-clear(ng-click="newClip()")
-    //-   img2x(src2x="img/icon-NewScreen",ext="png")
+    button.button.button-clear(ng-click="taskList(channel._id)")
+      img2x(src2x="img/icon-NewScreen",ext="png")
   ion-content
     ion-refresher(pulling-text=' ', on-refresh='doRefresh()')
     ion-list
