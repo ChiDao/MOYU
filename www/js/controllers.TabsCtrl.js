@@ -54,6 +54,8 @@ define(['app', 'services.Api'], function(app)
                     return true;
                 case 'tab.tasks':
                     return true;
+                case 'tab.task-clip':
+                    return true;
     			default:
     				return false;
     		}

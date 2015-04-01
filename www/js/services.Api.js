@@ -161,6 +161,7 @@ define(['app', 'services.Modal', 'services.DB'], function(app)
         jumpTo: function(apiLink, context){
           //get api
           var apiData = this.parse(apiLink);
+          console.log(apiData);
           if (!apiData.api){
             console.debug("Can't find api:", apiLink);
             return false;

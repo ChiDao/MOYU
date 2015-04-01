@@ -147,6 +147,7 @@ define(['app', 'restangular'], function(app){
           ['object', 'subscribe-edit', [['clip'],{}],{'user':'$currentUser'}],
           //tasks
           ['stream', 'game-tasks', [['game'],{}]],
+          ['object', 'task-clips', [['taskId'],{}]],
         ],
         apiRouteMaps:[
           ['recent-played-games',{'default': 'tab.channels'}],
@@ -159,6 +160,7 @@ define(['app', 'restangular'], function(app){
             'chats': 'tab.chat',
             'profile': 'tab.profile-chat',
           }],
+          ['task-clips', {'default': 'tab.task-clip'}],
         ],
         apiModals: [
           ['signup', 'templates/modal-signup.html', {tel: ''}],

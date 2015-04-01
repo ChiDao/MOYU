@@ -47,7 +47,7 @@ define(['app'], function(app){
           access: access.public
         }
       })
-      
+
       .state('tab.tasks', {
         url: '/tasks/:gameId',
         views: {
@@ -60,6 +60,18 @@ define(['app'], function(app){
           access: access.public
         }
       })
+        .state('tab.task-clip', {
+          url: '/task/:taskId',
+          views: {
+            'tab-channels': {
+              templateUrl: 'templates/channel.html',
+              controller: 'TaskCtrl'
+            }
+          },
+          data: {
+            access: access.public
+          }
+        })
       .state('tab.add-channel', {
         url: '/add-channel',
         views: {
