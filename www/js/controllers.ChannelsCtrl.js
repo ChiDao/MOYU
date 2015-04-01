@@ -9,7 +9,7 @@ define(['app', 'services.Api','services.Modal'], function(app)
 
       // Auth.login();
 
-      $scope.$on('log-in', function(event,data) {
+      $scope.$on('login', function(event,data) {
         console.log("iflogin:"+data);
         if(data){
           $scope.isLoggedIn = true;
